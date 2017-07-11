@@ -1,5 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
@@ -7,14 +8,22 @@
     android:layout_marginTop="10dp"
     tools:context=".MissionActivity" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mission"
+        android:textColor="@android:color/white"
+        android:textSize="40dp"
+        android:background="#50AEFC"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="12dp"/>
+
     <com.idunnololz.widgets.AnimatedExpandableListView
         android:id="@+id/processingMissionList"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#78D2FC"
         />
 
-    <!--<com.idunnololz.widgets.AnimatedExpandableListView-->
-        <!--anroid:id="@+id/processedMissionList"-->
-        <!--anroid:layout_width=""-->
-</RelativeLayout>
+    
+</LinearLayout>
