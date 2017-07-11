@@ -8,29 +8,10 @@
     android:layout_marginTop="20dp"
     tools:context=".MissionActivity" >
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mission"
-        android:textColor="@android:color/white"
-        android:textSize="40dp"
-        android:background="#50AEFC"
-        android:layout_marginBottom="15dp"
-        android:paddingLeft="12dp"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <com.idunnololz.widgets.AnimatedExpandableListView
-        android:id="@+id/processingMissionList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#78D2FC"
-        android:layout_marginBottom="15dp"
-        />
-
-    <com.idunnololz.widgets.AnimatedExpandableListView
-        android:id="@+id/processedMissionList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#78D2FC"
-        />
-
+    </ScrollView>
 </LinearLayout>
