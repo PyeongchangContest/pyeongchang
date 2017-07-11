@@ -15,31 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MissionActivity extends AppCompatActivity {
-    private AnimatedExpandableListView listView;
-    private ExampleAdapter adapter;
+    private AnimatedExpandableListView listView1;
+    private AnimatedExpandableListView listView2;
+    private ExampleAdapter adapter1;
+    private ExampleAdapter adapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission);
 
-        List<GroupItem> items = new ArrayList<GroupItem>();
+        List<GroupItem> items1 = new ArrayList<GroupItem>();
+        List<GroupItem> items2 = new ArrayList<GroupItem>();
 
-//        for(int i = 1; i < 6; i++) {
-//            GroupItem item = new GroupItem();
-//
-//            item.title = "Group" + i;
-//
-//            for(int j = 0; j < i; j++) {
-//                ChildItem child = new ChildItem();
-//                child.title = "Awesome item" + j;
-//                child.hint = "Too awesome";
-//
-//                item.items.add(child);
-//            }
-//
-//            items.add(item);
-//        }
+        /****************processingMissionList Start********************/
         GroupItem processingMission = new GroupItem();
         processingMission.title = "Processing Mission";
 
@@ -54,22 +43,55 @@ public class MissionActivity extends AppCompatActivity {
         ChildItem quizMission = new ChildItem();
         quizMission.title = "Let's solve the quiz!";
         processingMission.items.add(quizMission);
+        /****************processingMissionList End********************/
 
-        items.add(processingMission);
+        /****************processedMissionList Start********************/
+        GroupItem processedMission = new GroupItem();
+        processedMission.title = "Processed Mission";
 
-        adapter = new ExampleAdapter(this);
-        adapter.setData(items);
+        for(int i = 0; i < 5; i++) {
+            ChildItem child = new ChildItem();
+            child.title = "Awesome item" + i;
+            child.hint = "Too awesome";
 
-        listView = (AnimatedExpandableListView) findViewById(R.id.processingMissionList);
-        listView.setAdapter(adapter);
+            processedMission.items.add(child);
+        }
+        /****************processedMissionList End********************/
 
-        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        items1.add(processingMission);
+        items2.add(processedMission);
+
+        adapter1 = new ExampleAdapter(this);
+        adapter1.setData(items1);
+
+        adapter2 = new ExampleAdapter(this);
+        adapter2.setData(items2);
+
+        listView1 = (AnimatedExpandableListView) findViewById(R.id.processingMissionList);
+        listView1.setAdapter(adapter1);
+
+        listView2 = (AnimatedExpandableListView) findViewById(R.id.processedMissionList);
+        listView2.setAdapter(adapter2);
+
+        listView1.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
-                if(listView.isGroupExpanded(groupPosition)) {
-                    listView.collapseGroupWithAnimation(groupPosition);
+                if(listView1.isGroupExpanded(groupPosition)) {
+                    listView1.collapseGroupWithAnimation(groupPosition);
                 } else {
-                    listView.expandGroupWithAnimation(groupPosition);
+                    listView1.expandGroupWithAnimation(groupPosition);
+                }
+                return true;
+            }
+        });
+
+        listView2.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
+                if(listView2.isGroupExpanded(groupPosition)) {
+                    listView2.collapseGroupWithAnimation(groupPosition);
+                } else {
+                    listView2.expandGroupWithAnimation(groupPosition);
                 }
                 return true;
             }
