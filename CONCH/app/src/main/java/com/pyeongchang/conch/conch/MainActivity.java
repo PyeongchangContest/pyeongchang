@@ -46,7 +46,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PopupMail.class));
             }
         });
-        rankingBtn.setOnClickListener(new View.OnClickListener() {
+        settingBtn.setOnClickListener(new View.OnClickListener() {//설정 버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, PopupSetting.class));
+            }
+        });
+        rankingBtn.setOnClickListener(new View.OnClickListener() {//랭킹 버튼 클릭시
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), RankingActivity.class);

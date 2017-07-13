@@ -20,8 +20,9 @@
         <activity
             android:name=".MypageActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-        <activity android:name=".PopupMail"></activity>
-        <activity android:name=".RankingActivity"></activity>
+        <activity android:name=".PopupMail" />
+        <activity android:name=".RankingActivity" />
+        <activity android:name=".PopupSetting"></activity>
     </application>
 
 </manifest>
