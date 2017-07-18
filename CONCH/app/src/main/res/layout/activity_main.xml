@@ -17,8 +17,8 @@
             android:orientation="vertical"
             android:id="@+id/layout_body"
             android:weightSum="1"
-            android:layout_width="345dp"
-            android:layout_height="260dp"
+            android:layout_width="321dp"
+            android:layout_height="230dp"
             app:layout_constraintBottom_toTopOf="@+id/layout_info"
             android:layout_marginEnd="16dp"
             app:layout_constraintRight_toRightOf="parent"
@@ -26,31 +26,43 @@
             android:layout_marginStart="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="16dp"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.5"
             android:layout_marginBottom="16dp">
 
 
             <HorizontalScrollView
-                android:layout_width="298dp"
-                android:layout_height="260dp"
+                android:layout_width="300dp"
+                android:layout_height="220dp"
+                android:layout_marginBottom="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.521"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
 
                 <LinearLayout
+                    android:id="@+id/scroll_wrapper"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
-                    android:gravity="bottom">
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/torch_position"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"></LinearLayout>
 
                     <ImageButton
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        app:srcCompat="@drawable/torch"
-                        android:id="@+id/torch1"
+                        android:id="@+id/plus_torch"
+                        android:onClick="clickPlusBtn"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/plus_torch" />
 
                 </LinearLayout>
 
