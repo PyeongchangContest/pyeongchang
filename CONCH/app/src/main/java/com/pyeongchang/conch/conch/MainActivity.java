@@ -91,7 +91,12 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         mConstraintLayout = (ConstraintLayout) findViewById(R.id.layout_body);
 
-        popupTorch();
+        if (userProperty.getUserLevel() == 1 || userProperty.getUserLevel() > torchList.size()) {
+            popupTorch();
+        }else{
+            Toast.makeText(mContext, "성화를 추가하려면 레벨을 올리세요.", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -118,16 +123,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //객체 생성
-        View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
-        TextView torchName = customView.findViewById(R.id.create_torchName);
-        TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
-        ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
-        String tName=torchName.getText().toString();
-        int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
-        boolean isSecret=isSecretCommunity.isChecked();
-        TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
-
-        communityList.add(addTorchCommunity);
+//        View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
+//        TextView torchName = customView.findViewById(R.id.create_torchName);
+//        TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
+//        ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
+//        String tName=torchName.getText().toString();
+//        int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
+//        boolean isSecret=isSecretCommunity.isChecked();
+//        TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
+//
+//        communityList.add(addTorchCommunity);
 
         torchList.add(addBtn);
         layout.addView(addBtn);
@@ -137,7 +142,11 @@ public class MainActivity extends AppCompatActivity {
     public void popupTorch() {
 //        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 //        View customView = inflater.inflate(R.layout.activity_popup_create_torch, null);
-        View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
+//        View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
+
+        LayoutInflater inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View customView= inflater.inflate(R.layout.activity_popup_create_torch, (ViewGroup) findViewById(R.id.popup_layout));
+
 
         mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
@@ -149,6 +158,23 @@ public class MainActivity extends AppCompatActivity {
         // Get a reference for the custom view close button
         ImageButton closeButton = customView.findViewById(R.id.ib_close);
         Button createTorchBtn = customView.findViewById(R.id.create_TorchBtn);
+        final TextView textView=customView.findViewById(R.id.create_maxPeopleValue);
+        final SeekBar sb;
+        int value=20;
+        sb=customView.findViewById(R.id.create_maxPeople);
+        sb.setProgress(value);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                textView.setText(String.valueOf(i));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
         // Set a click listener for the popup window close button
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,14 +187,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final LinearLayout layoutWrapper = (LinearLayout) findViewById(R.id.torch_position);
-                if (userProperty.getUserLevel() == 1 || userProperty.getUserLevel() > torchList.size()) {
+                    //View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
+                    //성화정보들
+                    TextView torchName = customView.findViewById(R.id.create_torchName);
+                    TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
+                    ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
+                    String tName=torchName.getText().toString();
+                    int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
+                    boolean isSecret=isSecretCommunity.isChecked();
+                    //성화 커뮤니티 객체 추가
+                    TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
+                    communityList.add(addTorchCommunity);
+
+                    TextView mName=(TextView) findViewById(R.id.main_torchName);
+                    TextView mScore=(TextView) findViewById(R.id.main_torchScore);
+                    mName.setText(addTorchCommunity.getCommunityName());
+                    mScore.setText(String.valueOf(addTorchCommunity.getCommunityScore()));
+
                     createNewTorch(layoutWrapper);
-                }
+
 
                 mPopupWindow.dismiss();
             }
         });
-
 
         mPopupWindow.showAtLocation(mConstraintLayout, Gravity.CENTER, 0, 0);
 
