@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "338373919797",
+    "firebase_url": "https://conch-bce74.firebaseio.com",
+    "project_id": "conch-bce74",
+    "storage_bucket": "conch-bce74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338373919797:android:f4d9ea27acefa25d",
+        "android_client_info": {
+          "package_name": "com.pyeongchang.conch.conch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338373919797-ckie5sdkjsj3alpelbjn8rm1ur967e4q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfrbTDna9zgCdtMqoiCnYtAUXBsiZXxqM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
