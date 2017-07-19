@@ -14,7 +14,6 @@ public class TimeLineActivity extends Activity{
 
     TextView text;
     CustomAdapter cAdapter;
-    DBAdapter dbAdapter;
     PostDBAdapter postDB;
 
     @Override
@@ -33,8 +32,6 @@ public class TimeLineActivity extends Activity{
         cAdapter = new CustomAdapter(list, this);
         lv.setAdapter(cAdapter);
 
-        dbAdapter = new DBAdapter(this);
-        dbAdapter.open();
         postDB = new PostDBAdapter(this);
         postDB.open();
         ArrayList<String> array_list = (ArrayList) postDB.getAllPost();
