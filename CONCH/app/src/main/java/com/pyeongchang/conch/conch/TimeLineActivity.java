@@ -10,33 +10,29 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class TimeLineActivity extends Activity{
+public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.ListBtnClickListener{
 
     TextView text;
-    CustomAdapter cAdapter;
-    PostDBAdapter postDB;
+    TimeLineCustomAdapter cAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
 
-        ListView lv = (ListView)findViewById(R.id.listView1);
+        ListView lv = (ListView)findViewById(R.id.timeline_list_view);
 
         Intent intent = getIntent();
         String post = intent.getStringExtra("newWrite");
 
-        final ArrayList<Item> list = new ArrayList<Item>();
-        list.add(new Item(post));
+        final ArrayList<Item> timeLinelist = new ArrayList<>();
+        timeLinelist.add(new Item(post));
 
-        cAdapter = new CustomAdapter(list, this);
+
+        cAdapter = new TimeLineCustomAdapter(timeLinelist, this);
         lv.setAdapter(cAdapter);
 
-        postDB = new PostDBAdapter(this);
-        postDB.open();
-        ArrayList<String> array_list = (ArrayList) postDB.getAllPost();
-        TextView tv = findViewById(R.id.content);
-        tv.setText(array_list.get(0));
     }
 
 
@@ -44,4 +40,10 @@ public class TimeLineActivity extends Activity{
         Intent intent = new Intent(this, WritingActivity.class);
         startActivity(intent);
     }
+    @Override
+    public void onListBtnClick(int position){
+        Intent intent = new Intent(this, CommentAddActivity.class);
+        startActivity(intent);
+    }
+
 }
