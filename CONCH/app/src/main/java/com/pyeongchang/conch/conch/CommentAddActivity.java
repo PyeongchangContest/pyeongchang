@@ -28,7 +28,9 @@ public class CommentAddActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.comment_close:
-                finish();
+                onPause();
+                onStop();
+                onDestroy();
                 break;
             case R.id.comment_add_button:
                 EditText commentId = (EditText)findViewById(R.id.comment_add_button);
