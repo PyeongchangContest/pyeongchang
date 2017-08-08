@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_comment_add"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="com.pyeongchang.conch.conch.CommentAddActivity">
+    <Button
+        android:id="@+id/comment_close"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:onClick="onClick"
+        android:background="@drawable/close"/>
+    <ListView
+        android:layout_weight="16"
+        android:id="@+id/comment_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp">
+    </ListView>
+
+    <ScrollView
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:padding="10dp"
+            android:background="@drawable/black_border"
+            android:hint="덧글을 입력하세요."/>
+
+    </ScrollView>
+    <Button
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/comment_add_button"
+        android:onClick="onClick"
+        android:background="@drawable/border"
+        android:text="Add Comment"/>
+
+
+</LinearLayout>

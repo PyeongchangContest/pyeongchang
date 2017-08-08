@@ -1,10 +1,13 @@
 package com.pyeongchang.conch.conch;
 
+
 import android.app.FragmentTransaction;
 import android.content.Context;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.DrawerLayout;
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         CarouselFragment cf=CarouselFragment.newInstance();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_body, cf);
@@ -210,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mPopupWindow.showAtLocation(mConstraintLayout, Gravity.CENTER, 0, 0);
+
 
     }
 
