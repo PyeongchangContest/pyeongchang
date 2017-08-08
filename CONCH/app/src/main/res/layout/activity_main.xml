@@ -14,59 +14,61 @@
         android:layout_weight="0.17">
 
         <android.support.constraint.ConstraintLayout
-            android:orientation="vertical"
             android:id="@+id/layout_body"
-            android:weightSum="1"
-            android:layout_width="321dp"
-            android:layout_height="230dp"
-            app:layout_constraintBottom_toTopOf="@+id/layout_info"
+            android:layout_width="wrap_content"
+            android:layout_height="324dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
+            android:orientation="vertical"
+            android:weightSum="1"
+            app:layout_constraintBottom_toTopOf="@+id/layout_info"
+            app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginBottom="16dp">
+            app:layout_constraintRight_toRightOf="parent">
 
 
-            <HorizontalScrollView
-                android:layout_width="300dp"
-                android:layout_height="220dp"
-                android:layout_marginBottom="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.521"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+            <!--<HorizontalScrollView-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="220dp"-->
+            <!--android:layout_marginBottom="0dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.521"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent">-->
 
-                <LinearLayout
-                    android:id="@+id/scroll_wrapper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="bottom"
-                    android:orientation="horizontal">
+            <!--<LinearLayout-->
+            <!--android:id="@+id/scroll_wrapper"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="bottom"-->
+            <!--android:orientation="horizontal">-->
 
-                    <LinearLayout
-                        android:id="@+id/torch_position"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></LinearLayout>
+            <!--<LinearLayout-->
+            <!--android:id="@+id/torch_position"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"></LinearLayout>-->
 
-                    <ImageButton
-                        android:id="@+id/plus_torch"
-                        android:onClick="clickPlusBtn"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/plus_torch" />
+            <!--<ImageButton-->
+            <!--android:id="@+id/plus_torch"-->
+            <!--android:onClick="clickPlusBtn"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--app:srcCompat="@drawable/plus_torch" />-->
 
-                </LinearLayout>
+            <!--</LinearLayout>-->
 
-            </HorizontalScrollView>
+            <!--</HorizontalScrollView>-->
+
+
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -74,14 +76,13 @@
             android:layout_height="122dp"
             android:id="@+id/layout_info"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="-2dp"
             android:layout_marginStart="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="16dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="16dp"
-            app:layout_constraintHorizontal_bias="0.47">
+            android:layout_marginRight="16dp">
 
             <TextView
                 android:id="@+id/main_torchName"
@@ -137,7 +138,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/layout_body">
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_finished">
 
             <ImageView
                 app:srcCompat="@drawable/walking"
@@ -197,9 +201,12 @@
             app:layout_constraintBottom_toTopOf="@+id/layout_body"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="@+id/layout_walking"
-            android:layout_height="100dp"
-            android:layout_width="344dp"
-            app:layout_constraintLeft_toLeftOf="parent">
+            android:layout_height="67dp"
+            android:layout_width="303dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintVertical_bias="0.592">
 
             <Button
                 android:text="send torch"
@@ -252,7 +259,7 @@
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/rankingBtn"
                 app:srcCompat="@android:drawable/ic_dialog_email"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_editor_absoluteX="-179dp" />
 
             <ImageButton
                 android:id="@+id/rankingBtn"
@@ -261,7 +268,7 @@
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/settingBtn"
                 app:srcCompat="@android:drawable/ic_menu_myplaces"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_editor_absoluteX="-179dp" />
 
             <ImageButton
                 android:id="@+id/settingBtn"
@@ -270,7 +277,7 @@
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:srcCompat="@android:drawable/ic_menu_preferences"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_editor_absoluteX="-179dp" />
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>

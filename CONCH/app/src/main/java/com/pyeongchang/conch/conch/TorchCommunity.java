@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class TorchCommunity {
     private ArrayList<UserProperty> userList=new ArrayList<>();
     private int communityScore;
+    private int communityRank;
     private String communityName;
     private int maxPeople;
     private boolean isSecret;
@@ -59,5 +60,13 @@ public class TorchCommunity {
 
     public void setSecret(boolean secret) {
         isSecret = secret;
+    }
+
+    public int getCommunityRank() {
+        return communityRank;
+    }
+
+    public void setCommunityRank(int communityRank) {
+        this.communityRank = communityRank;
     }
 }

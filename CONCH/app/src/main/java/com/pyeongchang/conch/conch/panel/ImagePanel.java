@@ -2,6 +2,7 @@ package com.pyeongchang.conch.conch.panel;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -13,7 +14,6 @@ import com.pyeongchang.conch.conch.R;
 public class ImagePanel extends BasePanel {
 
     private ImageView mImageViewHolder;
-
     //Constructors
     public ImagePanel(Context context) {
         this(context, null);
@@ -44,4 +44,5 @@ public class ImagePanel extends BasePanel {
         mImageViewHolder.setLayoutParams(lp);
         mPanelContainer.addView(mImageViewHolder);
     }
+
 }

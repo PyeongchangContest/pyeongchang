@@ -1,5 +1,6 @@
 package com.pyeongchang.conch.conch;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,12 +22,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,12 +38,15 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ImageButton> torchList = new ArrayList<>();
     private ArrayList<TorchCommunity> communityList = new ArrayList<>();
 
+    private TextView infoTorchRank;
+    private TextView infoTorchName;
+    private TextView infoTorchScore;
+
     final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         //액션바 수정
         getSupportActionBar().setTitle("PyeonChang2018");
@@ -55,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         ImageButton mailboxBtn = (ImageButton) findViewById(R.id.mailboxBtn);//메일함 버튼
         ImageButton settingBtn = (ImageButton) findViewById(R.id.settingBtn);//세팅 버튼
         ImageButton rankingBtn = (ImageButton) findViewById(R.id.rankingBtn);//랭킹 버튼
+
+        infoTorchName=(TextView)findViewById(R.id.main_torchName);//성화 이름
+        infoTorchScore=(TextView)findViewById(R.id.main_torchScore);//성화 점수
+        infoTorchRank =(TextView)findViewById(R.id.main_torchRank);//성화 랭킹
 
         profileBtn.setOnClickListener(new View.OnClickListener() {//프로필 버튼 클릭시
             @Override
@@ -82,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        CarouselFragment cf=CarouselFragment.newInstance();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.layout_body, cf);
+        fragmentTransaction.commit();
         // 유저 정보 생성
+
 
     }
 
@@ -140,14 +150,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void popupTorch() {
-//        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-//        View customView = inflater.inflate(R.layout.activity_popup_create_torch, null);
-//        View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
-
         LayoutInflater inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View customView= inflater.inflate(R.layout.activity_popup_create_torch, (ViewGroup) findViewById(R.id.popup_layout));
-
-
+        mConstraintLayout = (ConstraintLayout) findViewById(R.id.layout_body);
         mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
         mPopupWindow.update();
@@ -157,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Get a reference for the custom view close button
         ImageButton closeButton = customView.findViewById(R.id.ib_close);
-        Button createTorchBtn = customView.findViewById(R.id.create_TorchBtn);
+        final Button createTorchBtn = customView.findViewById(R.id.create_TorchBtn);
         final TextView textView=customView.findViewById(R.id.create_maxPeopleValue);
         final SeekBar sb;
         int value=20;
@@ -186,26 +191,19 @@ public class MainActivity extends AppCompatActivity {
         createTorchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final LinearLayout layoutWrapper = (LinearLayout) findViewById(R.id.torch_position);
-                    //View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
-                    //성화정보들
-                    TextView torchName = customView.findViewById(R.id.create_torchName);
-                    TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
-                    ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
-                    String tName=torchName.getText().toString();
-                    int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
-                    boolean isSecret=isSecretCommunity.isChecked();
-                    //성화 커뮤니티 객체 추가
-                    TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
-                    communityList.add(addTorchCommunity);
+                //성화정보들
+                TextView torchName = customView.findViewById(R.id.create_torchName);
+                TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
+                ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
+                String tName=torchName.getText().toString();
+                int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
+                boolean isSecret=isSecretCommunity.isChecked();
+                //성화 커뮤니티 객체 추가
+                TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
+                communityList.add(addTorchCommunity);
 
-                    TextView mName=(TextView) findViewById(R.id.main_torchName);
-                    TextView mScore=(TextView) findViewById(R.id.main_torchScore);
-                    mName.setText(addTorchCommunity.getCommunityName());
-                    mScore.setText(String.valueOf(addTorchCommunity.getCommunityScore()));
-
-                    createNewTorch(layoutWrapper);
-
+                CarouselFragment carouselFragment=(CarouselFragment)getFragmentManager().findFragmentById(R.id.layout_body);
+                carouselFragment.createNewTorch();
 
                 mPopupWindow.dismiss();
             }
@@ -234,8 +232,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void printValue(int value){
-        TextView textView=(TextView)findViewById(R.id.create_maxPeopleValue);
-        textView.setText(String.valueOf(value));
+    public void changeText(String name,int score,int rank){
+        infoTorchName.setText(name);
+        infoTorchScore.setText(String.valueOf(score));
+        infoTorchRank.setText(String.valueOf(rank));
+
+    }
+
+    public ArrayList<TorchCommunity> getCommunityList() {
+        return communityList;
     }
 }
