@@ -26,6 +26,18 @@
         <activity android:name=".RankingActivity" />
         <activity android:name=".PopupSetting" />
         <activity android:name=".CommentAddActivity"></activity>
+        <activity
+            android:name=".Popup_createTorch"
+            android:theme="@android:style/Theme.DeviceDefault">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity2"
+            android:noHistory="true"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
