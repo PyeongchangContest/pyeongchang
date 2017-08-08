@@ -25,13 +25,11 @@ public class MissionActivity extends AppCompatActivity {
     private ExampleAdapter adapter1;
     private ExampleAdapter adapter2;
 
-    DBAdapter db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission);
-
-        db = new DBAdapter(this);
+        
         Intent intent = new Intent(this, WritingActivity.class);
         startActivity(intent);
 
