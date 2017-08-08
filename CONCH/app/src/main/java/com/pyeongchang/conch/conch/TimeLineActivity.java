@@ -13,9 +13,10 @@ import java.util.ArrayList;
 public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.ListBtnClickListener{
 
     TextView text;
-    TimeLineCustomAdapter cAdapter;
+    TimeLineCustomAdapter[] cAdapter;
     final ArrayList<Item> timeLinelist = new ArrayList<>();
     ListView lv;
+    int count = 0;
 
 
     @Override
@@ -24,11 +25,8 @@ public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.
         setContentView(R.layout.activity_time_line);
 
         lv = (ListView)findViewById(R.id.timeline_list_view);
+        newWirte();
 
-
-
-        //3주차 ppt보고 보안 activity간에 정보 교환하는거
-        //함수를 만들어서 넘겨버리기
         //parcelable 기반 꾸러미로 사용자가 입력한 정보 받아오기
 
 
@@ -57,11 +55,13 @@ public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.
         Intent intent = getIntent();
         String post = intent.getStringExtra("newWrite");
 
-     //   timeLinelist.add(new Item(post));
+        count++;
+        timeLinelist.add(new Item(post));
 
-      //  cAdapter = new TimeLineCustomAdapter(timeLinelist, this);
-        cAdapter.add(new Item(post));
-        lv.setAdapter(cAdapter);
+        cAdapter[count] = new TimeLineCustomAdapter(timeLinelist, this);
+        cAdapter[count].add(new Item(post));
+        lv.setAdapter(cAdapter[count]);
+
 
     }
 
