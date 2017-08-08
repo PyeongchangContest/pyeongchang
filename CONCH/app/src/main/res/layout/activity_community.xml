@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <Button
-        android:id="@+id/missionBtn"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper
+        android:id="@+id/custom_switcher"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ListView
+        android:id="@+id/runner_listview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mission" />
-    <Button
-        android:id="@+id/timelineBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Timeline"/>
+        android:divider="#ffcc22"></ListView>
+
+
+
 </LinearLayout>
