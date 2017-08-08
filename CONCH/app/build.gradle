@@ -29,6 +29,6 @@ dependencies {
     compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.sdsmdg.harjot:rotatingtext:1.0.2'
     testCompile 'junit:junit:4.12'
-
+    compile project(path: ':carousel')
     apply plugin: 'com.google.gms.google-services'
 }
