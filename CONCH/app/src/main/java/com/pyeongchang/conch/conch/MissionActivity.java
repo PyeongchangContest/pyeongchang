@@ -30,80 +30,79 @@ public class MissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission);
         
-        Intent intent = new Intent(this, WritingActivity.class);
-        startActivity(intent);
 
-//        List<GroupItem> items1 = new ArrayList<GroupItem>();
-//        List<GroupItem> items2 = new ArrayList<GroupItem>();
-//
-//        /****************processingMissionList Start********************/
-//        GroupItem processingMission = new GroupItem();
-//        processingMission.title = "Processing Mission";
-//
-//        ChildItem runningMission = new ChildItem();
-//        runningMission.title = "Run 3km with your mebers!";
-//        processingMission.items.add(runningMission);
-//
-//        ChildItem invitationMission = new ChildItem();
-//        invitationMission.title = "Invite those who is from KOREA!";
-//        processingMission.items.add(invitationMission);
-//
-//        ChildItem quizMission = new ChildItem();
-//        quizMission.title = "Let's solve the quiz!";
-//        processingMission.items.add(quizMission);
-//        /****************processingMissionList End********************/
-//
-//        /****************processedMissionList Start********************/
-//        GroupItem processedMission = new GroupItem();
-//        processedMission.title = "Processed Mission";
-//
-//        for(int i = 0; i < 5; i++) {
-//            ChildItem child = new ChildItem();
-//            child.title = "Awesome item" + i;
-//            child.hint = "Too awesome";
-//
-//            processedMission.items.add(child);
-//        }
-//        /****************processedMissionList End********************/
-//
-//        items1.add(processingMission);
-//        items2.add(processedMission);
-//
-//        adapter1 = new ExampleAdapter(this);
-//        adapter1.setData(items1);
-//
-//        adapter2 = new ExampleAdapter(this);
-//        adapter2.setData(items2);
-//
+
+        List<GroupItem> items1 = new ArrayList<GroupItem>();
+        List<GroupItem> items2 = new ArrayList<GroupItem>();
+
+        /****************processingMissionList Start********************/
+        GroupItem processingMission = new GroupItem();
+        processingMission.title = "Processing Mission";
+
+        ChildItem runningMission = new ChildItem();
+        runningMission.title = "Run 3km with your mebers!";
+        processingMission.items.add(runningMission);
+
+        ChildItem invitationMission = new ChildItem();
+        invitationMission.title = "Invite those who is from KOREA!";
+        processingMission.items.add(invitationMission);
+
+        ChildItem quizMission = new ChildItem();
+        quizMission.title = "Let's solve the quiz!";
+        processingMission.items.add(quizMission);
+        /****************processingMissionList End********************/
+
+        /****************processedMissionList Start********************/
+        GroupItem processedMission = new GroupItem();
+        processedMission.title = "Processed Mission";
+
+        for(int i = 0; i < 5; i++) {
+            ChildItem child = new ChildItem();
+            child.title = "Awesome item" + i;
+            child.hint = "Too awesome";
+
+            processedMission.items.add(child);
+        }
+        /****************processedMissionList End********************/
+
+        items1.add(processingMission);
+        items2.add(processedMission);
+
+        adapter1 = new ExampleAdapter(this);
+        adapter1.setData(items1);
+
+        adapter2 = new ExampleAdapter(this);
+        adapter2.setData(items2);
+
 //        listView1 = (AnimatedExpandableListView) findViewById(R.id.processingMissionList);
 //        listView1.setAdapter(adapter1);
 //
 //        listView2 = (AnimatedExpandableListView) findViewById(R.id.processedMissionList);
 //        listView2.setAdapter(adapter2);
-//
-//        listView1.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
-//                if(listView1.isGroupExpanded(groupPosition)) {
-//                    listView1.collapseGroupWithAnimation(groupPosition);
-//                } else {
-//                    listView1.expandGroupWithAnimation(groupPosition);
-//                }
-//                return true;
-//            }
-//        });
-//
-//        listView2.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//            @Override
-//            public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
-//                if(listView2.isGroupExpanded(groupPosition)) {
-//                    listView2.collapseGroupWithAnimation(groupPosition);
-//                } else {
-//                    listView2.expandGroupWithAnimation(groupPosition);
-//                }
-//                return true;
-//            }
-//        });
+
+        listView1.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
+                if(listView1.isGroupExpanded(groupPosition)) {
+                    listView1.collapseGroupWithAnimation(groupPosition);
+                } else {
+                    listView1.expandGroupWithAnimation(groupPosition);
+                }
+                return true;
+            }
+        });
+
+        listView2.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View view, int groupPosition, long id) {
+                if(listView2.isGroupExpanded(groupPosition)) {
+                    listView2.collapseGroupWithAnimation(groupPosition);
+                } else {
+                    listView2.expandGroupWithAnimation(groupPosition);
+                }
+                return true;
+            }
+        });
     }
 
     private static class GroupItem {

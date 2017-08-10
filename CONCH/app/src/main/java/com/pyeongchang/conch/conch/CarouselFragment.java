@@ -3,6 +3,7 @@ package com.pyeongchang.conch.conch;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -129,6 +130,13 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
     public void createNewTorch(){
         ImagePanel plusTorch = new ImagePanel(getActivity());
         plusTorch.setImageResId(R.drawable.torch);
+        plusTorch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CommunityActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         torchList.add(plusTorch);
         mCarouselView.addView(plusTorch);
         mCarouselView.notifyDataSetChanged();

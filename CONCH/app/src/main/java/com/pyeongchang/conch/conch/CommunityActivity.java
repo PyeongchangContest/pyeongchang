@@ -1,8 +1,11 @@
-package com.gayeon.practice.myapplication2;
+package com.pyeongchang.conch.conch;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.pyeongchang.conch.conch.R;
@@ -20,7 +23,7 @@ public class CommunityActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_community);
 
         RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
@@ -50,5 +53,14 @@ public class CommunityActivity extends AppCompatActivity {
 
         RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
         listView.setAdapter(adapter);
+
+        Button timelineBtn=(Button) findViewById(R.id.timelineBtn);
+        timelineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
