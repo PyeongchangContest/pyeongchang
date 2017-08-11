@@ -47,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
     final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
 
+    private Button btnShowLocation;
+
+    // GPSTracker class
+    private GpsInfo gps;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +104,32 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.layout_body, cf);
         fragmentTransaction.commit();
         // 유저 정보 생성
+
+        btnShowLocation = (Button) findViewById(R.id.sendButton);
+
+        // GPS 정보를 보여주기 위한 이벤트 클래스 등록
+        btnShowLocation.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                gps = new GpsInfo(MainActivity.this);
+                // GPS 사용유무 가져오기
+                if (gps.isGetLocation()) {
+
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+
+
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert();
+                }
+            }
+        });
+
 
 
     }
