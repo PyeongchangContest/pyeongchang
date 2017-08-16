@@ -51,6 +51,7 @@ public class GpsInfo extends Service implements LocationListener {
     }
 
     public Location getLocation() {
+
         try {
 
             locationManager = (LocationManager) mContext
@@ -72,6 +73,8 @@ public class GpsInfo extends Service implements LocationListener {
                 // 네트워크 정보로 부터 위치값 가져오기
                 if (isNetworkEnabled) {
 
+
+                    }
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
@@ -104,9 +107,7 @@ public class GpsInfo extends Service implements LocationListener {
                         }
                     }
                 }
-            }
-
-        } catch (Exception e) {
+            }catch (Exception e) {
             e.printStackTrace();
         }
         return location;
