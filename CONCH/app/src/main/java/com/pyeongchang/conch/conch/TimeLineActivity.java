@@ -7,16 +7,20 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 
 
 public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.ListBtnClickListener{
 
     TextView text;
-    TimeLineCustomAdapter[] cAdapter;
+    TimeLineCustomAdapter cAdapter;
     final ArrayList<Item> timeLinelist = new ArrayList<>();
     ListView lv;
     int count = 0;
+    int likeCount = 0;
 
 
     @Override
@@ -25,20 +29,14 @@ public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.
         setContentView(R.layout.activity_time_line);
 
         lv = (ListView)findViewById(R.id.timeline_list_view);
-        newWirte();
+        newWrite();
 
-        //parcelable 기반 꾸러미로 사용자가 입력한 정보 받아오기
 
 
     }
     //onNewIntent를 사용해서 타임라인을 누적!
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        newWirte();
-    }
 
     public void onClick(View view) {
         Intent intent = new Intent(this, WritingActivity.class);
@@ -51,16 +49,16 @@ public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.
         onStop();
     }
 
-    public void newWirte(){
+    public void newWrite(){
         Intent intent = getIntent();
         String post = intent.getStringExtra("newWrite");
+        String currentData = DateFormat.getDateTimeInstance().format(new Date());
 
         count++;
-        timeLinelist.add(new Item(post));
+        timeLinelist.add(new Item(currentData, likeCount, "1", post));
 
-        cAdapter[count] = new TimeLineCustomAdapter(timeLinelist, this);
-        cAdapter[count].add(new Item(post));
-        lv.setAdapter(cAdapter[count]);
+        cAdapter= new TimeLineCustomAdapter(timeLinelist, this);
+        lv.setAdapter(cAdapter);
 
 
     }

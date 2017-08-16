@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Intent intent = new Intent(this, WritingActivity.class);
+        Intent intent = new Intent(this, TimeLineActivity.class);
         startActivity(intent);
     }
 
