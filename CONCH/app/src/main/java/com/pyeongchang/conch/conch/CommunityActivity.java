@@ -1,13 +1,13 @@
-package com.gayeon.practice.myapplication2;
+package com.pyeongchang.conch.conch;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
-import com.pyeongchang.conch.conch.R;
-import com.pyeongchang.conch.conch.RunnerListviewAdapter;
-import com.pyeongchang.conch.conch.RunnerListviewItem;
 import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
 import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
@@ -20,7 +20,7 @@ public class CommunityActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_community);
 
         RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
@@ -30,6 +30,15 @@ public class CommunityActivity extends AppCompatActivity {
         rotatable.setAnimationDuration(500);
 
         rotatingTextWrapper.setContent("This is ?", rotatable);
+
+        Button missionBtn = (Button) findViewById(R.id.missionBtn);
+        missionBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CommunityActivity.this, MissionActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
@@ -47,6 +56,7 @@ public class CommunityActivity extends AppCompatActivity {
         data.add(tiger);
         data.add(bear);
         data.add(torch);
+
 
         RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
         listView.setAdapter(adapter);
