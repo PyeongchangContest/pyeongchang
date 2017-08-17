@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -73,7 +74,10 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item> implements View.On
         viewHolder.date.setText(dataModel.getDate());
         viewHolder.name.setText(dataModel.getName());
 
-
+        // button2의 TAG에 position값 지정. Adapter를 click listener로 지정.
+        Button button2 = (Button) convertView.findViewById(R.id.comment);
+        button2.setTag(position);
+        button2.setOnClickListener(this);
 
 
         return convertView;
