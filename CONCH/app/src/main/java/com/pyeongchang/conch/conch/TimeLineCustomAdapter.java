@@ -30,6 +30,7 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item> implements View.On
         TextView name;
         TextView likeCount;
         TextView content;
+        Item comment;
     }
     //현재 몇개의 아이템을 가지고 있는지
     public int getCount(){
@@ -71,6 +72,7 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item> implements View.On
         viewHolder.content.setText(dataModel.getContent());
         viewHolder.date.setText(dataModel.getDate());
         viewHolder.name.setText(dataModel.getName());
+
 
 
 

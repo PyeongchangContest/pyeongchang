@@ -12,6 +12,7 @@ public class Item {
     public int like;
     public String name;
     public String content;
+    public Item comment;
 
     // 게시글
     public Item(String date, int like, String name, String content){
@@ -40,5 +41,8 @@ public class Item {
     }
     public String getName(){
         return this.name;
+    }
+    public Item getComment(){
+        return this.comment;
     }
 }
