@@ -1,21 +1,16 @@
 package com.pyeongchang.conch.conch;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.carousel.CarouselView;
 import com.pyeongchang.conch.conch.panel.ImagePanel;
-import com.pyeongchang.conch.conch.panel.LayoutPanel;
 import com.pyeongchang.conch.conch.panel.ListLayoutPanel;
 
 import java.util.ArrayList;
@@ -60,7 +55,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
             public void onPositionChanged(int position) {
                 if (position!=nextPosition&&position!=0) {
                     TorchCommunity newTorch = ((MainActivity) getActivity()).getCommunityList().get(mCarouselView.getSelectedItemPosition()-1);
-                    ((MainActivity) getActivity()).changeText(
+                    ((MainActivity) getActivity()).changeTorchInfo(
                             newTorch.getCommunityName(),
                             newTorch.getCommunityScore(),
                             newTorch.getCommunityRank()

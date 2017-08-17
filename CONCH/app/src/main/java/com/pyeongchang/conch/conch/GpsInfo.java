@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+
+import static android.app.PendingIntent.getActivity;
 
 
 /**
@@ -37,18 +40,30 @@ public class GpsInfo extends Service implements LocationListener {
     double lon; // 경도
 
     // 최소 GPS 정보 업데이트 거리 10미터
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
 
     // 최소 GPS 정보 업데이트 시간 밀리세컨이므로 1분
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-
+    private static final long MIN_TIME_BW_UPDATES = 10 * 1;
+    Intent broadcastIntent = new Intent("com.pyeongchang.conch.conch.SEND_DISTANCE");
     protected LocationManager locationManager;
-
+    private Location beforeLocation;
+    private float totalDistance;
 
     public GpsInfo(Context context) {
         this.mContext = context;
+//        locationManager = (LocationManager) mContext
+//                .getSystemService(LOCATION_SERVICE);
+//        locationManager.requestLocationUpdates(
+//                LocationManager.NETWORK_PROVIDER,
+//                MIN_TIME_BW_UPDATES,
+//                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+//        locationManager.requestLocationUpdates(
+//                LocationManager.GPS_PROVIDER,
+//                MIN_TIME_BW_UPDATES,
+//                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
         getLocation();
     }
+
 
     public Location getLocation() {
 
@@ -110,6 +125,7 @@ public class GpsInfo extends Service implements LocationListener {
             }catch (Exception e) {
             e.printStackTrace();
         }
+        beforeLocation=location;
         return location;
     }
 
@@ -187,6 +203,30 @@ public class GpsInfo extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
 
+        if(beforeLocation == null){
+
+            beforeLocation = getLocation();
+            Log.i("(테스트)이동시작 ","");
+        }else{
+//            float tmp= beforeLocation.distanceTo(location);
+//                distance +=tmp;
+//                beforeLocation = location;
+
+            float distance[] = new float[1];
+
+            Location.distanceBetween(beforeLocation.getLatitude(), beforeLocation.getLongitude(),
+                    location.getLatitude(), location.getLongitude(), distance);
+            beforeLocation=location;
+            totalDistance+=distance[0];
+            Log.i("(테스트)-----------------","--------------------");
+            Log.i("(테스트)이동거리는: ",String.valueOf(totalDistance));
+            Log.i("(테스트)위도: ",String.valueOf(location.getLatitude()));
+            Log.i("(테스트)경도: ",String.valueOf(location.getLongitude()));
+//해야댕//해야댕//해야댕//해야댕
+
+        }
+        broadcastIntent.putExtra("distance",totalDistance);
+        mContext.sendBroadcast(broadcastIntent);
     }
 
     @Override

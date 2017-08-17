@@ -136,7 +136,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="0.17"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/layout_finished"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -182,7 +182,8 @@
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:progress="60" />
+                android:progress="0"
+                android:max="3000"/>
 
             <TextView
                 android:id="@+id/progressText_start"
@@ -198,11 +199,12 @@
 
         <RelativeLayout
             android:id="@+id/layout_finished"
-            android:layout_width="303dp"
+            android:layout_width="103dp"
             android:layout_height="67dp"
             android:layout_marginBottom="0dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/layout_body"
-            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintHorizontal_bias="0.28"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="@+id/layout_walking"
             app:layout_constraintTop_toTopOf="parent"
@@ -215,7 +217,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="false"
                 android:layout_centerVertical="true"
-                android:text="send torch" />
+                android:text="send torch"
+                android:visibility="invisible" />
         </RelativeLayout>
 
     </android.support.constraint.ConstraintLayout>

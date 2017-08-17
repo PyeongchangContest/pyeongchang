@@ -2,9 +2,11 @@ package com.pyeongchang.conch.conch;
 
 
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
+    private TextView runningDistance;
 
     final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
 
     private Button btnShowLocation;
-
+    BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
-
 
 
     @Override
@@ -92,10 +95,14 @@ public class MainActivity extends AppCompatActivity {
         ImageButton mailboxBtn = (ImageButton) findViewById(R.id.mailboxBtn);//메일함 버튼
         ImageButton settingBtn = (ImageButton) findViewById(R.id.settingBtn);//세팅 버튼
         ImageButton rankingBtn = (ImageButton) findViewById(R.id.rankingBtn);//랭킹 버튼
+        final ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);//프로그레스바 버튼
 
         infoTorchName=(TextView)findViewById(R.id.main_torchName);//성화 이름
         infoTorchScore=(TextView)findViewById(R.id.main_torchScore);//성화 점수
         infoTorchRank =(TextView)findViewById(R.id.main_torchRank);//성화 랭킹
+
+        runningDistance=(TextView)findViewById(R.id.progressText_now);//뛴 거리
+
 
         profileBtn.setOnClickListener(new View.OnClickListener() {//프로필 버튼 클릭시
             @Override
@@ -129,14 +136,29 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.layout_body, cf);
         fragmentTransaction.commit();
         // 유저 정보 생성
-
         btnShowLocation = (Button) findViewById(R.id.sendButton);
+
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction("com.pyeongchang.conch.conch.SEND_DISTANCE");
+
+        broadcastReceiver=new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                float distance=intent.getFloatExtra("distance",0);
+                changeDistanceText(String.valueOf(distance));
+                progressBar.incrementProgressBy((int) distance);
+            }
+        };
+        registerReceiver(broadcastReceiver,intentFilter);
+        gps = new GpsInfo(MainActivity.this);
+
 
         // GPS 정보를 보여주기 위한 이벤트 클래스 등록
         btnShowLocation.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 gps = new GpsInfo(MainActivity.this);
+
                 // GPS 사용유무 가져오기
                 if (gps.isGetLocation()) {
 
@@ -154,9 +176,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     public void clickPlusBtn(View v) {
@@ -295,11 +314,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void changeText(String name,int score,int rank){
+    public void changeTorchInfo(String name, int score, int rank){
         infoTorchName.setText(name);
         infoTorchScore.setText(String.valueOf(score));
         infoTorchRank.setText(String.valueOf(rank));
 
+    }
+    public void changeDistanceText(String distance){
+        runningDistance.setText(distance);
     }
 
     public ArrayList<TorchCommunity> getCommunityList() {
@@ -323,4 +345,16 @@ public class MainActivity extends AppCompatActivity {
                 return;
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
 }
