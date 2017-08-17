@@ -18,7 +18,7 @@ public class communityDTO {
     private List<String> user = new ArrayList<String>();
         // (유저 객체도 필요하지 않을까 추후 고려 그냥 List<String> 이어도 될 듯 싶기도 함)
     private List<String> processingMission = new ArrayList<String>();
-        //미션의 기여자, 기여도, 진행상황 등을 표시하기 위해서는 미션도 하나의 객체가 필요할 것 같기도 함
+        //미션의 기여자, 진행상황 등을 표시하기 위해서는 미션도 하나의 객체가 필요할 것 같기도 함
     private List<String> completedMission = new ArrayList<String>();
         //processingMission과 이하 내용 같음
     private List<String> route = new ArrayList<String>();
