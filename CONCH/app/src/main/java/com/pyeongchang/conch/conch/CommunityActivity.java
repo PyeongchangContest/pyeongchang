@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CommunityActivity extends AppCompatActivity {
+    private boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

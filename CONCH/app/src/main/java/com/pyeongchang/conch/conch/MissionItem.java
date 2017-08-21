@@ -11,6 +11,12 @@ public class MissionItem {
     private int progress;
     private List<String> contributor; //User형 리스트로 변경해야할 지 고려!
 
+    public MissionItem(String missionName) {
+        this.missionName = missionName;
+        this.progress = 0;
+        this.contributor = null;
+    }
+
     public void setMissionName(String missionName) {
         this.missionName = missionName;
     }
