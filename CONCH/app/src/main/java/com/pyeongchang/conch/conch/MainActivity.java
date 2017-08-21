@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,9 +30,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +42,10 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static Context mContext;
     private static final int LOCATION_PERMISSION_IN_PROJECT = 1;
     private DrawerLayout dlDrawer;
     private LinearLayout llDrawer;
-    private Context mContext;
     private PopupWindow mPopupWindow;
     private ConstraintLayout mConstraintLayout;
     private ArrayList<ImageButton> torchList = new ArrayList<>();
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTorchScore;
     private TextView infoSumOfTorch;
     private TextView runningDistance;
+
+
 
     final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
 
@@ -72,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff339999));
         //액션바 수정
 
+        mContext=this;
 
         if (ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
 
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         infoSumOfTorch=(TextView)findViewById(R.id.main_sumOfTorch);//총 성화 갯수
 
         runningDistance=(TextView)findViewById(R.id.progressText_now);//뛴 거리
+
 
 
         profileBtn.setOnClickListener(new View.OnClickListener() {//프로필 버튼 클릭시
@@ -247,6 +253,8 @@ public class MainActivity extends AppCompatActivity {
                 CarouselFragment carouselFragment=(CarouselFragment)getFragmentManager().findFragmentById(R.id.layout_body);
                 carouselFragment.createNewTorch();
 
+
+
                 mPopupWindow.dismiss();
             }
         });
@@ -255,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -331,4 +340,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
+    public ArrayList<TorchCommunity> getCommunityArrayList(){
+        return communityList;
+    }
 }
