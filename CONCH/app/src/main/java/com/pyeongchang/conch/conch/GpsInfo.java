@@ -125,7 +125,7 @@ public class GpsInfo extends Service implements LocationListener {
             }catch (Exception e) {
             e.printStackTrace();
         }
-        beforeLocation=location;
+//        beforeLocation=location;
         return location;
     }
 
@@ -202,31 +202,28 @@ public class GpsInfo extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        location=getLocation();//GPS 오차범위 개선
 
         if(beforeLocation == null){
-
             beforeLocation = getLocation();
-            Log.i("(테스트)이동시작 ","");
-        }else{
-//            float tmp= beforeLocation.distanceTo(location);
-//                distance +=tmp;
-//                beforeLocation = location;
-
+        }else if(beforeLocation!=location){
             float distance[] = new float[1];
 
             Location.distanceBetween(beforeLocation.getLatitude(), beforeLocation.getLongitude(),
                     location.getLatitude(), location.getLongitude(), distance);
+
             beforeLocation=location;
             totalDistance+=distance[0];
+
+
             Log.i("(테스트)-----------------","--------------------");
-            Log.i("(테스트)이동거리는: ",String.valueOf(totalDistance));
+            Log.i("(테스트)이동거리는: ",String.valueOf(totalDistance)+"m");
             Log.i("(테스트)위도: ",String.valueOf(location.getLatitude()));
             Log.i("(테스트)경도: ",String.valueOf(location.getLongitude()));
 //해야댕//해야댕//해야댕//해야댕
-
+            broadcastIntent.putExtra("distance",totalDistance);
+            mContext.sendBroadcast(broadcastIntent);
         }
-        broadcastIntent.putExtra("distance",totalDistance);
-        mContext.sendBroadcast(broadcastIntent);
     }
 
     @Override
