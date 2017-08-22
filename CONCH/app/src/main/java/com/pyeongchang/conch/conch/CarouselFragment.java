@@ -1,20 +1,17 @@
 package com.pyeongchang.conch.conch;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.carousel.CarouselView;
 import com.pyeongchang.conch.conch.panel.ImagePanel;
-import com.pyeongchang.conch.conch.panel.LayoutPanel;
 import com.pyeongchang.conch.conch.panel.ListLayoutPanel;
 
 import java.util.ArrayList;
@@ -57,13 +54,18 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         mCarouselView.setCarouselScrollListener(new CarouselView.CarouselScrollListener() {
             @Override
             public void onPositionChanged(int position) {
+                Log.i("(테스트)초기포지션 : ",String.valueOf(position));
                 if (position!=nextPosition&&position!=0) {
                     TorchCommunity newTorch = ((MainActivity) getActivity()).getCommunityList().get(mCarouselView.getSelectedItemPosition()-1);
-                    ((MainActivity) getActivity()).changeText(
+                    ((MainActivity) getActivity()).changeTorchInfo(
                             newTorch.getCommunityName(),
                             newTorch.getCommunityScore(),
                             newTorch.getCommunityRank()
                     );
+                    ((MainActivity) getActivity()).visibilityOfTorchInfo(true);
+                    nextPosition=position;
+                }else if (position==0){
+                    ((MainActivity) getActivity()).visibilityOfTorchInfo(false);
                     nextPosition=position;
                 }
             }
@@ -104,7 +106,12 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).popupTorch();
+                if (((MainActivity)getActivity()).getCommunityList().size()<=4){
+                    ((MainActivity)getActivity()).popupTorch();
+                }else {
+                    ((MainActivity)getActivity()).showToastText("더이상 성화를 생성할 수 없습니다.");
+                }
+
 
             }
         });
@@ -129,6 +136,13 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
     public void createNewTorch(){
         ImagePanel plusTorch = new ImagePanel(getActivity());
         plusTorch.setImageResId(R.drawable.torch);
+        plusTorch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CommunityActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         torchList.add(plusTorch);
         mCarouselView.addView(plusTorch);
         mCarouselView.notifyDataSetChanged();

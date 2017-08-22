@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="comColor1">#50a2C2</color>
+    <color name="comColor2">#D9c42B</color>
+    <color name="comColor3">#F4CB89</color>
+    <color name="comColor4">#5b8CbC</color>
+    <color name="comColor5">#011C26</color>
 </resources>
