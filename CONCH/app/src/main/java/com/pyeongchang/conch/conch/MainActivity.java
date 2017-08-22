@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     // GPSTracker class
     private GpsInfo gps;
 
+//    private String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}; //카메라 관련 권한 설정 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +86,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff339999));
         //액션바 수정
 
-        mContext=this;
+        mContext = this;
 
-        if (ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             // 이 권한을 필요한 이유를 설명해야하는가?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
                 // 다이어로그같은것을 띄워서 사용자에게 해당 권한이 필요한 이유에 대해 설명합니다
                 // 해당 설명이 끝난뒤 requestPermissions()함수를 호출하여 권한허가를 요청해야 합니다
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-        CarouselFragment cf=CarouselFragment.newInstance();
+        CarouselFragment cf = CarouselFragment.newInstance();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_body, cf);
         fragmentTransaction.commit();
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void popupTorch() {
-        LayoutInflater inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View customView= inflater.inflate(R.layout.activity_popup_create_torch, (ViewGroup) findViewById(R.id.popup_layout));
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View customView = inflater.inflate(R.layout.activity_popup_create_torch, (ViewGroup) findViewById(R.id.popup_layout));
         mConstraintLayout = (ConstraintLayout) findViewById(R.id.layout_body);
         mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
@@ -126,19 +127,21 @@ public class MainActivity extends AppCompatActivity {
         // Get a reference for the custom view close button
         ImageButton closeButton = customView.findViewById(R.id.ib_close);
         final Button createTorchBtn = customView.findViewById(R.id.create_TorchBtn);
-        final TextView textView=customView.findViewById(R.id.create_maxPeopleValue);
+        final TextView textView = customView.findViewById(R.id.create_maxPeopleValue);
         final SeekBar sb;
-        int value=20;
-        sb=customView.findViewById(R.id.create_maxPeople);
+        int value = 20;
+        sb = customView.findViewById(R.id.create_maxPeople);
         sb.setProgress(value);
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 textView.setText(String.valueOf(i));
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -158,19 +161,19 @@ public class MainActivity extends AppCompatActivity {
                 TextView torchName = customView.findViewById(R.id.create_torchName);
                 TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
                 ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
-                String tName=torchName.getText().toString();
-                int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
-                boolean isSecret=isSecretCommunity.isChecked();
+                String tName = torchName.getText().toString();
+                int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
+                boolean isSecret = isSecretCommunity.isChecked();
                 //성화 커뮤니티 객체 추가
                 /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
+
                 TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
                 generateMission(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
-                CarouselFragment carouselFragment=(CarouselFragment)getFragmentManager().findFragmentById(R.id.layout_body);
+                CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
                 carouselFragment.createNewTorch();
-
 
 
                 mPopupWindow.dismiss();
@@ -202,18 +205,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void changeTorchInfo(String name, int score, int rank){
+    public void changeTorchInfo(String name, int score, int rank) {
         infoTorchName.setText(name);
         infoTorchScore.setText(String.valueOf(score));
         infoTorchRank.setText(String.valueOf(rank));
     }
-    public void visibilityOfTorchInfo(boolean visible){
-        if (visible){
+
+    public void visibilityOfTorchInfo(boolean visible) {
+        if (visible) {
             infoTorchName.setVisibility(View.VISIBLE);
             infoTorchScore.setVisibility(View.VISIBLE);
             infoTorchRank.setVisibility(View.VISIBLE);
             infoSumOfTorch.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             infoTorchName.setVisibility(View.INVISIBLE);
             infoTorchScore.setVisibility(View.INVISIBLE);
             infoTorchRank.setVisibility(View.INVISIBLE);
@@ -221,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void changeDistanceText(String distance){
+    public void changeDistanceText(String distance) {
         runningDistance.setText(distance);
     }
 
@@ -286,18 +290,17 @@ public class MainActivity extends AppCompatActivity {
         ImageButton mailboxBtn = (ImageButton) findViewById(R.id.mailboxBtn);//메일함 버튼
         ImageButton settingBtn = (ImageButton) findViewById(R.id.settingBtn);//세팅 버튼
         ImageButton rankingBtn = (ImageButton) findViewById(R.id.rankingBtn);//랭킹 버튼
-        final ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);//프로그레스바 버튼
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);//프로그레스바 버튼
 
-        final RelativeLayout runFinishedLayout=(RelativeLayout)findViewById(R.id.layout_finished);//3km 뛴 후 레이아웃
-        final RelativeLayout runProgressedLayout=(RelativeLayout)findViewById(R.id.layout_walking);//3km 뛰기 전 레이아웃
+        final RelativeLayout runFinishedLayout = (RelativeLayout) findViewById(R.id.layout_finished);//3km 뛴 후 레이아웃
+        final RelativeLayout runProgressedLayout = (RelativeLayout) findViewById(R.id.layout_walking);//3km 뛰기 전 레이아웃
 
-        infoTorchName=(TextView)findViewById(R.id.main_torchName);//성화 이름
-        infoTorchScore=(TextView)findViewById(R.id.main_torchScore);//성화 점수
-        infoTorchRank =(TextView)findViewById(R.id.main_torchRank);//성화 랭킹
-        infoSumOfTorch=(TextView)findViewById(R.id.main_sumOfTorch);//총 성화 갯수
+        infoTorchName = (TextView) findViewById(R.id.main_torchName);//성화 이름
+        infoTorchScore = (TextView) findViewById(R.id.main_torchScore);//성화 점수
+        infoTorchRank = (TextView) findViewById(R.id.main_torchRank);//성화 랭킹
+        infoSumOfTorch = (TextView) findViewById(R.id.main_sumOfTorch);//총 성화 갯수
 
-        runningDistance=(TextView)findViewById(R.id.progressText_now);//뛴 거리
-
+        runningDistance = (TextView) findViewById(R.id.progressText_now);//뛴 거리
 
 
         profileBtn.setOnClickListener(new View.OnClickListener() {//프로필 버튼 클릭시
@@ -331,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         // 유저 정보 생성
         btnShowLocation = (Button) findViewById(R.id.sendButton);
 
-        IntentFilter intentFilter=new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.pyeongchang.conch.conch.SEND_DISTANCE");
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -343,14 +346,13 @@ public class MainActivity extends AppCompatActivity {
                 if (progressBar.getProgress() >= 3000) {
                     runProgressedLayout.setVisibility(View.INVISIBLE);
                     runFinishedLayout.setVisibility(View.VISIBLE);
-                    gps=null;
+                    gps = null;
                     unregisterReceiver(broadcastReceiver);
                 }
             }
         };
-        registerReceiver(broadcastReceiver,intentFilter);
+        registerReceiver(broadcastReceiver, intentFilter);
         gps = new GpsInfo(MainActivity.this);
-
 
 
         // GPS 정보를 보여주기 위한 이벤트 클래스 등록
@@ -384,10 +386,11 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    public ArrayList<TorchCommunity> getCommunityArrayList(){
+    public ArrayList<TorchCommunity> getCommunityArrayList() {
         return communityList;
     }
-    public void showToastText(String text){
+
+    public void showToastText(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }

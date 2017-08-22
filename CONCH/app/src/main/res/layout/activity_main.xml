@@ -236,46 +236,139 @@
 
         <ImageButton
             android:id="@+id/profileBtn"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/mailboxBtn"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_profile" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="프로필"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/mailboxBtn"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/rankingBtn"
-            app:srcCompat="@android:drawable/ic_dialog_email"
-            tools:layout_editor_absoluteX="-179dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_msg" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="수신함"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/rankingBtn"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/settingBtn"
-            app:srcCompat="@android:drawable/ic_menu_myplaces"
-            tools:layout_editor_absoluteX="-179dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_ranking" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="랭킹"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/settingBtn"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_preferences"
-            tools:layout_editor_absoluteX="-179dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_setting" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="설정"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/mailboxBtn"-->
+            <!--android:layout_width="150dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_marginBottom="24dp"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="centerInside"-->
+            <!--app:srcCompat="@drawable/btn_msg"-->
+            <!--tools:layout_editor_absoluteX="-179dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="수신함" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/rankingBtn"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="67dp"-->
+            <!--android:layout_marginBottom="24dp"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="centerInside"-->
+            <!--app:srcCompat="@drawable/btn_ranking"-->
+            <!--tools:layout_editor_absoluteX="-179dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="랭킹" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/settingBtn"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="67dp"-->
+            <!--android:layout_marginBottom="24dp"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="centerInside"-->
+            <!--app:srcCompat="@drawable/btn_setting"-->
+            <!--tools:layout_editor_absoluteX="-179dp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textView4"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="설정" />-->
 
     </LinearLayout>
 
