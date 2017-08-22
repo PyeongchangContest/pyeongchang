@@ -106,7 +106,12 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).popupTorch();
+                if (((MainActivity)getActivity()).getCommunityList().size()<=4){
+                    ((MainActivity)getActivity()).popupTorch();
+                }else {
+                    ((MainActivity)getActivity()).showToastText("더이상 성화를 생성할 수 없습니다.");
+                }
+
 
             }
         });

@@ -51,16 +51,6 @@ public class GpsInfo extends Service implements LocationListener {
 
     public GpsInfo(Context context) {
         this.mContext = context;
-//        locationManager = (LocationManager) mContext
-//                .getSystemService(LOCATION_SERVICE);
-//        locationManager.requestLocationUpdates(
-//                LocationManager.NETWORK_PROVIDER,
-//                MIN_TIME_BW_UPDATES,
-//                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-//        locationManager.requestLocationUpdates(
-//                LocationManager.GPS_PROVIDER,
-//                MIN_TIME_BW_UPDATES,
-//                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
         getLocation();
     }
 
@@ -220,7 +210,6 @@ public class GpsInfo extends Service implements LocationListener {
             Log.i("(테스트)이동거리는: ",String.valueOf(totalDistance)+"m");
             Log.i("(테스트)위도: ",String.valueOf(location.getLatitude()));
             Log.i("(테스트)경도: ",String.valueOf(location.getLongitude()));
-//해야댕//해야댕//해야댕//해야댕
             broadcastIntent.putExtra("distance",totalDistance);
             mContext.sendBroadcast(broadcastIntent);
         }

@@ -96,105 +96,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
-
-        ImageButton profileBtn = (ImageButton) findViewById(R.id.profileBtn);//프로필 버튼
-        ImageButton mailboxBtn = (ImageButton) findViewById(R.id.mailboxBtn);//메일함 버튼
-        ImageButton settingBtn = (ImageButton) findViewById(R.id.settingBtn);//세팅 버튼
-        ImageButton rankingBtn = (ImageButton) findViewById(R.id.rankingBtn);//랭킹 버튼
-        final ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);//프로그레스바 버튼
-
-        final RelativeLayout runFinishedLayout=(RelativeLayout)findViewById(R.id.layout_finished);//3km 뛴 후 레이아웃
-        final RelativeLayout runProgressedLayout=(RelativeLayout)findViewById(R.id.layout_walking);//3km 뛰기 전 레이아웃
-
-        infoTorchName=(TextView)findViewById(R.id.main_torchName);//성화 이름
-        infoTorchScore=(TextView)findViewById(R.id.main_torchScore);//성화 점수
-        infoTorchRank =(TextView)findViewById(R.id.main_torchRank);//성화 랭킹
-        infoSumOfTorch=(TextView)findViewById(R.id.main_sumOfTorch);//총 성화 갯수
-
-        runningDistance=(TextView)findViewById(R.id.progressText_now);//뛴 거리
-
-
-
-        profileBtn.setOnClickListener(new View.OnClickListener() {//프로필 버튼 클릭시
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
-                startActivity(intent);
-            }
-        });
-        mailboxBtn.setOnClickListener(new View.OnClickListener() {//메일 버튼 클릭시
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, PopupMail.class));
-            }
-        });
-        settingBtn.setOnClickListener(new View.OnClickListener() {//설정 버튼 클릭시
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, PopupSetting.class));
-            }
-        });
-        rankingBtn.setOnClickListener(new View.OnClickListener() {//랭킹 버튼 클릭시
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RankingActivity.class);
-                startActivity(intent);
-            }
-        });
-
         CarouselFragment cf=CarouselFragment.newInstance();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_body, cf);
         fragmentTransaction.commit();
-        // 유저 정보 생성
-        btnShowLocation = (Button) findViewById(R.id.sendButton);
 
-        IntentFilter intentFilter=new IntentFilter();
-        intentFilter.addAction("com.pyeongchang.conch.conch.SEND_DISTANCE");
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                float distance = intent.getFloatExtra("distance", 0);
-                changeDistanceText(String.valueOf(distance));
-                progressBar.incrementProgressBy((int) distance);
-                if (progressBar.getProgress() >= 3000) {
-                    runProgressedLayout.setVisibility(View.INVISIBLE);
-                    runFinishedLayout.setVisibility(View.VISIBLE);
-                    gps=null;
-                    unregisterReceiver(broadcastReceiver);
-                }
-            }
-        };
-        registerReceiver(broadcastReceiver,intentFilter);
-        gps = new GpsInfo(MainActivity.this);
-
-
-
-        // GPS 정보를 보여주기 위한 이벤트 클래스 등록
-        btnShowLocation.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                gps = new GpsInfo(MainActivity.this);
-
-                // GPS 사용유무 가져오기
-                if (gps.isGetLocation()) {
-
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-
-
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    // GPS 를 사용할수 없으므로
-                    gps.showSettingsAlert();
-                }
-            }
-        });
     }
 
     public void popupTorch() {
@@ -332,15 +238,113 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        ImageButton profileBtn = (ImageButton) findViewById(R.id.profileBtn);//프로필 버튼
+        ImageButton mailboxBtn = (ImageButton) findViewById(R.id.mailboxBtn);//메일함 버튼
+        ImageButton settingBtn = (ImageButton) findViewById(R.id.settingBtn);//세팅 버튼
+        ImageButton rankingBtn = (ImageButton) findViewById(R.id.rankingBtn);//랭킹 버튼
+        final ProgressBar progressBar=(ProgressBar) findViewById(R.id.progressBar);//프로그레스바 버튼
+
+        final RelativeLayout runFinishedLayout=(RelativeLayout)findViewById(R.id.layout_finished);//3km 뛴 후 레이아웃
+        final RelativeLayout runProgressedLayout=(RelativeLayout)findViewById(R.id.layout_walking);//3km 뛰기 전 레이아웃
+
+        infoTorchName=(TextView)findViewById(R.id.main_torchName);//성화 이름
+        infoTorchScore=(TextView)findViewById(R.id.main_torchScore);//성화 점수
+        infoTorchRank =(TextView)findViewById(R.id.main_torchRank);//성화 랭킹
+        infoSumOfTorch=(TextView)findViewById(R.id.main_sumOfTorch);//총 성화 갯수
+
+        runningDistance=(TextView)findViewById(R.id.progressText_now);//뛴 거리
+
+
+
+        profileBtn.setOnClickListener(new View.OnClickListener() {//프로필 버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MypageActivity.class);
+                startActivity(intent);
+            }
+        });
+        mailboxBtn.setOnClickListener(new View.OnClickListener() {//메일 버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, PopupMail.class));
+            }
+        });
+        settingBtn.setOnClickListener(new View.OnClickListener() {//설정 버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, PopupSetting.class));
+            }
+        });
+        rankingBtn.setOnClickListener(new View.OnClickListener() {//랭킹 버튼 클릭시
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RankingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // 유저 정보 생성
+        btnShowLocation = (Button) findViewById(R.id.sendButton);
+
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction("com.pyeongchang.conch.conch.SEND_DISTANCE");
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                float distance = intent.getFloatExtra("distance", 0);
+                changeDistanceText(String.valueOf(distance));
+                progressBar.setProgress((int) distance);
+                if (progressBar.getProgress() >= 3000) {
+                    runProgressedLayout.setVisibility(View.INVISIBLE);
+                    runFinishedLayout.setVisibility(View.VISIBLE);
+                    gps=null;
+                    unregisterReceiver(broadcastReceiver);
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver,intentFilter);
+        gps = new GpsInfo(MainActivity.this);
+
+
+
+        // GPS 정보를 보여주기 위한 이벤트 클래스 등록
+        btnShowLocation.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                gps = new GpsInfo(MainActivity.this);
+
+                // GPS 사용유무 가져오기
+                if (gps.isGetLocation()) {
+
+                    double latitude = gps.getLatitude();
+                    double longitude = gps.getLongitude();
+
+
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    gps.showSettingsAlert();
+                }
+            }
+        });
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(broadcastReceiver);
     }
 
     public ArrayList<TorchCommunity> getCommunityArrayList(){
         return communityList;
+    }
+    public void showToastText(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }
