@@ -60,5 +60,14 @@ public class CommunityActivity extends AppCompatActivity {
 
         RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
         listView.setAdapter(adapter);
+
+        Button timelineBtn=(Button) findViewById(R.id.timelineBtn);
+        timelineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
