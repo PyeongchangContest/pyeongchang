@@ -117,15 +117,6 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         });
         torchList.add(plusBtn);
 
-//        LayoutPanel layoutPanel = new LayoutPanel(getActivity());
-//        torchList.add(layoutPanel);
-//
-//        ListLayoutPanel listLayoutPanel = new ListLayoutPanel(getActivity());
-//        listLayoutPanel.setOnScrollListener(this);
-//        result.add(listLayoutPanel);
-
-
-
         return torchList;
     }
     @Override
