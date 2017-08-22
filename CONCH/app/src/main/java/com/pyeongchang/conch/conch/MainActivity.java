@@ -48,6 +48,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -165,9 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
                 TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
                 generateMission(addTorchCommunity);
-                writeNewCommunity(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
-                generateMission(addTorchCommunity);
 
                 CarouselFragment carouselFragment=(CarouselFragment)getFragmentManager().findFragmentById(R.id.layout_body);
                 carouselFragment.createNewTorch();
@@ -231,21 +230,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void generateMission(final TorchCommunity torchCommunity) {
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("Mission").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String runningMissionContent = (String) dataSnapshot.child("Mission").child("Racing").child(String.valueOf(torchCommunity.getRacingLevel())).getValue();
-                MissionItem runningMission = new MissionItem(runningMissionContent);
+                Object runningMissionContent = dataSnapshot.child("Racing").child(String.valueOf(torchCommunity.getRacingLevel())).getValue();
+                MissionItem runningMission = new MissionItem(runningMissionContent.toString());
                 torchCommunity.setRacingMission(runningMission);
 
                 Random random = new Random();
-                String invitationMissionContent = (String) dataSnapshot.child("Mission").child("Invitation").child(String.valueOf(random.nextInt(10))).getValue();
-                MissionItem invitationMission = new MissionItem(invitationMissionContent);
+                Object invitationMissionContent = (String) dataSnapshot.child("Invitation").child(String.valueOf(random.nextInt(1))).getValue();
+                MissionItem invitationMission = new MissionItem(invitationMissionContent.toString());
                 torchCommunity.setInvitationMission(invitationMission);
 
-                String quizMissionContent = (String) dataSnapshot.child("Mission").child("Quiz").child(String.valueOf(random.nextInt(10))).getValue();
-                MissionItem quizMission = new MissionItem(quizMissionContent);
+                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(1))).getValue();
+                MissionItem quizMission = new MissionItem(quizMissionContent.toString());
                 torchCommunity.setQuiz(quizMission);
+
+                writeNewCommunity(torchCommunity);
             }
 
             @Override
