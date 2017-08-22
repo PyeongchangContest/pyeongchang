@@ -7,18 +7,18 @@ import java.util.List;
  */
 
 public class MissionItem {
-    private String missionName;
+    private String mission;
     private int progress;
     private List<String> contributor; //User형 리스트로 변경해야할 지 고려!
 
     public MissionItem(String missionName) {
-        this.missionName = missionName;
+        this.mission = missionName;
         this.progress = 0;
         this.contributor = null;
     }
 
     public void setMissionName(String missionName) {
-        this.missionName = missionName;
+        this.mission = missionName;
     }
 
     public void setProgress(int progress) {
@@ -27,7 +27,7 @@ public class MissionItem {
 
     public String getMissionName() {
 
-        return missionName;
+        return mission;
     }
 
     public int getProgress() {

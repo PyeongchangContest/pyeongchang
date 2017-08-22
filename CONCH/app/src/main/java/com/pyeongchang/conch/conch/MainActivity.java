@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -40,10 +41,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     public static Context mContext;
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
-    private DatabaseReference mMission = FirebaseDatabase.getInstance().getReference("Mission");
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TextView infoSumOfTorch;
     private TextView runningDistance;
 
@@ -159,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
                 TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
+                generateMission(addTorchCommunity);
+                writeNewCommunity(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
                 generateMission(addTorchCommunity);
 
@@ -223,7 +230,34 @@ public class MainActivity extends AppCompatActivity {
         return communityList;
     }
 
-    public void generateMission(TorchCommunity torchCommunity) {}
+    public void generateMission(final TorchCommunity torchCommunity) {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String runningMissionContent = (String) dataSnapshot.child("Mission").child("Racing").child(String.valueOf(torchCommunity.getRacingLevel())).getValue();
+                MissionItem runningMission = new MissionItem(runningMissionContent);
+                torchCommunity.setRacingMission(runningMission);
+
+                Random random = new Random();
+                String invitationMissionContent = (String) dataSnapshot.child("Mission").child("Invitation").child(String.valueOf(random.nextInt(10))).getValue();
+                MissionItem invitationMission = new MissionItem(invitationMissionContent);
+                torchCommunity.setInvitationMission(invitationMission);
+
+                String quizMissionContent = (String) dataSnapshot.child("Mission").child("Quiz").child(String.valueOf(random.nextInt(10))).getValue();
+                MissionItem quizMission = new MissionItem(quizMissionContent);
+                torchCommunity.setQuiz(quizMission);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+    }
+
+    public void writeNewCommunity(TorchCommunity torchCommunity) {
+        mDatabase.child("Community").child(torchCommunity.getCommunityName()).setValue(torchCommunity);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
