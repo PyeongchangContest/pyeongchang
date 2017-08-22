@@ -39,6 +39,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,10 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
+    private DatabaseReference mMission = FirebaseDatabase.getInstance().getReference("Mission");
     private TextView infoSumOfTorch;
     private TextView runningDistance;
-
-
 
     final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
 
@@ -153,8 +156,11 @@ public class MainActivity extends AppCompatActivity {
                 int tMaxPeople=Integer.parseInt(torchMaxPeople.getText().toString());
                 boolean isSecret=isSecretCommunity.isChecked();
                 //성화 커뮤니티 객체 추가
+                /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
+                /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
                 TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
-                communityList.add(addTorchCommunity);
+                communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
+                generateMission(addTorchCommunity);
 
                 CarouselFragment carouselFragment=(CarouselFragment)getFragmentManager().findFragmentById(R.id.layout_body);
                 carouselFragment.createNewTorch();
@@ -216,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<TorchCommunity> getCommunityList() {
         return communityList;
     }
+
+    public void generateMission(TorchCommunity torchCommunity) {}
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
