@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class MypageActivity extends AppCompatActivity implements View.OnClickListener{
@@ -39,6 +45,9 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView iv_UserPhoto;
     private int id_view;
     private String absoultePath;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private StorageReference userImageRef;
 
 //    private DB_Manger dbmanger;
 
@@ -52,6 +61,8 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
     }
 
 
@@ -169,7 +180,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
                     Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
                     userPictureBtn.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
 
-                    storeCropImage(photo, filePath); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
+                    storeImageInFirebase(photo); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
                     absoultePath = filePath;
                     break;
 
@@ -240,29 +251,25 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     /*
      * Bitmap을 저장하는 부분
      */
-    private void storeCropImage(Bitmap bitmap, String filePath) {
-        // SmartWheel 폴더를 생성하여 이미지를 저장하는 방식이다.
-        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/SmartWheel";
-        File directory_SmartWheel = new File(dirPath);
-
-        if(!directory_SmartWheel.exists()) // SmartWheel 디렉터리에 폴더가 없다면 (새로 이미지를 저장할 경우에 속한다.)
-            directory_SmartWheel.mkdir();
-
-        File copyFile = new File(filePath);
-        BufferedOutputStream out = null;
-
+    private void storeImageInFirebase(Bitmap bitmap) {
         try {
-
-            copyFile.createNewFile();
-            out = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-
-            // sendBroadcast를 통해 Crop된 사진을 앨범에 보이도록 갱신한다.
-            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                    Uri.fromFile(copyFile)));
-
-            out.flush();
-            out.close();
+            userImageRef=storageRef.child("test.jpg");
+            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+            byte[] data=baos.toByteArray();
+            UploadTask uploadTask=userImageRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("(테스트) 파이어베이스 전송실패: ",e.getMessage());
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl=taskSnapshot.getDownloadUrl();
+                    Log.e("(테스트) 파이어베이스 전송성공!!","!!!");
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

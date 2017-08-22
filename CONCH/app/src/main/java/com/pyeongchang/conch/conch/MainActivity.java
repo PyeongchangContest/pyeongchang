@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout llDrawer;
     private PopupWindow mPopupWindow;
     private ConstraintLayout mConstraintLayout;
-    private ArrayList<ImageButton> torchList = new ArrayList<>();
     private ArrayList<TorchCommunity> communityList = new ArrayList<>();
 
     private TextView infoTorchRank;
@@ -74,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
-
-//    private String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}; //카메라 관련 권한 설정 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
