@@ -38,6 +38,7 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
             viewHolder = new CommentCustomAdapter.ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.comment_list_item, parent, false);
+
             viewHolder.content = (TextView)convertView.findViewById(R.id.content);
 
             result=convertView;

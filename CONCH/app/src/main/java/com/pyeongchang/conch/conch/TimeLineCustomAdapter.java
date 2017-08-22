@@ -18,6 +18,7 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
 
     private ArrayList<Item> dataSet;
     Context mContext;
+    int position;
 
     private static class ViewHolder{
         TextView date;
@@ -36,10 +37,11 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
         return this.dataSet.get(position);
     }
 
-    public TimeLineCustomAdapter(ArrayList<Item> data, Context context){
+    public TimeLineCustomAdapter(ArrayList<Item> data, Context context, int layout){
         super(context, R.layout.timeline_list_item, data);
         this.dataSet = data;
         this.mContext = context;
+        this.position = layout;
     }
 
     @Override
@@ -68,21 +70,8 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
         viewHolder.date.setText(dataModel.getDate());
         viewHolder.name.setText(dataModel.getName());
 
-        // button2의 TAG에 position값 지정. Adapter를 click listener로 지정.
-
-
-
 
         return convertView;
     }
-    public void addItem(String contents){
-        Item addDataModel = new Item(contents);
-
-        addDataModel.setContent(contents);
-
-        dataSet.add(addDataModel);
-    }
-
-
 
 }

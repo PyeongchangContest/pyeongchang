@@ -4,15 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TimeLineActivity extends Activity {
+public class TimeLineActivity extends Activity implements AdapterView.OnItemClickListener {
 
     TextView text;
     TimeLineCustomAdapter cAdapter;
@@ -28,14 +28,13 @@ public class TimeLineActivity extends Activity {
         setContentView(R.layout.activity_time_line);
 
         lv = (ListView)findViewById(R.id.timeline_list_view);
-        Toast.makeText(this,"1",Toast.LENGTH_SHORT).show();
+
 
         //게시글 얻어오기
-        cAdapter= new TimeLineCustomAdapter(timeLinelist, this);
+        cAdapter= new TimeLineCustomAdapter(timeLinelist, this, R.layout.timeline_list_item);
         //리스트 뷰에 어뎁터 등록
         lv.setAdapter(cAdapter);
-
-
+        lv.setOnItemClickListener(this);
 
     }
     //리스트뷰 재구성
@@ -43,24 +42,27 @@ public class TimeLineActivity extends Activity {
     protected void onResume() {
         super.onResume();
         cAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 0) {
-            String response = data.getStringExtra("newWrite");
-            //날짜 시간
-            String currentData = DateFormat.getDateTimeInstance().format(new Date());
+            if(data != null) {
+                String response = data.getStringExtra("newWrite");
+                //날짜 시간
+                String currentData = DateFormat.getDateTimeInstance().format(new Date());
 
-            timeLinelist.add(new Item(currentData, likeCount, "1", response));
-            cAdapter.notifyDataSetChanged();
+                timeLinelist.add(new Item(currentData, likeCount, "1", response));
+                cAdapter.notifyDataSetChanged();
+            }
+            else
+                cAdapter.notifyDataSetChanged();
         }
 
     }
     //onNewIntent를 사용해서 타임라인을 누적!
-
-
 
     public void onClick(View view) {
         Intent intent = new Intent(this, WritingActivity.class);
@@ -68,5 +70,13 @@ public class TimeLineActivity extends Activity {
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(getApplicationContext(), CommentAddActivity.class);
+        intent.putExtra("name",timeLinelist.get(i).name);
+        intent.putExtra("content",timeLinelist.get(i).content);
 
+        startActivity(intent);
+
+    }
 }
