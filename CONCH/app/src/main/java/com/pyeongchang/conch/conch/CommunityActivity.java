@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.pyeongchang.conch.conch.R;
-import com.pyeongchang.conch.conch.RunnerListviewAdapter;
-import com.pyeongchang.conch.conch.RunnerListviewItem;
 import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
 import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
@@ -34,6 +31,15 @@ public class CommunityActivity extends AppCompatActivity {
 
         rotatingTextWrapper.setContent("This is ?", rotatable);
 
+        Button missionBtn = (Button) findViewById(R.id.missionBtn);
+        missionBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CommunityActivity.this, MissionActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Calendar calendar = Calendar.getInstance();
         java.util.Date date = calendar.getTime();
         String today = (new SimpleDateFormat("yyyyMMdd").format(date));
@@ -50,6 +56,7 @@ public class CommunityActivity extends AppCompatActivity {
         data.add(tiger);
         data.add(bear);
         data.add(torch);
+
 
         RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
         listView.setAdapter(adapter);

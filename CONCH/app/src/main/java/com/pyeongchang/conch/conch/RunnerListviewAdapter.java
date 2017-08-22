@@ -58,8 +58,8 @@ public class RunnerListviewAdapter extends BaseAdapter {
         name.setText(listviewItem.getName());
 
         TextView date = (TextView) convertView.findViewById(R.id.date);
+        date.setText(listviewItem.getDate());
 
         return convertView;
     }
 }
-

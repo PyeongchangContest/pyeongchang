@@ -4,16 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper
-        android:id="@+id/custom_switcher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper
+            android:id="@+id/custom_switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/missionBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"/>
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/runner_listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#ffcc22"></ListView>
+        android:divider="#ffcc22"
+        android:layout_weight="1"></ListView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +36,15 @@
             android:id="@+id/routeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="route"/>
+            android:text="Route"
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/timelineBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="timeline"/>
+            android:text="TimeLine"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </LinearLayout>

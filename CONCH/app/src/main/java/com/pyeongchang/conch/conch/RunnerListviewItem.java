@@ -1,7 +1,7 @@
 package com.pyeongchang.conch.conch;
 
 /**
- * Created by Gayeon on 2017-08-03.
+ * Created by GAYEON on 2017-08-13.
  */
 
 public class RunnerListviewItem {
