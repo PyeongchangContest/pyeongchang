@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,13 +14,7 @@ import java.util.ArrayList;
  * 리스트뷰 구현을 위한 어뎁터
  */
 
-public class TimeLineCustomAdapter extends ArrayAdapter<Item> implements View.OnClickListener {
-
-    public interface ListBtnClickListener{
-        void onListBtnClick(int position);
-    }
-
-    private ListBtnClickListener listBtnClickListener;
+public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
 
     private ArrayList<Item> dataSet;
     Context mContext;
@@ -60,6 +53,7 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item> implements View.On
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.timeline_list_item, parent, false);
+
             viewHolder.content= (TextView)convertView.findViewById(R.id.content);
             viewHolder.date= (TextView)convertView.findViewById(R.id.date);
             viewHolder.name= (TextView)convertView.findViewById(R.id.simpleProfile);
@@ -75,22 +69,20 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item> implements View.On
         viewHolder.name.setText(dataModel.getName());
 
         // button2의 TAG에 position값 지정. Adapter를 click listener로 지정.
-        Button button2 = (Button) convertView.findViewById(R.id.comment);
-        button2.setTag(position);
-        button2.setOnClickListener(this);
+
+
 
 
         return convertView;
     }
+    public void addItem(String contents){
+        Item addDataModel = new Item(contents);
 
-    @Override
-    public void onClick(View view) {
-        //ListBtnClickListener(timeline activity)의 onlistBtnClick()함수 호출
-        if(this.listBtnClickListener != null){
-            this.listBtnClickListener.onListBtnClick((int)view.getTag());
-        }
+        addDataModel.setContent(contents);
 
+        dataSet.add(addDataModel);
     }
+
 
 
 }

@@ -135,9 +135,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-<<<<<<< HEAD
-        
-=======
 
         //객체 생성
 //        View customView = getLayoutInflater().inflate(R.layout.activity_popup_create_torch, null);
@@ -219,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
         mPopupWindow.showAtLocation(mConstraintLayout, Gravity.CENTER, 0, 0);
 
 
->>>>>>> 2d9b3c6475a44dcec9d078330c8d639c3e6f0d50
     }
 
     @Override

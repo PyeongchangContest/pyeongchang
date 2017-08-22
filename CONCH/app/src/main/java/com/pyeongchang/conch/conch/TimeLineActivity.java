@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-
-
-public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.ListBtnClickListener{
+public class TimeLineActivity extends Activity {
 
     TextView text;
     TimeLineCustomAdapter cAdapter;
@@ -29,9 +28,34 @@ public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.
         setContentView(R.layout.activity_time_line);
 
         lv = (ListView)findViewById(R.id.timeline_list_view);
-        newWrite();
+        Toast.makeText(this,"1",Toast.LENGTH_SHORT).show();
+
+        //게시글 얻어오기
+        cAdapter= new TimeLineCustomAdapter(timeLinelist, this);
+        //리스트 뷰에 어뎁터 등록
+        lv.setAdapter(cAdapter);
 
 
+
+    }
+    //리스트뷰 재구성
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 0) {
+            String response = data.getStringExtra("newWrite");
+            //날짜 시간
+            String currentData = DateFormat.getDateTimeInstance().format(new Date());
+
+            timeLinelist.add(new Item(currentData, likeCount, "1", response));
+            cAdapter.notifyDataSetChanged();
+        }
 
     }
     //onNewIntent를 사용해서 타임라인을 누적!
@@ -40,27 +64,9 @@ public class TimeLineActivity extends Activity implements TimeLineCustomAdapter.
 
     public void onClick(View view) {
         Intent intent = new Intent(this, WritingActivity.class);
-        startActivity(intent);
-    }
-    @Override
-    public void onListBtnClick(int position) {
-        Intent intent = new Intent(this, CommentAddActivity.class);
-        startActivity(intent);
-        onStop();
-    }
-
-    public void newWrite(){
-        Intent intent = getIntent();
-        String post = intent.getStringExtra("newWrite");
-        String currentData = DateFormat.getDateTimeInstance().format(new Date());
-
-        count++;
-        timeLinelist.add(new Item(currentData, likeCount, "1", post));
-
-        cAdapter= new TimeLineCustomAdapter(timeLinelist, this);
-        lv.setAdapter(cAdapter);
-
+        startActivityForResult(intent,0);
 
     }
+
 
 }
