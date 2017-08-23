@@ -36,6 +36,9 @@ public class TorchCommunity {
         this.isSecret=isSecret;
     }
 
+    public TorchCommunity() {
+    }
+
     public int getCommunityScore() {
         return communityScore;
     }
