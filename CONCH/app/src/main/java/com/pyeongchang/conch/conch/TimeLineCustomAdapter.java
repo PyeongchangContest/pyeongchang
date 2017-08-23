@@ -23,9 +23,8 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
     private static class ViewHolder{
         TextView date;
         TextView name;
-        TextView likeCount;
         TextView content;
-        Item comment;
+
     }
     //현재 몇개의 아이템을 가지고 있는지
     public int getCount(){

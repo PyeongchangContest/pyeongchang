@@ -17,6 +17,8 @@ public class TorchCommunity {
     private int racingLevel; //db에서 미션을 난이도별로 받아도기 위한 변수. 더 나은 구현 알고리즘이 있을까 고민 필요
     /**************************************************/
     //타임라인 추가하기 (타임라인아이템 객체가 필요해여)
+    private  List<Item> timeLine;
+    private List<Item> commentTimeLine;
     /**************************************************/
     private String runner; //현재 해당 커뮤니티의 주자를 저장하기 위한 변수
     private List<String> user = new ArrayList<String>();

@@ -131,6 +131,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CommunityActivity.class);
+                intent.putExtra("communityName", communityName);
                 getActivity().startActivity(intent);
             }
         });
