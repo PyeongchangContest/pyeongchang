@@ -2,15 +2,13 @@ package com.pyeongchang.conch.conch;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,11 +20,6 @@ import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import static java.lang.Math.sin;
-import static java.lang.Math.toIntExact;
 
 public class CommunityActivity extends AppCompatActivity {
     private boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
