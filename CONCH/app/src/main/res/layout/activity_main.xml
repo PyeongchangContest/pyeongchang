@@ -90,11 +90,31 @@
                 android:text="My torch1"
                 android:textSize="24dp"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/main_torchScore"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.3" />
+
+            <TextView
+                android:id="@+id/main_torchInform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="새로운 성화를 생성하세요!"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25" />
 
             <TextView
                 android:id="@+id/main_torchRank"
@@ -103,44 +123,46 @@
                 android:text="3"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="18dp"
+                android:visibility="invisible"
                 app:layout_constraintRight_toLeftOf="@+id/main_sumOfTorch"
                 app:layout_constraintTop_toTopOf="@+id/main_sumOfTorch" />
 
             <TextView
-                android:text="/ 42144"
+                android:id="@+id/main_sumOfTorch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/main_sumOfTorch"
+                android:text="/ 42144"
                 android:textSize="18dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/main_torchScore" />
 
             <TextView
-                android:text="3420p"
+                android:id="@+id/main_torchScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/main_torchScore"
+                android:text="3420p"
                 android:textSize="22dp"
-                app:layout_constraintRight_toRightOf="parent"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <RelativeLayout
             android:id="@+id/layout_walking"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="0dp"
+            android:layout_width="366dp"
+            android:layout_height="112dp"
             android:layout_weight="0.17"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/layout_finished"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.93"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout_body"
             app:layout_constraintVertical_bias="0.0">
 
             <ImageView
@@ -181,8 +203,8 @@
                 android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:progress="0"
-                android:max="3000"/>
+                android:max="3000"
+                android:progress="0" />
 
             <TextView
                 android:id="@+id/progressText_start"
@@ -201,11 +223,12 @@
             android:layout_width="wrap_content"
             android:layout_height="67dp"
             android:layout_marginBottom="0dp"
-            android:visibility="visible"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/layout_body"
-            app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/layout_walking"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.592">
 
@@ -215,8 +238,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="false"
                 android:layout_centerVertical="true"
-                android:text="send torch"
-                android:visibility="invisible" />
+                android:text="send torch" />
         </RelativeLayout>
 
     </android.support.constraint.ConstraintLayout>

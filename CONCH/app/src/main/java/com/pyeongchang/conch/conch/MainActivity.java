@@ -8,20 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Build;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,13 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +42,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,11 +56,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
+    private TextView infoTorchState;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TextView infoSumOfTorch;
     private TextView runningDistance;
 
-    private User user=new User("TestUser","abc@naver.com","password123","Korea");//임시생성
+    public User getUser() {
+        return user;
+    }
+
+    private User user = new User("TestUser", "abc@naver.com", "password123", "Korea");//임시생성
 
 
     private Button btnShowLocation;
@@ -156,24 +153,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //성화정보들
+
                 TextView torchName = customView.findViewById(R.id.create_torchName);
                 TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
                 ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
                 String tName = torchName.getText().toString();
-                int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
-                boolean isSecret = isSecretCommunity.isChecked();
-                //성화 커뮤니티 객체 추가
-                /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
-                /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
 
-                TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(),tName,tMaxPeople,isSecret);
-                generateMission(addTorchCommunity);
-                communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
+                if (tName.equals("")) {
+                    Toast.makeText(MainActivity.this, "성화 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
 
-                CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
-                carouselFragment.createNewTorch(tName);
+                    int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
+                    boolean isSecret = isSecretCommunity.isChecked();
+                    //성화 커뮤니티 객체 추가
+                    /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
+                    /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
 
-                mPopupWindow.dismiss();
+
+                    TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), tName, tMaxPeople, isSecret);
+                    generateMission(addTorchCommunity);
+                    communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
+
+                    CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
+                    carouselFragment.createNewTorch(tName);
+                    mPopupWindow.dismiss();
+                }
             }
         });
 
@@ -181,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -210,11 +214,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void visibilityOfTorchInfo(boolean visible) {
         if (visible) {
+            infoTorchState.setVisibility(View.INVISIBLE);
             infoTorchName.setVisibility(View.VISIBLE);
             infoTorchScore.setVisibility(View.VISIBLE);
             infoTorchRank.setVisibility(View.VISIBLE);
             infoSumOfTorch.setVisibility(View.VISIBLE);
         } else {
+            infoTorchState.setVisibility(View.VISIBLE);
             infoTorchName.setVisibility(View.INVISIBLE);
             infoTorchScore.setVisibility(View.INVISIBLE);
             infoTorchRank.setVisibility(View.INVISIBLE);
@@ -295,6 +301,7 @@ public class MainActivity extends AppCompatActivity {
         infoTorchName = (TextView) findViewById(R.id.main_torchName);//성화 이름
         infoTorchScore = (TextView) findViewById(R.id.main_torchScore);//성화 점수
         infoTorchRank = (TextView) findViewById(R.id.main_torchRank);//성화 랭킹
+        infoTorchState=(TextView)findViewById(R.id.main_torchInform);//성화생성정보
         infoSumOfTorch = (TextView) findViewById(R.id.main_sumOfTorch);//총 성화 갯수
 
         runningDistance = (TextView) findViewById(R.id.progressText_now);//뛴 거리
@@ -341,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
                 changeDistanceText(String.valueOf(distance));
                 progressBar.setProgress((int) distance);
                 if (progressBar.getProgress() >= 3000) {
-                    runProgressedLayout.setVisibility(View.INVISIBLE);
+                    runProgressedLayout.setVisibility(View.GONE);
                     runFinishedLayout.setVisibility(View.VISIBLE);
                     gps = null;
                     unregisterReceiver(broadcastReceiver);
@@ -390,5 +397,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToastText(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean isValidId(final String torchName) {
+
+        Log.e("(테스트)tName", torchName);
+        if (torchName == "") {
+            Toast.makeText(MainActivity.this, "성화 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                    if (singleDataSnapshot.getKey().equals(torchName)) {
+                        Toast.makeText(MainActivity.this, "이미 생성된 이름입니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                throw databaseError.toException();
+            }
+        });
+        return true;
     }
 }

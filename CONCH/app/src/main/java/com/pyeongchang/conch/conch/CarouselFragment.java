@@ -42,6 +42,11 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         return mCarouselView;
     }
     private CarouselView mCarouselView;
+
+    public List<View> getTorchList() {
+        return torchList;
+    }
+
     private List<View> torchList = new ArrayList<>();
     private TextView tv;
     private int nextPosition=0;
@@ -131,6 +136,10 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         });
         torchList.add(plusTorch);
         mCarouselView.addView(plusTorch);
+        Log.e("(테스트)초기포지션 : ",String.valueOf(getTorchList().size()));
+        int index;
+        index=getTorchList().size()-1;
+        mCarouselView.scrollToChild(index);
         mCarouselView.notifyDataSetChanged();
 
     }

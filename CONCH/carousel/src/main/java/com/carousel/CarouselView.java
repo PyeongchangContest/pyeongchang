@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
@@ -383,8 +384,14 @@ public class CarouselView extends CarouselSpinner implements GestureDetector.OnG
         if(null == view) {
             return;
         }
-
         float angle = view.getCurrentAngle();
+        switch (idx){
+            case 1:angle=180.0f;break;
+            case 2:angle=240.0f;break;
+            case 3:angle=270.0f;break;
+            case 4:angle=288.0f;break;
+            case 5:angle=300.0f;break;
+        }
 
         if (angle == 0)
             return;
