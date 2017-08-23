@@ -2,20 +2,28 @@ package com.pyeongchang.conch.conch;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.carousel.CarouselView;
 import com.pyeongchang.conch.conch.panel.ImagePanel;
 import com.pyeongchang.conch.conch.panel.ListLayoutPanel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Created by binary on 3/8/16.
@@ -28,6 +36,9 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         return fragment;
     }
 
+    public CarouselView getmCarouselView() {
+        return mCarouselView;
+    }
     private CarouselView mCarouselView;
     private List<View> torchList = new ArrayList<>();
     private TextView tv;
@@ -75,33 +86,14 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
 
             }
         });
-//        view.findViewById(R.id.prev).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = mCarouselView.getSelectedItemPosition() == 0 ? mCarouselView.getCount() - 1 : mCarouselView.getSelectedItemPosition() - 1;
-//                mCarouselView.scrollToChild(position);
-//                mCarouselView.invalidate();
-//            }
-//        });
-//
-//        view.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = mCarouselView.getSelectedItemPosition() == mCarouselView.getCount() - 1 ? 0 : mCarouselView.getSelectedItemPosition() + 1;
-//                mCarouselView.scrollToChild(position);
-//                mCarouselView.invalidate();
-//            }
-//        });
     }
 
 
     // Stub items
     private List<View> initStubItems() {
-//        ImagePanel torchBtn = new ImagePanel(getActivity());
-//        torchBtn.setImageResId(R.drawable.torch);
-//        torchList.add(torchBtn);
 
         ImagePanel plusBtn = new ImagePanel(getActivity());
+        plusBtn.initImageLayout();
         plusBtn.setImageResId(R.drawable.plus_torch);
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,8 +103,6 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
                 }else {
                     ((MainActivity)getActivity()).showToastText("더이상 성화를 생성할 수 없습니다.");
                 }
-
-
             }
         });
         torchList.add(plusBtn);
@@ -126,7 +116,10 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
 
     public void createNewTorch(){
         ImagePanel plusTorch = new ImagePanel(getActivity());
-        plusTorch.setImageResId(R.drawable.torch);
+        plusTorch.customImageLayout();
+//        plusTorch.setImageResId(R.drawable.torch);
+        GlideDrawableImageViewTarget imageViewTarget=new GlideDrawableImageViewTarget(plusTorch.getmImageViewHolder());
+        Glide.with(this).load(R.raw.torchanim).into(imageViewTarget);
         plusTorch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +130,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         torchList.add(plusTorch);
         mCarouselView.addView(plusTorch);
         mCarouselView.notifyDataSetChanged();
+
     }
 
     public void changeText(String text){

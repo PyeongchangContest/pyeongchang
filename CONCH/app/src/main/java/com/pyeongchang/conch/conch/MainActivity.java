@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Build;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v4.app.ActivityCompat;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TextView infoSumOfTorch;
     private TextView runningDistance;
-
+    private Handler handler;
     final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
 
     private Button btnShowLocation;
@@ -107,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_body, cf);
         fragmentTransaction.commit();
-
     }
 
     public void popupTorch() {
@@ -169,9 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 generateMission(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
-                CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
+                final CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
                 carouselFragment.createNewTorch();
-
 
                 mPopupWindow.dismiss();
             }
@@ -381,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     public ArrayList<TorchCommunity> getCommunityArrayList() {
