@@ -39,6 +39,14 @@ public class TorchCommunity {
     public TorchCommunity() {
     }
 
+    public ArrayList<UserProperty> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(ArrayList<UserProperty> userList) {
+        this.userList = userList;
+    }
+
     public int getCommunityScore() {
         return communityScore;
     }
@@ -47,12 +55,12 @@ public class TorchCommunity {
         this.communityScore = communityScore;
     }
 
-    public ArrayList<UserProperty> getUserList() {
-        return userList;
+    public int getCommunityRank() {
+        return communityRank;
     }
 
-    public void setUserList(ArrayList<UserProperty> userList) {
-        this.userList = userList;
+    public void setCommunityRank(int communityRank) {
+        this.communityRank = communityRank;
     }
 
     public String getCommunityName() {
@@ -79,52 +87,67 @@ public class TorchCommunity {
         isSecret = secret;
     }
 
-    public int getCommunityRank() {
-        return communityRank;
-    }
-
-    public void setCommunityRank(int communityRank) {
-        this.communityRank = communityRank;
+    public int getRacingLevel() {
+        return racingLevel;
     }
 
     public void setRacingLevel(int racingLevel) {
         this.racingLevel = racingLevel;
     }
 
+    public String getRunner() {
+        return runner;
+    }
+
     public void setRunner(String runner) {
         this.runner = runner;
     }
 
-    public void setRacingMission(MissionItem racingMission) {
-        this.racingMission = racingMission;
+    public List<String> getUser() {
+        return user;
     }
 
-    public void setInvitationMission(MissionItem invitationMission) {
-        InvitationMission = invitationMission;
-    }
-
-    public void setQuiz(MissionItem quiz) {
-        Quiz = quiz;
-    }
-
-    public int getRacingLevel() {
-
-        return racingLevel;
-    }
-
-    public String getRunner() {
-        return runner;
+    public void setUser(List<String> user) {
+        this.user = user;
     }
 
     public MissionItem getRacingMission() {
         return racingMission;
     }
 
+    public void setRacingMission(MissionItem racingMission) {
+        this.racingMission = racingMission;
+    }
+
     public MissionItem getInvitationMission() {
         return InvitationMission;
     }
 
+    public void setInvitationMission(MissionItem invitationMission) {
+        InvitationMission = invitationMission;
+    }
+
     public MissionItem getQuiz() {
         return Quiz;
+    }
+
+    public void setQuiz(MissionItem quiz) {
+        Quiz = quiz;
+    }
+
+    public List<MissionItem> getCompletedMission() {
+        return completedMission;
+    }
+
+    public void setCompletedMission(List<MissionItem> completedMission) {
+        this.completedMission = completedMission;
+    }
+
+    public List<String> getRoute() {
+        return route;
+    }
+
+    public void setRoute(List<String> route) {
+        this.route = route;
     }
 }

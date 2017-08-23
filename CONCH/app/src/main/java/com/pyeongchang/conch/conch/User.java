@@ -18,6 +18,18 @@ public class User {
     private int distance; //If isRunner is true, the value of distance is valid;
     private List<String> communityList; // Community number is limited to 5;
 
+    public User(String userName, String email, String pwd, String nation, int photo) {
+        this.userName = userName;
+        this.email = email;
+        this.pwd = pwd;
+        this.nation = nation;
+        this.photo = photo;
+    }
+
+    public User() {
+
+    }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
