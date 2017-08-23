@@ -102,11 +102,12 @@ public class CommunityActivity extends AppCompatActivity {
         MissionItem invitationMission = new MissionItem((String)dataSnapshot.child("invitationMission").child("missionName").getValue(),((Long)dataSnapshot.child("invitationMission").child("progress").getValue()).intValue());
         MissionItem quizMission = new MissionItem((String)dataSnapshot.child("quiz").child("missionName").getValue(),((Long)dataSnapshot.child("quiz").child("progress").getValue()).intValue());
 
-        List<UserProperty> userList = new ArrayList<UserProperty>();
+        List<String> userList = new ArrayList<String>();
         for(DataSnapshot singleDataSnapshot : dataSnapshot.child("userList").getChildren()) {
-            UserProperty user = new UserProperty(((Long)singleDataSnapshot.child("userLevel").getValue()).intValue(),((Long)singleDataSnapshot.child("userScore").getValue()).intValue());
-            userList.add(user);
+//            UserProperty user = new UserProperty(((Long)singleDataSnapshot.child("userLevel").getValue()).intValue(),((Long)singleDataSnapshot.child("userScore").getValue()).intValue());
+//            userList.add(user);
         }
+
         TorchCommunity community = new TorchCommunity();
         community.setCommunityName((String)dataSnapshot.child("communityName").getValue());
         community.setCommunityRank(((Long) dataSnapshot.child("communityRank").getValue()).intValue());

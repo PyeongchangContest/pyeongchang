@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class TorchCommunity {
-    private ArrayList<String > userList=new ArrayList<>();
+    private ArrayList<String> userList=new ArrayList<>();
     private int communityScore;
     private int communityRank;
     private String communityName;
@@ -19,7 +19,6 @@ public class TorchCommunity {
     //타임라인 추가하기 (타임라인아이템 객체가 필요해여)
     /**************************************************/
     private String runner; //현재 해당 커뮤니티의 주자를 저장하기 위한 변수
-    private List<String> user = new ArrayList<String>();
     // (유저 객체도 필요하지 않을까 추후 고려 그냥 List<String> 이어도 될 듯 싶기도 함)
     private MissionItem racingMission;
     private MissionItem InvitationMission;
@@ -39,14 +38,6 @@ public class TorchCommunity {
     public TorchCommunity() {
     }
 
-    public ArrayList<UserProperty> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(ArrayList<UserProperty> userList) {
-        this.userList = userList;
-    }
-
     public int getCommunityScore() {
         return communityScore;
     }
@@ -60,7 +51,8 @@ public class TorchCommunity {
     }
 
     public void setUserList(ArrayList<String > userList) {
-        this.userList = userList;
+        this.userList = userList;}
+
     public int getCommunityRank() {
         return communityRank;
     }
@@ -107,14 +99,6 @@ public class TorchCommunity {
 
     public void setRunner(String runner) {
         this.runner = runner;
-    }
-
-    public List<String> getUser() {
-        return user;
-    }
-
-    public void setUser(List<String> user) {
-        this.user = user;
     }
 
     public MissionItem getRacingMission() {
