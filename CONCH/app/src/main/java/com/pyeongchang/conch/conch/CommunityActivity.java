@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CommunityActivity extends AppCompatActivity {
+    private boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,5 +61,14 @@ public class CommunityActivity extends AppCompatActivity {
 
         RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
         listView.setAdapter(adapter);
+
+        Button timelineBtn=(Button) findViewById(R.id.timelineBtn);
+        timelineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
