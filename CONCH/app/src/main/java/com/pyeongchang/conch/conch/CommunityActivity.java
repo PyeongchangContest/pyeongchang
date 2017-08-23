@@ -28,6 +28,7 @@ import static java.lang.Math.toIntExact;
 
 public class CommunityActivity extends AppCompatActivity {
     private boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
+
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TorchCommunity community;
     private String communityName;
@@ -35,15 +36,18 @@ public class CommunityActivity extends AppCompatActivity {
     private String invitationMission;
     private String quizMission;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
 
         communityName = getIntent().getStringExtra("communityName");
+
         getCommunity(communityName);
 
         String temp = communityName;
+
 
         RotatingTextWrapper rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
@@ -89,6 +93,7 @@ public class CommunityActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
+                intent.putExtra("communityName",communityName);
                 startActivity(intent);
             }
         });
