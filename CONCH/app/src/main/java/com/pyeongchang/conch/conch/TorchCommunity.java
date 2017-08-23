@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class TorchCommunity {
-    private ArrayList<UserProperty> userList=new ArrayList<>();
+    private ArrayList<String > userList=new ArrayList<>();
     private int communityScore;
     private int communityRank;
     private String communityName;
@@ -27,7 +27,7 @@ public class TorchCommunity {
     private List<MissionItem> completedMission = new ArrayList<MissionItem>();
     private List<String> route = new ArrayList<String>();
 
-    public TorchCommunity(UserProperty leader,String communityName,int maxPeople,boolean isSecret){
+    public TorchCommunity(String leader,String communityName,int maxPeople,boolean isSecret){
         userList.add(leader);
         communityScore=0;
         racingLevel = 0;
@@ -55,6 +55,12 @@ public class TorchCommunity {
         this.communityScore = communityScore;
     }
 
+    public ArrayList<String > getUserList() {
+        return userList;
+    }
+
+    public void setUserList(ArrayList<String > userList) {
+        this.userList = userList;
     public int getCommunityRank() {
         return communityRank;
     }
