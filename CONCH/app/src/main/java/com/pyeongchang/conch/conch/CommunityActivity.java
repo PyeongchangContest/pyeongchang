@@ -45,6 +45,8 @@ public class CommunityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
 
+        communityName = getIntent().getStringExtra("communityName");
+
         temp = (TextView) findViewById(R.id.temp);
 
         rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
@@ -56,6 +58,27 @@ public class CommunityActivity extends AppCompatActivity {
 
         rotatingTextWrapper.setContent( " ", rotatable);
 
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date date = calendar.getTime();
+        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
+
+//        ListView listView = (ListView) findViewById(R.id.runner_listview);
+//
+//        ArrayList<RunnerListviewItem> data = new ArrayList<>();
+//        RunnerListviewItem pyeongchang = new RunnerListviewItem(R.drawable.emblem, "PyeongChang", today);
+//        RunnerListviewItem tiger = new RunnerListviewItem(R.drawable.horang, "Tiger", today);
+//        RunnerListviewItem bear = new RunnerListviewItem(R.drawable.bear, "Bear", today);
+//        RunnerListviewItem torch = new RunnerListviewItem(R.drawable.torch, "Torch", today);
+//
+//        data.add(pyeongchang);
+//        data.add(tiger);
+//        data.add(bear);
+//        data.add(torch);
+//
+//
+//        RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
+//        listView.setAdapter(adapter);
+
         Button missionBtn = (Button) findViewById(R.id.missionBtn);
         missionBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -65,32 +88,12 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
 
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
-        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-
-        ListView listView = (ListView) findViewById(R.id.runner_listview);
-
-        ArrayList<RunnerListviewItem> data = new ArrayList<>();
-        RunnerListviewItem pyeongchang = new RunnerListviewItem(R.drawable.emblem, "PyeongChang", today);
-        RunnerListviewItem tiger = new RunnerListviewItem(R.drawable.horang, "Tiger", today);
-        RunnerListviewItem bear = new RunnerListviewItem(R.drawable.bear, "Bear", today);
-        RunnerListviewItem torch = new RunnerListviewItem(R.drawable.torch, "Torch", today);
-
-        data.add(pyeongchang);
-        data.add(tiger);
-        data.add(bear);
-        data.add(torch);
-
-
-        RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
-        listView.setAdapter(adapter);
-
         Button timelineBtn=(Button) findViewById(R.id.timelineBtn);
         timelineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), TimeLineActivity.class);
+                intent.putExtra("commnityName",communityName);
                 startActivity(intent);
             }
         });
@@ -125,7 +128,6 @@ public class CommunityActivity extends AppCompatActivity {
             }
         });
 
-//        communityName = getIntent().getStringExtra("communityName");
 //        getCommunityInfo(communityName);
     }
 
