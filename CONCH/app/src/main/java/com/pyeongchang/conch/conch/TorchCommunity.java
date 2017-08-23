@@ -25,7 +25,7 @@ public class TorchCommunity {
     private MissionItem racingMission;
     private MissionItem InvitationMission;
     private MissionItem Quiz;
-    private List<MissionItem> completedMission = new ArrayList<MissionItem>();
+    private List<String> completedMission = new ArrayList<String>();
     private List<String> route = new ArrayList<String>();
 
     public TorchCommunity(String leader,String communityName,int maxPeople,boolean isSecret){
@@ -35,6 +35,8 @@ public class TorchCommunity {
         this.communityName=communityName;
         this.maxPeople=maxPeople;
         this.isSecret=isSecret;
+        this.runner = "hello!";
+        this.route.add("KOREA");
     }
 
     public TorchCommunity() {
@@ -127,11 +129,11 @@ public class TorchCommunity {
         Quiz = quiz;
     }
 
-    public List<MissionItem> getCompletedMission() {
+    public List<String> getCompletedMission() {
         return completedMission;
     }
 
-    public void setCompletedMission(List<MissionItem> completedMission) {
+    public void setCompletedMission(List<String> completedMission) {
         this.completedMission = completedMission;
     }
 

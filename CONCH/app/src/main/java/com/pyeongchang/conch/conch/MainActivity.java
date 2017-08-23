@@ -167,6 +167,10 @@ public class MainActivity extends AppCompatActivity {
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
 
                 TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(),tName,tMaxPeople,isSecret);
+                /******************************************
+                 addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
+                 addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
+                 **********************************************************/
                 generateMission(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
