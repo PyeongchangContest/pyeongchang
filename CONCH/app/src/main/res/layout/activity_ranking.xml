@@ -36,7 +36,8 @@
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_worldrank"
@@ -45,16 +46,18 @@
                         android:background="@android:color/holo_orange_light"
                         android:text="World Rank!"
                         android:textAlignment="center"
-                        android:textSize="18sp" />
+                        android:textColor="@color/Chartreuse"
+                        android:textSize="30sp" />
 
                     <ScrollView
                         android:id="@+id/TeamRankScrollView"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="230dp"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="0dp"
                         android:layout_marginTop="0dp"
+                        android:layout_weight="0.03"
                         android:background="@android:color/holo_orange_light"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_bias="0.526"
@@ -79,12 +82,13 @@
                         android:background="@android:color/holo_blue_bright"
                         android:text="My Community"
                         android:textAlignment="center"
-                        android:textSize="18sp" />
+                        android:textColor="?attr/actionModeSplitBackground"
+                        android:textSize="30sp" />
 
                     <ScrollView
                         android:id="@+id/myTeamRankScrollView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="150dp"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="0dp"
@@ -158,7 +162,7 @@
                     <ScrollView
                         android:id="@+id/TeamRank"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="273dp"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="0dp"
