@@ -30,7 +30,6 @@ public class CommunityActivity extends AppCompatActivity {
     private String quizMission;
     private RotatingTextWrapper rotatingTextWrapper;
     private Rotatable rotatable;
-    private TextView temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +37,6 @@ public class CommunityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_community);
 
         communityName = getIntent().getStringExtra("communityName");
-
-        temp = (TextView) findViewById(R.id.temp);
 
         rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
@@ -100,8 +97,6 @@ public class CommunityActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String communityName = getIntent().getStringExtra("communityName");
                 DataSnapshot communityDataSnapshot = dataSnapshot.child(communityName);
-                String text = communityDataSnapshot.child("runner").getValue(String.class);
-                temp.setText(text);
 
                 String racingMission = communityDataSnapshot.child("racingMission").child("missionName").getValue(String.class);
                 String invitattionMission = communityDataSnapshot.child("invitationMission").child("missionName").getValue(String.class);
@@ -111,9 +106,6 @@ public class CommunityActivity extends AppCompatActivity {
                 rotatingTextWrapper.setSize(35);
 
                 rotatable.setText(racingMission, invitattionMission, quizMission);
-//                rotatable = new Rotatable(Color.parseColor("#FFA036"), 3000, racingMission, invitattionMission, quizMission);
-//                rotatable.setSize(35);
-//                rotatable.setAnimationDuration(500);
 
                 rotatingTextWrapper.setContent(" ", rotatable);
             }
