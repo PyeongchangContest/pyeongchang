@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Build;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v4.app.ActivityCompat;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout llDrawer;
     private PopupWindow mPopupWindow;
     private ConstraintLayout mConstraintLayout;
-    private ArrayList<ImageButton> torchList = new ArrayList<>();
     private ArrayList<TorchCommunity> communityList = new ArrayList<>();
 
     private TextView infoTorchRank;
@@ -68,14 +68,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoSumOfTorch;
     private TextView runningDistance;
 
-    final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
+    private User user=new User("TestUser","abc@naver.com","password123","Korea");//임시생성
+
 
     private Button btnShowLocation;
     BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
-
-//    private String[] permissions = {android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}; //카메라 관련 권한 설정 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.layout_body, cf);
         fragmentTransaction.commit();
-
     }
 
     public void popupTorch() {
@@ -168,13 +166,12 @@ public class MainActivity extends AppCompatActivity {
                 /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
 
-                TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
+                TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(),tName,tMaxPeople,isSecret);
                 generateMission(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
                 CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
-                carouselFragment.createNewTorch();
-
+                carouselFragment.createNewTorch(tName);
 
                 mPopupWindow.dismiss();
             }
@@ -384,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     public ArrayList<TorchCommunity> getCommunityArrayList() {

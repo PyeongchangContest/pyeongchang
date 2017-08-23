@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class TorchCommunity {
-    private ArrayList<UserProperty> userList=new ArrayList<>();
+    private ArrayList<String> userList=new ArrayList<>();
     private int communityScore;
     private int communityRank;
     private String communityName;
@@ -21,7 +21,6 @@ public class TorchCommunity {
     private List<Item> commentTimeLine;
     /**************************************************/
     private String runner; //현재 해당 커뮤니티의 주자를 저장하기 위한 변수
-    private List<String> user = new ArrayList<String>();
     // (유저 객체도 필요하지 않을까 추후 고려 그냥 List<String> 이어도 될 듯 싶기도 함)
     private MissionItem racingMission;
     private MissionItem InvitationMission;
@@ -29,13 +28,16 @@ public class TorchCommunity {
     private List<MissionItem> completedMission = new ArrayList<MissionItem>();
     private List<String> route = new ArrayList<String>();
 
-    public TorchCommunity(UserProperty leader,String communityName,int maxPeople,boolean isSecret){
+    public TorchCommunity(String leader,String communityName,int maxPeople,boolean isSecret){
         userList.add(leader);
         communityScore=0;
         racingLevel = 0;
         this.communityName=communityName;
         this.maxPeople=maxPeople;
         this.isSecret=isSecret;
+    }
+
+    public TorchCommunity() {
     }
 
     public int getCommunityScore() {
@@ -46,12 +48,19 @@ public class TorchCommunity {
         this.communityScore = communityScore;
     }
 
-    public ArrayList<UserProperty> getUserList() {
+    public ArrayList<String > getUserList() {
         return userList;
     }
 
-    public void setUserList(ArrayList<UserProperty> userList) {
-        this.userList = userList;
+    public void setUserList(ArrayList<String > userList) {
+        this.userList = userList;}
+
+    public int getCommunityRank() {
+        return communityRank;
+    }
+
+    public void setCommunityRank(int communityRank) {
+        this.communityRank = communityRank;
     }
 
     public String getCommunityName() {
@@ -78,52 +87,59 @@ public class TorchCommunity {
         isSecret = secret;
     }
 
-    public int getCommunityRank() {
-        return communityRank;
-    }
-
-    public void setCommunityRank(int communityRank) {
-        this.communityRank = communityRank;
+    public int getRacingLevel() {
+        return racingLevel;
     }
 
     public void setRacingLevel(int racingLevel) {
         this.racingLevel = racingLevel;
     }
 
-    public void setRunner(String runner) {
-        this.runner = runner;
-    }
-
-    public void setRacingMission(MissionItem racingMission) {
-        this.racingMission = racingMission;
-    }
-
-    public void setInvitationMission(MissionItem invitationMission) {
-        InvitationMission = invitationMission;
-    }
-
-    public void setQuiz(MissionItem quiz) {
-        Quiz = quiz;
-    }
-
-    public int getRacingLevel() {
-
-        return racingLevel;
-    }
-
     public String getRunner() {
         return runner;
+    }
+
+    public void setRunner(String runner) {
+        this.runner = runner;
     }
 
     public MissionItem getRacingMission() {
         return racingMission;
     }
 
+    public void setRacingMission(MissionItem racingMission) {
+        this.racingMission = racingMission;
+    }
+
     public MissionItem getInvitationMission() {
         return InvitationMission;
     }
 
+    public void setInvitationMission(MissionItem invitationMission) {
+        InvitationMission = invitationMission;
+    }
+
     public MissionItem getQuiz() {
         return Quiz;
+    }
+
+    public void setQuiz(MissionItem quiz) {
+        Quiz = quiz;
+    }
+
+    public List<MissionItem> getCompletedMission() {
+        return completedMission;
+    }
+
+    public void setCompletedMission(List<MissionItem> completedMission) {
+        this.completedMission = completedMission;
+    }
+
+    public List<String> getRoute() {
+        return route;
+    }
+
+    public void setRoute(List<String> route) {
+        this.route = route;
     }
 }

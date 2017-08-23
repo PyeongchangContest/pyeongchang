@@ -9,16 +9,20 @@ import java.util.List;
 public class MissionItem {
     private String mission;
     private int progress;
-    private List<String> contributor; //User형 리스트로 변경해야할 지 고려!
+//    private List<String> contributor; //User형 리스트로 변경해야할 지 고려!
 
-    public MissionItem(String missionName) {
-        this.mission = missionName;
+    public MissionItem(String mission) {
+        this.mission = mission;
         this.progress = 0;
-        this.contributor = null;
     }
 
-    public void setMissionName(String missionName) {
-        this.mission = missionName;
+    public MissionItem(String mission, int progress) {
+        this.mission = mission;
+        this.progress = progress;
+    }
+
+    public void setMission(String mission) {
+        this.mission = mission;
     }
 
     public void setProgress(int progress) {
@@ -34,7 +38,7 @@ public class MissionItem {
         return progress;
     }
 
-    public List<String> getContributor() {
-        return contributor;
-    }
+//    public List<String> getContributor() {
+//        return contributor;
+//    }
 }
