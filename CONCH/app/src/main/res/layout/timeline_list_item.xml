@@ -41,6 +41,9 @@
             android:gravity="top"
             android:layout_margin="2dp"
             android:background="@drawable/black_border"
+            android:maxLength="100"
+            android:ellipsize="end"
+            android:maxLines="5"
             android:text="content"/>
 
         <LinearLayout

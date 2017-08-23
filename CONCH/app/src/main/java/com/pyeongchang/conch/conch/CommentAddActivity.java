@@ -3,6 +3,7 @@ package com.pyeongchang.conch.conch;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ public class CommentAddActivity extends AppCompatActivity {
         //게시글 받아오기
         TextView name = (TextView)findViewById(R.id.comment_name);
         TextView content = (TextView)findViewById(R.id.comment_content);
+        content.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         Intent intent = getIntent();
         name.setText(intent.getStringExtra("name"));

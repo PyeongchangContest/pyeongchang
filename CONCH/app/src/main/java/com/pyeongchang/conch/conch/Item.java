@@ -14,10 +14,6 @@ public class Item {
     public String content;
     public Item comment;
 
-    //임시
-    public Item(String content){
-        this.content = content;
-    }
     // 게시글
     public Item(String date, int like, String name, String content){
         this.content = content;
