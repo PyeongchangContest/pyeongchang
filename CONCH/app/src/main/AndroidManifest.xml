@@ -17,8 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TimeLineActivity" >
+
+        </activity>
+
         <activity android:name=".CommunityActivity"></activity>
-        <activity android:name=".TimeLineActivity" />
+
         <activity android:name=".WritingActivity" />
         <activity
             android:name=".MypageActivity"
@@ -26,7 +30,8 @@
         <activity android:name=".PopupMail" />
         <activity android:name=".RankingActivity" />
         <activity android:name=".PopupSetting" />
-        <activity android:name=".CommentAddActivity"></activity>
+        <activity android:name=".CommentAddActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".Popup_createTorch"
             android:theme="@android:style/Theme.DeviceDefault">
