@@ -1,5 +1,6 @@
 package com.pyeongchang.conch.conch;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -25,13 +26,12 @@ public class RankingActivity extends AppCompatActivity {
 
     private ArrayList<TorchCommunity> torchCommunityArrayList;
     private LinearLayout rankWorldCommunity;
-
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
-
         //탭 설정
         TabHost tabHost = (TabHost) findViewById(R.id.rankingTab);
         tabHost.setup();
@@ -99,7 +99,7 @@ public class RankingActivity extends AppCompatActivity {
         rankWorldCommunity.addView(addMyCommunity,p);
     }
 
-    private void calculatingWorldRanking(){
+    public void calculatingWorldRanking(){
         Query topCommunityScoreQuery=mDatabase.child("Community").orderByChild("communityScore");
         topCommunityScoreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -121,7 +121,7 @@ public class RankingActivity extends AppCompatActivity {
             }
         });
     }
-    private void updateWorldRankCommunity(){
+    public void updateWorldRankCommunity(){
         Query topCommunityRankQuery=mDatabase.child("Community").orderByChild("communityRank");
         topCommunityRankQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -185,5 +185,11 @@ public class RankingActivity extends AppCompatActivity {
         addMyCommunity.setBackgroundResource(R.color.comColor4);
         rankWorldCommunity.addView(addMyCommunity,p);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        calculatingWorldRanking();
     }
 }

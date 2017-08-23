@@ -39,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                     /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                     /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
 
-
                     TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), tName, tMaxPeople, isSecret);
+
                     generateMission(addTorchCommunity);
                     communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
@@ -382,9 +382,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        countAllCommunity();
 
+//        for (TorchCommunity torchCommunity : communityList) {
+//            updateCommunityState(torchCommunity);
+//        }
+        for (int i=0;i<communityList.size();i++){
+            communityList.set(i,updateCommunityState(communityList.get(i)));
+        }
     }
 
+    public TorchCommunity updateCommunityState(final TorchCommunity torchCommunity){
+        final String targetCommunityName=torchCommunity.getCommunityName();
+
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        if (postSnapshot.getKey().equals(targetCommunityName)){
+                            int rank=Integer.parseInt(postSnapshot.child("communityRank").getValue().toString());
+                            torchCommunity.setCommunityRank(rank);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return torchCommunity;
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -399,30 +429,29 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    public boolean isValidId(final String torchName) {
-
-        Log.e("(테스트)tName", torchName);
-        if (torchName == "") {
-            Toast.makeText(MainActivity.this, "성화 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void countAllCommunity(){
+        Query topCommunityScoreQuery=mDatabase.child("Community").orderByChild("communityScore");
+        topCommunityScoreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
-                    if (singleDataSnapshot.getKey().equals(torchName)) {
-                        Toast.makeText(MainActivity.this, "이미 생성된 이름입니다.", Toast.LENGTH_SHORT).show();
-                    } else {
+                int index=0;
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        index++;
+                    }
 
+                    infoSumOfTorch.setText("/"+index);
+
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        String topCommunityName = postSnapshot.getKey();
+                        mDatabase.child("Community").child(topCommunityName).child("communityRank").setValue(index--);
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                throw databaseError.toException();
+
             }
         });
-        return true;
     }
 }
