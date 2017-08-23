@@ -17,16 +17,19 @@ import java.util.ArrayList;
 public class CommentCustomAdapter extends ArrayAdapter<Item>{
     private ArrayList<Item> dataSet;
     Context mContext;
+    int position;
+
 
     private  static class ViewHolder{
         TextView name;
         TextView content;
         TextView date;
     }
-    public CommentCustomAdapter(ArrayList<Item> data, Context context){
+    public CommentCustomAdapter(ArrayList<Item> data, Context context, int layout){
         super(context, R.layout.comment_list_item,data);
         this.dataSet = data;
         this.mContext = context;
+        this.position = layout;
     }
 
     @Override
@@ -34,10 +37,9 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
         Item commentData = getItem(position);
         ViewHolder viewHolder;
 
-        final View result;
         if(convertView == null){
 
-            viewHolder = new CommentCustomAdapter.ViewHolder();
+            viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.comment_list_item, parent, false);
 
@@ -45,15 +47,14 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
             viewHolder.date = (TextView)convertView.findViewById(R.id.date);
             viewHolder.name = (TextView)convertView.findViewById(R.id.simpleProfile);
 
-            result=convertView;
-
             convertView.setTag(viewHolder);
         } else{
-            viewHolder = (CommentCustomAdapter.ViewHolder)convertView.getTag();
-            result = convertView;
+            viewHolder = (ViewHolder)convertView.getTag();
+
         }
         viewHolder.content.setText(commentData.getContent());
         viewHolder.date.setText(commentData.getDate());
+        viewHolder.name.setText(commentData.getName());
 
         return convertView;
 
