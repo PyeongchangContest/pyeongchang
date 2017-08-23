@@ -67,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TextView infoSumOfTorch;
     private TextView runningDistance;
-    private Handler handler;
-    final UserProperty userProperty = new UserProperty(2, 3500);//임시 생성
+
+    private User user=new User("TestUser","abc@naver.com","password123","Korea");//임시생성
+
 
     private Button btnShowLocation;
     BroadcastReceiver broadcastReceiver;
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
 
-                TorchCommunity addTorchCommunity = new TorchCommunity(userProperty,tName,tMaxPeople,isSecret);
+                TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(),tName,tMaxPeople,isSecret);
                 generateMission(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
