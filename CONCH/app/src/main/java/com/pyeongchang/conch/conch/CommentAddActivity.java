@@ -32,7 +32,7 @@ public class CommentAddActivity extends AppCompatActivity {
     String communityName;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference("timeLine");
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +57,16 @@ public class CommentAddActivity extends AppCompatActivity {
 
         findViewById(R.id.comment_add_button).setOnClickListener(clickListener);
 
-        databaseReference.child(communityName).child(String.valueOf(count)).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("timeLine").child(communityName).child(String.valueOf(count)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 commentList.clear();
                 for (DataSnapshot fileSnapshot : dataSnapshot.getChildren()) {
-
                     String str = fileSnapshot.child("content").getValue(String.class);
                     String name = fileSnapshot.child("name").getValue(String.class);
                     String date = fileSnapshot.child("date").getValue(String.class);
-
-                    commentList.add(new Item(date,1,name,str));
+                    if(str != null && name != null && date != null)
+                          commentList.add(new Item(date,1,name,str));
                 }
                 commentCount = commentList.size();
                 commentAdapter.notifyDataSetChanged();
@@ -93,7 +92,7 @@ public class CommentAddActivity extends AppCompatActivity {
 
             //데이터베이스에 저장
            Item itemData = new Item(commentData,1,"username",comment);
-            databaseReference.child(communityName).child(String.valueOf(count)).child(String.valueOf(commentCount)).setValue(itemData);
+            databaseReference.child("timeLine").child(communityName).child(String.valueOf(count)).child(String.valueOf(commentCount)).setValue(itemData);
 
            // commentList.add(new Item(commentData,1, "1", comment));
             commentAdapter.notifyDataSetChanged();

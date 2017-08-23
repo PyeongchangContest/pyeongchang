@@ -39,7 +39,7 @@ public class TimeLineActivity extends Activity implements AdapterView.OnItemClic
         lv = (ListView) findViewById(R.id.timeline_list_view);
 
         Intent intent = getIntent();
-        communityName = intent.getStringExtra("communityName");
+        communityName = intent.getStringExtra("commnityName");
 
         //게시글 얻어오기
         cAdapter = new TimeLineCustomAdapter(timeLinelist, this, R.layout.timeline_list_item);
