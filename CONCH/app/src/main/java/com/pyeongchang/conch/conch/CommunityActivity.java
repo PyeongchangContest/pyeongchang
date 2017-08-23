@@ -115,11 +115,15 @@ public class CommunityActivity extends AppCompatActivity {
                 String invitattionMission = communityDataSnapshot.child("invitationMission").child("missionName").getValue(String.class);
                 String quizMission = communityDataSnapshot.child("quiz").child("missionName").getValue(String.class);
 
-                rotatable = new Rotatable(Color.parseColor("#FFA036"), 3000, racingMission, invitattionMission, quizMission);
-                rotatable.setSize(35);
-                rotatable.setAnimationDuration(500);
+                rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
+                rotatingTextWrapper.setSize(35);
 
-                rotatingTextWrapper.setContent( " ", rotatable);
+                rotatable.setText(racingMission, invitattionMission, quizMission);
+//                rotatable = new Rotatable(Color.parseColor("#FFA036"), 3000, racingMission, invitattionMission, quizMission);
+//                rotatable.setSize(35);
+//                rotatable.setAnimationDuration(500);
+
+                rotatingTextWrapper.setContent(" ", rotatable);
             }
 
             @Override
@@ -138,14 +142,6 @@ public class CommunityActivity extends AppCompatActivity {
                 for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                     if(singleDataSnapshot.getKey().equals(communityName)) {
                         TorchCommunity community = creatCommunityObject(singleDataSnapshot);
-
-                        String racingMission = community.getRacingMission().getMissionName();
-                        String invitattionMission = community.getInvitationMission().getMissionName();
-                        String quizMission = community.getQuiz().getMissionName();
-
-                        rotatable = new Rotatable(Color.parseColor("#FFA036"), 3000, racingMission, invitattionMission, quizMission);
-
-                        rotatingTextWrapper.setContent( " ", rotatable);
                     }
                 }
 
