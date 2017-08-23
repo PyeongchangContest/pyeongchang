@@ -1,5 +1,6 @@
 package com.pyeongchang.conch.conch;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 public class WritingActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +27,10 @@ public class WritingActivity extends AppCompatActivity {
                 String newWrite = editId.getText().toString();
 
                 Intent intent;
-                intent = new Intent(this, TimeLineActivity.class);
+                intent = new Intent();
                 intent.putExtra("newWrite", newWrite);
-                startActivity(intent);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
                 break;
         }
     }
