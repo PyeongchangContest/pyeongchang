@@ -170,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 generateMission(addTorchCommunity);
                 communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
-                final CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
-                carouselFragment.createNewTorch();
+                CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
+                carouselFragment.createNewTorch(tName);
 
                 mPopupWindow.dismiss();
             }

@@ -19,7 +19,9 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
     Context mContext;
 
     private  static class ViewHolder{
+        TextView name;
         TextView content;
+        TextView date;
     }
     public CommentCustomAdapter(ArrayList<Item> data, Context context){
         super(context, R.layout.comment_list_item,data);
@@ -38,7 +40,10 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
             viewHolder = new CommentCustomAdapter.ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.comment_list_item, parent, false);
+
             viewHolder.content = (TextView)convertView.findViewById(R.id.content);
+            viewHolder.date = (TextView)convertView.findViewById(R.id.date);
+            viewHolder.name = (TextView)convertView.findViewById(R.id.simpleProfile);
 
             result=convertView;
 
@@ -48,6 +53,7 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
             result = convertView;
         }
         viewHolder.content.setText(commentData.getContent());
+        viewHolder.date.setText(commentData.getDate());
 
         return convertView;
 

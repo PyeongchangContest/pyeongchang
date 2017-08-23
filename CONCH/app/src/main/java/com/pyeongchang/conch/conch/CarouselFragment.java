@@ -1,6 +1,7 @@
 package com.pyeongchang.conch.conch;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import java.util.concurrent.ThreadFactory;
  * Created by binary on 3/8/16.
  */
 public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScrollListener {
+
     public static CarouselFragment newInstance() {
         Bundle args = new Bundle();
         CarouselFragment fragment = new CarouselFragment();
@@ -88,7 +90,6 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         });
     }
 
-
     // Stub items
     private List<View> initStubItems() {
 
@@ -114,7 +115,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
        mCarouselView.invalidate();
     }
 
-    public void createNewTorch(){
+    public void createNewTorch(final String communityName){
         ImagePanel plusTorch = new ImagePanel(getActivity());
         plusTorch.customImageLayout();
 //        plusTorch.setImageResId(R.drawable.torch);
@@ -124,6 +125,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CommunityActivity.class);
+                intent.putExtra("communityName", communityName);
                 getActivity().startActivity(intent);
             }
         });
