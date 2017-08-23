@@ -3,6 +3,8 @@ package com.pyeongchang.conch.conch;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.idunnololz.widgets.AnimatedExpandableListView;
 import com.idunnololz.widgets.AnimatedExpandableListView.AnimatedExpandableListAdapter;
 
@@ -25,11 +27,14 @@ import android.widget.TextView;
  * child, the second will have two children and so on...).
  */
 public class MissionActivity extends AppCompatActivity {
+    private String communityName;
     private AnimatedExpandableListView listView;
     private ExampleAdapter adapter;
 
     private AnimatedExpandableListView listView2;
     private ExampleAdapter adapter2;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
