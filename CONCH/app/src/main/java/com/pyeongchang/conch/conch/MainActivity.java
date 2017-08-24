@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TextView infoSumOfTorch;
     private TextView runningDistance;
+    private ArrayList<String> alreadyRegistered=new ArrayList<>();
 
     public User getUser() {
         return user;
@@ -162,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
                 if (tName.equals("")) {
                     Toast.makeText(MainActivity.this, "성화 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
                     return;
+                }else if (isValidCommunityName(tName)){
+                    Toast.makeText(MainActivity.this, "이미 생성된 이름입니다.", Toast.LENGTH_SHORT).show();
+                    return;
                 }else {
 
                     int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
@@ -175,8 +179,16 @@ public class MainActivity extends AppCompatActivity {
                     generateMission(addTorchCommunity);
                     communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
+
                     CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
                     carouselFragment.createNewTorch(tName);
+
+                    countAllCommunityAndUpdateCommunityRank();
+
+                    int index=carouselFragment.getTorchList().size()-1;
+                    carouselFragment.getmCarouselView().scrollToChild(index);
+                    carouselFragment.getmCarouselView().notifyDataSetChanged();
+
                     mPopupWindow.dismiss();
                 }
             }
@@ -185,6 +197,16 @@ public class MainActivity extends AppCompatActivity {
         mPopupWindow.showAtLocation(mConstraintLayout, Gravity.CENTER, 0, 0);
 
 
+    }
+
+    private boolean isValidCommunityName(final String name) {
+        boolean registered = false;
+        for (String index:alreadyRegistered){
+            if (index.equals(name)){
+                registered=true;
+            }
+        }
+        return registered;
     }
 
     @Override
@@ -382,17 +404,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        countAllCommunity();
+        countAllCommunityAndUpdateCommunityRank();
 
-//        for (TorchCommunity torchCommunity : communityList) {
-//            updateCommunityState(torchCommunity);
-//        }
-        for (int i=0;i<communityList.size();i++){
-            communityList.set(i,updateCommunityState(communityList.get(i)));
-        }
     }
 
-    public TorchCommunity updateCommunityState(final TorchCommunity torchCommunity){
+
+    public TorchCommunity updateCommunityRankingInFirebase(final TorchCommunity torchCommunity){
         final String targetCommunityName=torchCommunity.getCommunityName();
 
         mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -402,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         if (postSnapshot.getKey().equals(targetCommunityName)){
                             int rank=Integer.parseInt(postSnapshot.child("communityRank").getValue().toString());
+                            Log.e("(테스트)","계산된 랭킹 : "+rank);
                             torchCommunity.setCommunityRank(rank);
                         }
                     }
@@ -418,6 +436,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        countAllCommunityAndUpdateCommunityRank();
         unregisterReceiver(broadcastReceiver);
     }
 
@@ -429,7 +448,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    public void countAllCommunity(){
+    public void countAllCommunityAndUpdateCommunityRank(){
         Query topCommunityScoreQuery=mDatabase.child("Community").orderByChild("communityScore");
         topCommunityScoreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -437,7 +456,9 @@ public class MainActivity extends AppCompatActivity {
                 int index=0;
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        index++;
+                        Log.i("대상",postSnapshot.getKey());
+                        alreadyRegistered.add(index++,postSnapshot.getKey());
+                        Log.i(index-1+"번째",alreadyRegistered.get(index-1));
                     }
 
                     infoSumOfTorch.setText("/"+index);
@@ -453,5 +474,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        for (int i=0;i<communityList.size();i++){
+            communityList.set(i, updateCommunityRankingInFirebase(communityList.get(i)));
+            Log.e("(테스트)",i+"번째 이름 : "+communityList.get(i).getCommunityName());
+            Log.e("(테스트)",i+"번째 점수 : "+communityList.get(i).getCommunityRank());
+        }
     }
 }

@@ -73,6 +73,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
             @Override
             public void onPositionChanged(int position) {
                 Log.i("(테스트)초기포지션 : ",String.valueOf(position));
+
                 if (position!=nextPosition&&position!=0) {
                     TorchCommunity newTorch = ((MainActivity) getActivity()).getCommunityList().get(mCarouselView.getSelectedItemPosition()-1);
                     ((MainActivity) getActivity()).changeTorchInfo(
@@ -80,6 +81,7 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
                             newTorch.getCommunityScore(),
                             newTorch.getCommunityRank()
                     );
+                    Log.i("(테스트)랭킹 : ",String.valueOf(newTorch.getCommunityRank()));
                     ((MainActivity) getActivity()).visibilityOfTorchInfo(true);
                     nextPosition=position;
                 }else if (position==0){
@@ -90,7 +92,14 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
 
             @Override
             public void onPositionClicked(int position) {
-
+                if (position!=0){
+                    TorchCommunity newTorch = ((MainActivity) getActivity()).getCommunityList().get(mCarouselView.getSelectedItemPosition()-1);
+                    ((MainActivity) getActivity()).changeTorchInfo(
+                            newTorch.getCommunityName(),
+                            newTorch.getCommunityScore(),
+                            newTorch.getCommunityRank()
+                    );
+                }
             }
         });
     }
@@ -136,12 +145,6 @@ public class CarouselFragment extends Fragment implements ListLayoutPanel.OnScro
         });
         torchList.add(plusTorch);
         mCarouselView.addView(plusTorch);
-        Log.e("(테스트)초기포지션 : ",String.valueOf(getTorchList().size()));
-        int index;
-        index=getTorchList().size()-1;
-        mCarouselView.scrollToChild(index);
-        mCarouselView.notifyDataSetChanged();
-
     }
 
     public void changeText(String text){

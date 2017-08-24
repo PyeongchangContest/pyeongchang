@@ -53,7 +53,6 @@ public class RankingActivity extends AppCompatActivity {
         }
 
         calculatingWorldRanking();
-        updateWorldRankCommunity();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -65,7 +64,7 @@ public class RankingActivity extends AppCompatActivity {
         TextView addCommunityName=new TextView(this);
         TextView addCommunityScore=new TextView(this);
 
-        addCommunityNumber.setText(String.valueOf(index));
+        addCommunityNumber.setText(String.valueOf(torchCommunity.getCommunityRank()));
         addCommunityNumber.setTextSize(24);
         addCommunityNumber.setGravity(Gravity.CENTER_VERTICAL);
         addCommunityNumber.setTextColor(Color.DKGRAY);
@@ -120,6 +119,7 @@ public class RankingActivity extends AppCompatActivity {
 
             }
         });
+        updateWorldRankCommunity();
     }
     public void updateWorldRankCommunity(){
         Query topCommunityRankQuery=mDatabase.child("Community").orderByChild("communityRank");
@@ -191,5 +191,6 @@ public class RankingActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         calculatingWorldRanking();
+        torchCommunityArrayList=((MainActivity)MainActivity.mContext).getCommunityList();
     }
 }
