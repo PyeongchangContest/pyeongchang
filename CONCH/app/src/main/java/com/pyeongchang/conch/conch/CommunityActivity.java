@@ -26,7 +26,6 @@ import java.util.Calendar;
 public class CommunityActivity extends AppCompatActivity{
     private boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mTempRef = mDatabase.child("Community");
     private String communityName;
     private String runningMission;
     private String invitationMission;
@@ -66,6 +65,7 @@ public class CommunityActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CommunityActivity.this, MissionActivity.class);
+                intent.putExtra("communityName",communityName);
                 startActivity(intent);
             }
         });
@@ -108,14 +108,16 @@ public class CommunityActivity extends AppCompatActivity{
     }
 
     public void setRotatingText(DataSnapshot communityDataSnapshot) {
-        String racingMission = "Run" + communityDataSnapshot.child("racingMission").child("missionName").getValue(String.class) + "Km with your members";
-        String invitattionMission = "Invite a" + communityDataSnapshot.child("invitationMission").child("missionName").getValue(String.class) + "person";
+        String racingMission = "Run " + communityDataSnapshot.child("racingMission").child("missionName").getValue(String.class) + "Km with your members";
+        String invitationMission = "Invite a " + communityDataSnapshot.child("invitationMission").child("missionName").getValue(String.class) + " person";
         String quizMission = communityDataSnapshot.child("quiz").child("missionName").getValue(String.class);
 
         rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
 
-        rotatable.setText(racingMission, invitattionMission, quizMission);
+        rotatable.setText(racingMission, invitationMission, quizMission);
+        rotatable.setSize(20);
+        rotatable.setAnimationDuration(500);
 
         rotatingTextWrapper.setContent(" ", rotatable);
     }
