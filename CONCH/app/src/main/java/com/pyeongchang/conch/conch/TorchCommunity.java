@@ -10,6 +10,16 @@ import java.util.Random;
 
 public class TorchCommunity {
     private ArrayList<String> userList=new ArrayList<>();
+    private ArrayList<String> date = new ArrayList<String>();
+
+    public ArrayList<String> getDate() {
+        return date;
+    }
+
+    public void setDate(ArrayList<String> date) {
+        this.date = date;
+    }
+
     private int communityScore;
     private int communityRank;
     private String communityName;
@@ -29,15 +39,16 @@ public class TorchCommunity {
     private List<String> completedMission = new ArrayList<String>();
     private List<String> route = new ArrayList<String>();
 
-    public TorchCommunity(String leader,String communityName,int maxPeople,boolean isSecret){
+    public TorchCommunity(String leader,String date, String communityName,int maxPeople,boolean isSecret){
         userList.add(leader);
         communityScore= (int) (Math.random()*10000);//Test...원래는 0
         racingLevel = 0;
         this.communityName=communityName;
         this.maxPeople=maxPeople;
         this.isSecret=isSecret;
-        this.runner = "hello!";
+        this.runner = "helloWorld!";
         this.route.add("KOREA");
+        this.date.add(date);
     }
 
     public TorchCommunity() {

@@ -42,7 +42,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,12 +66,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView runningDistance;
     private ArrayList<String> alreadyRegistered=new ArrayList<>();
 
+    private User user1=new User("ASDASD","abc@naver.com","password123","Korea");//임시생성
+    private User user2=new User("ASDFAS","abc@naver.com","password123","Korea");//임시생성
     public User getUser() {
         return user;
     }
 
     private User user = new User("TestUser", "abc@naver.com", "password123", "Korea");//임시생성
-
 
     private Button btnShowLocation;
     BroadcastReceiver broadcastReceiver;
@@ -159,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
                 ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
                 String tName = torchName.getText().toString();
-
                 if (tName.equals("")) {
                     Toast.makeText(MainActivity.this, "성화 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
                     return;
@@ -172,12 +175,18 @@ public class MainActivity extends AppCompatActivity {
                     //성화 커뮤니티 객체 추가
                     /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                     /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
+                    Calendar calendar = Calendar.getInstance();
+                    java.util.Date date = calendar.getTime();
+                    String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                    TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), tName, tMaxPeople, isSecret);
-
+                    TorchCommunity addTorchCommunity = new TorchCommunity(user1.getUserName(), today,tName,tMaxPeople,isSecret);
+                    addTorchCommunity.getUserList().add(user2.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
+                    /******************************************
+                     addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
+                     addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
+                     **********************************************************/
                     generateMission(addTorchCommunity);
                     communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
-
 
                     CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
                     carouselFragment.createNewTorch(tName);
@@ -266,11 +275,13 @@ public class MainActivity extends AppCompatActivity {
                 torchCommunity.setRacingMission(runningMission);
 
                 Random random = new Random();
-                Object invitationMissionContent = (String) dataSnapshot.child("Invitation").child(String.valueOf(random.nextInt(1))).getValue();
+                int invitationMissionNum = ((Long)dataSnapshot.child("Invitation").getChildrenCount()).intValue();
+                Object invitationMissionContent = (String) dataSnapshot.child("Invitation").child(String.valueOf(random.nextInt(invitationMissionNum))).getValue();
                 MissionItem invitationMission = new MissionItem(invitationMissionContent.toString());
                 torchCommunity.setInvitationMission(invitationMission);
 
-                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(1))).getValue();
+                int quizMissionNum = ((Long)dataSnapshot.child("Quiz").getChildrenCount()).intValue();
+                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(quizMissionNum))).getValue();
                 MissionItem quizMission = new MissionItem(quizMissionContent.toString());
                 torchCommunity.setQuiz(quizMission);
 
