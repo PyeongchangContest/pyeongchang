@@ -8,20 +8,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Build;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,13 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -66,19 +60,24 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
+    private TextView infoTorchState;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private TextView infoSumOfTorch;
     private TextView runningDistance;
+    private ArrayList<String> alreadyRegistered=new ArrayList<>();
 
     private User user1=new User("ASDASD","abc@naver.com","password123","Korea");//임시생성
     private User user2=new User("ASDFAS","abc@naver.com","password123","Korea");//임시생성
+    public User getUser() {
+        return user;
+    }
 
+    private User user = new User("TestUser", "abc@naver.com", "password123", "Korea");//임시생성
 
     private Button btnShowLocation;
     BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,32 +158,47 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //성화정보들
+
                 TextView torchName = customView.findViewById(R.id.create_torchName);
                 TextView torchMaxPeople = customView.findViewById(R.id.create_maxPeopleValue);
                 ToggleButton isSecretCommunity = customView.findViewById(R.id.create_isSecret);
                 String tName = torchName.getText().toString();
-                int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
-                boolean isSecret = isSecretCommunity.isChecked();
-                //성화 커뮤니티 객체 추가
-                /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
-                /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
-                Calendar calendar = Calendar.getInstance();
-                java.util.Date date = calendar.getTime();
-                String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
+                if (tName.equals("")) {
+                    Toast.makeText(MainActivity.this, "성화 이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if (isValidCommunityName(tName)){
+                    Toast.makeText(MainActivity.this, "이미 생성된 이름입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
+                    boolean isSecret = isSecretCommunity.isChecked();
+                    //성화 커뮤니티 객체 추가
+                    /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
+                    /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
+                    Calendar calendar = Calendar.getInstance();
+                    java.util.Date date = calendar.getTime();
+                    String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                TorchCommunity addTorchCommunity = new TorchCommunity(user1.getUserName(), today,tName,tMaxPeople,isSecret);
-                addTorchCommunity.getUserList().add(user2.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
-                /******************************************
-                 addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
-                 addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
-                 **********************************************************/
-                generateMission(addTorchCommunity);
-                communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
+                    TorchCommunity addTorchCommunity = new TorchCommunity(user1.getUserName(), today,tName,tMaxPeople,isSecret);
+                    addTorchCommunity.getUserList().add(user2.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
+                    /******************************************
+                     addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
+                     addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
+                     **********************************************************/
+                    generateMission(addTorchCommunity);
+                    communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
-                CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
-                carouselFragment.createNewTorch(tName);
+                    CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
+                    carouselFragment.createNewTorch(tName);
 
-                mPopupWindow.dismiss();
+                    countAllCommunityAndUpdateCommunityRank();
+
+                    int index=carouselFragment.getTorchList().size()-1;
+                    carouselFragment.getmCarouselView().scrollToChild(index);
+                    carouselFragment.getmCarouselView().notifyDataSetChanged();
+
+                    mPopupWindow.dismiss();
+                }
             }
         });
 
@@ -193,6 +207,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean isValidCommunityName(final String name) {
+        boolean registered = false;
+        for (String index:alreadyRegistered){
+            if (index.equals(name)){
+                registered=true;
+            }
+        }
+        return registered;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -221,11 +244,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void visibilityOfTorchInfo(boolean visible) {
         if (visible) {
+            infoTorchState.setVisibility(View.INVISIBLE);
             infoTorchName.setVisibility(View.VISIBLE);
             infoTorchScore.setVisibility(View.VISIBLE);
             infoTorchRank.setVisibility(View.VISIBLE);
             infoSumOfTorch.setVisibility(View.VISIBLE);
         } else {
+            infoTorchState.setVisibility(View.VISIBLE);
             infoTorchName.setVisibility(View.INVISIBLE);
             infoTorchScore.setVisibility(View.INVISIBLE);
             infoTorchRank.setVisibility(View.INVISIBLE);
@@ -308,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
         infoTorchName = (TextView) findViewById(R.id.main_torchName);//성화 이름
         infoTorchScore = (TextView) findViewById(R.id.main_torchScore);//성화 점수
         infoTorchRank = (TextView) findViewById(R.id.main_torchRank);//성화 랭킹
+        infoTorchState=(TextView)findViewById(R.id.main_torchInform);//성화생성정보
         infoSumOfTorch = (TextView) findViewById(R.id.main_sumOfTorch);//총 성화 갯수
 
         runningDistance = (TextView) findViewById(R.id.progressText_now);//뛴 거리
@@ -354,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
                 changeDistanceText(String.valueOf(distance));
                 progressBar.setProgress((int) distance);
                 if (progressBar.getProgress() >= 3000) {
-                    runProgressedLayout.setVisibility(View.INVISIBLE);
+                    runProgressedLayout.setVisibility(View.GONE);
                     runFinishedLayout.setVisibility(View.VISIBLE);
                     gps = null;
                     unregisterReceiver(broadcastReceiver);
@@ -388,12 +414,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        countAllCommunityAndUpdateCommunityRank();
 
     }
 
+
+    public TorchCommunity updateCommunityRankingInFirebase(final TorchCommunity torchCommunity){
+        final String targetCommunityName=torchCommunity.getCommunityName();
+
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        if (postSnapshot.getKey().equals(targetCommunityName)){
+                            int rank=Integer.parseInt(postSnapshot.child("communityRank").getValue().toString());
+                            Log.e("(테스트)","계산된 랭킹 : "+rank);
+                            torchCommunity.setCommunityRank(rank);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return torchCommunity;
+    }
     @Override
     protected void onPause() {
         super.onPause();
+        countAllCommunityAndUpdateCommunityRank();
         unregisterReceiver(broadcastReceiver);
     }
 
@@ -403,5 +456,39 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToastText(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void countAllCommunityAndUpdateCommunityRank(){
+        Query topCommunityScoreQuery=mDatabase.child("Community").orderByChild("communityScore");
+        topCommunityScoreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int index=0;
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Log.i("대상",postSnapshot.getKey());
+                        alreadyRegistered.add(index++,postSnapshot.getKey());
+                        Log.i(index-1+"번째",alreadyRegistered.get(index-1));
+                    }
+
+                    infoSumOfTorch.setText("/"+index);
+
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        String topCommunityName = postSnapshot.getKey();
+                        mDatabase.child("Community").child(topCommunityName).child("communityRank").setValue(index--);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        for (int i=0;i<communityList.size();i++){
+            communityList.set(i, updateCommunityRankingInFirebase(communityList.get(i)));
+            Log.e("(테스트)",i+"번째 이름 : "+communityList.get(i).getCommunityName());
+            Log.e("(테스트)",i+"번째 점수 : "+communityList.get(i).getCommunityRank());
+        }
     }
 }
