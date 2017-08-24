@@ -11,4 +11,7 @@
 
 
     <string name="carousel_view_test_application">Carousel View test application</string>
+
+    <string name="facebook_app_id">318142558636259</string>
+    <string name="fb_login_protocol_scheme">fb318142558636259</string>
 </resources>
