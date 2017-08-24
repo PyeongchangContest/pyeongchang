@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -45,7 +46,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Objects;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,7 +60,127 @@ public class MainActivity extends AppCompatActivity {
     private PopupWindow mPopupWindow;
     private ConstraintLayout mConstraintLayout;
     private ArrayList<TorchCommunity> communityList = new ArrayList<>();
+    private List<String> loadCommunityList=new List<String>() {
+        @Override
+        public int size() {
+            return 0;
+        }
 
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return false;
+        }
+
+        @NonNull
+        @Override
+        public Iterator<String> iterator() {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Object[] toArray() {
+            return new Object[0];
+        }
+
+        @NonNull
+        @Override
+        public <T> T[] toArray(@NonNull T[] ts) {
+            return null;
+        }
+
+        @Override
+        public boolean add(String s) {
+            return false;
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return false;
+        }
+
+        @Override
+        public boolean containsAll(@NonNull Collection<?> collection) {
+            return false;
+        }
+
+        @Override
+        public boolean addAll(@NonNull Collection<? extends String> collection) {
+            return false;
+        }
+
+        @Override
+        public boolean addAll(int i, @NonNull Collection<? extends String> collection) {
+            return false;
+        }
+
+        @Override
+        public boolean removeAll(@NonNull Collection<?> collection) {
+            return false;
+        }
+
+        @Override
+        public boolean retainAll(@NonNull Collection<?> collection) {
+            return false;
+        }
+
+        @Override
+        public void clear() {
+
+        }
+
+        @Override
+        public String get(int i) {
+            return null;
+        }
+
+        @Override
+        public String set(int i, String s) {
+            return null;
+        }
+
+        @Override
+        public void add(int i, String s) {
+
+        }
+
+        @Override
+        public String remove(int i) {
+            return null;
+        }
+
+        @Override
+        public int indexOf(Object o) {
+            return 0;
+        }
+
+        @Override
+        public int lastIndexOf(Object o) {
+            return 0;
+        }
+
+        @Override
+        public ListIterator<String> listIterator() {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public ListIterator<String> listIterator(int i) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public List<String> subList(int i, int i1) {
+            return null;
+        }
+    };
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
@@ -85,11 +209,23 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff339999));
 
         //유저 로딩
-        Intent intent = getIntent();
-        user = new User(
-                intent.getExtras().getString("user_name"),
-                intent.getExtras().getString("user_id"),
-                intent.getExtras().getString("user_country"));
+        final Intent intent = getIntent();
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user= dataSnapshot.child("Users").child(intent.getExtras().getString("user_id")).getValue(User.class);
+                loadMyCommunityList();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+//        user = new User(
+//                intent.getExtras().getString("user_name"),
+//                intent.getExtras().getString("user_id"),
+//                intent.getExtras().getString("user_country"));
 
 
         mContext = this;
@@ -185,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                     String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
                     TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
-                    addTorchCommunity.getUserList().add(user.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
                     /******************************************
                      addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                      addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
@@ -193,6 +328,8 @@ public class MainActivity extends AppCompatActivity {
                     generateMission(addTorchCommunity);
                     communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
+                    user.getCommunityList().add(tName);
+                    mDatabase.child("Users").child(user.getId()).child("communityList").child(String.valueOf(communityList.size())).setValue(tName);
                     CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
                     carouselFragment.createNewTorch(tName);
 
@@ -208,7 +345,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mPopupWindow.showAtLocation(mConstraintLayout, Gravity.CENTER, 0, 0);
-
 
     }
 
@@ -494,6 +630,51 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadMyCommunityList(){
+        mDatabase.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                loadCommunityList=user.getCommunityList();
+                loadCommunityFromFirebase();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void loadCommunityFromFirebase(){
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        for (String target : loadCommunityList){
+                            if (postSnapshot.getKey().equals(target)){
+                                TorchCommunity loadedCommunity=postSnapshot.getValue(TorchCommunity.class);
+
+                                communityList.add(loadedCommunity); // 추후 수정 대상으로 고려 필요
+
+                                CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
+                                carouselFragment.createNewTorch(loadedCommunity.getCommunityName());
+
+                                countAllCommunityAndUpdateCommunityRank();
+                                int index=carouselFragment.getTorchList().size()-1;
+                                carouselFragment.getmCarouselView().scrollToChild(index);
+                                carouselFragment.getmCarouselView().notifyDataSetChanged();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 //    getter
     public User getUser() {
         return user;

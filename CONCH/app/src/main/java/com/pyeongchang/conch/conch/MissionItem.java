@@ -10,7 +10,9 @@ public class MissionItem {
     private String mission;
     private int progress;
 //    private List<String> contributor; //User형 리스트로 변경해야할 지 고려!
+    public MissionItem(){
 
+    }
     public MissionItem(String mission) {
         this.mission = mission;
         this.progress = 0;

@@ -39,7 +39,7 @@ public class Login extends AppCompatActivity {
         Id = idText.getText().toString();
         Pass = passText.getText().toString();
         databaseUsers = FirebaseDatabase.getInstance();
-        databaseUsers.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+        databaseUsers.getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
@@ -59,7 +59,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "정확한 정보를 입력하세요.", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
