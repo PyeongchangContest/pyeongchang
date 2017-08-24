@@ -35,7 +35,7 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
         Item commentData = getItem(position);
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if(convertView == null){
 
@@ -46,7 +46,6 @@ public class CommentCustomAdapter extends ArrayAdapter<Item>{
             viewHolder.content = (TextView)convertView.findViewById(R.id.content);
             viewHolder.date = (TextView)convertView.findViewById(R.id.date);
             viewHolder.name = (TextView)convertView.findViewById(R.id.simpleProfile);
-
             convertView.setTag(viewHolder);
         } else{
             viewHolder = (ViewHolder)convertView.getTag();
