@@ -48,6 +48,7 @@ public class TorchCommunity {
         this.runner = "helloWorld!";
         this.route.add("KOREA");
         this.date.add(date);
+        this.completedMission.add("temp");
     }
 
     public TorchCommunity() {

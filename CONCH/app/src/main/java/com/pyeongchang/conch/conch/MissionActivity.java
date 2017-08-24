@@ -3,8 +3,11 @@ package com.pyeongchang.conch.conch;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.idunnololz.widgets.AnimatedExpandableListView;
 import com.idunnololz.widgets.AnimatedExpandableListView.AnimatedExpandableListAdapter;
 
@@ -27,7 +30,13 @@ import android.widget.TextView;
  * child, the second will have two children and so on...).
  */
 public class MissionActivity extends AppCompatActivity {
+
+    private List<GroupItem> items = new ArrayList<GroupItem>();
+    private List<GroupItem> items2 = new ArrayList<GroupItem>();
     private String communityName;
+    private GroupItem processingMissions;
+    private GroupItem completedMissions;
+
     private AnimatedExpandableListView listView;
     private ExampleAdapter adapter;
 
@@ -41,85 +50,93 @@ public class MissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission);
 
-        List<GroupItem> items = new ArrayList<GroupItem>();
+        communityName = getIntent().getStringExtra("communityName");
 
-        // Populate our list with groups and it's children
-        GroupItem processingMissions = new GroupItem();
-        processingMissions.title = "Processing Missions";
-
-        ChildItem list1 = new ChildItem();
-        list1.title = "Run 3km with your team members!";
-        processingMissions.items.add(list1);
-
-        ChildItem list2 = new ChildItem();
-        list2.title = "Invite someone who is from KOREA";
-        processingMissions.items.add(list2);
-
-        ChildItem list3 = new ChildItem();
-        list3.title = "Let's solve the Quiz!";
-        processingMissions.items.add(list3);
-
-        items.add(processingMissions);
-
-        adapter = new ExampleAdapter(this);
-        adapter.setData(items);
-
+        adapter = new ExampleAdapter(getBaseContext());
         listView = (AnimatedExpandableListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
 
-        List<GroupItem> items2 = new ArrayList<GroupItem>();
-
-        GroupItem completedMissions = new GroupItem();
-        completedMissions.title = "Completed Missions";
-
-        ChildItem completedList1 = new ChildItem();
-        completedList1.title = "Run 1km with your team members!";
-        completedMissions.items.add(completedList1);
-
-        ChildItem completedList2 = new ChildItem();
-        completedList2.title = "Invite someone who is from CHINA!";
-        completedMissions.items.add(completedList2);
-
-        ChildItem completedList3 = new ChildItem();
-        completedList3.title = "Let's solve the Quiz!";
-        completedMissions.items.add(completedList3);
-
-        items2.add(completedMissions);
-
-        adapter2 = new ExampleAdapter(this);
-        adapter2.setData(items2);
-
+        adapter2 = new ExampleAdapter(getBaseContext());
         listView2 = (AnimatedExpandableListView) findViewById(R.id.listView2);
-        listView2.setAdapter(adapter2);
+    }
 
-        // In order to show animations, we need to use a custom click handler
-        // for our ExpandableListView.
-        listView.setOnGroupClickListener(new OnGroupClickListener() {
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                // We call collapseGroupWithAnimation(int) and
-                // expandGroupWithAnimation(int) to animate group
-                // expansion/collapse.
-                if (listView.isGroupExpanded(groupPosition)) {
-                    listView.collapseGroupWithAnimation(groupPosition);
-                } else {
-                    listView.expandGroupWithAnimation(groupPosition);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot communityRef = dataSnapshot.child("Community").child(communityName);
+
+                processingMissions = new GroupItem();
+                processingMissions.title = "Processing Missions";
+
+                ChildItem racingMission = new ChildItem();
+                racingMission.title = "Run " + communityRef.child("racingMission").child("missionName").getValue(String.class) + " with your members";
+                processingMissions.items.add(racingMission);
+
+                ChildItem invitationMission = new ChildItem();
+                invitationMission.title = "Invite a " + communityRef.child("invitationMission").child("missionName").getValue(String.class) + " person";
+                processingMissions.items.add(invitationMission);
+
+                ChildItem quizMission = new ChildItem();
+                quizMission.title = communityRef.child("quiz").child("missionName").getValue(String.class);
+                processingMissions.items.add(quizMission);
+
+                items.add(processingMissions);
+                adapter.setData(items);
+                listView.setAdapter(adapter);
+
+                listView.setOnGroupClickListener(new OnGroupClickListener() {
+
+                    @Override
+                    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                        // We call collapseGroupWithAnimation(int) and
+                        // expandGroupWithAnimation(int) to animate group
+                        // expansion/collapse.
+                        if (listView.isGroupExpanded(groupPosition)) {
+                            listView.collapseGroupWithAnimation(groupPosition);
+                        } else {
+                            listView.expandGroupWithAnimation(groupPosition);
+                        }
+                        return true;
+                    }
+
+                });
+
+                //completedMissionListView Start
+                completedMissions = new GroupItem();
+                completedMissions.title = "Completed Missions";
+
+                DataSnapshot completedMissionRef = communityRef.child("completedMission");
+                if (((Long)completedMissionRef.getChildrenCount()).intValue() != 0) {
+
+                    for(DataSnapshot singleDataSnapshot : completedMissionRef.getChildren()) {
+                        ChildItem completedList = new ChildItem();
+                        completedList.title = singleDataSnapshot.getValue(String.class);
+                        completedMissions.items.add(completedList);
+                    }
+
+                    items2.add(completedMissions);
+                    adapter2.setData(items2);
+                    listView2.setAdapter(adapter2);
+
+                    listView2.setOnGroupClickListener(new OnGroupClickListener() {
+                        @Override
+                        public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
+                            if(listView2.isGroupExpanded(groupPosition)) {
+                                listView2.collapseGroupWithAnimation(groupPosition);
+                            } else {
+                                listView2.expandGroupWithAnimation(groupPosition);
+                            }
+                            return true;
+                        }
+                    });
                 }
-                return true;
             }
 
-        });
-
-        listView2.setOnGroupClickListener(new OnGroupClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
-                if(listView2.isGroupExpanded(groupPosition)) {
-                    listView2.collapseGroupWithAnimation(groupPosition);
-                } else {
-                    listView2.expandGroupWithAnimation(groupPosition);
-                }
-                return true;
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
@@ -174,7 +191,7 @@ public class MissionActivity extends AppCompatActivity {
             if (convertView == null) {
                 holder = new ChildHolder();
                 convertView = inflater.inflate(R.layout.list_item, parent, false);
-                holder.title = (TextView) convertView.findViewById(R.id.textTitle);
+                holder.title = (TextView) convertView.findViewById(R.id.childTitle);
                 convertView.setTag(holder);
             } else {
                 holder = (ChildHolder) convertView.getTag();
