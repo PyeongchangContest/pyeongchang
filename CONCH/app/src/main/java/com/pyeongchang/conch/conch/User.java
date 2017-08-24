@@ -25,6 +25,14 @@ public class User {
         this.pwd=pwd;
         this.nation=nation;
     }
+    public User(String userName, String id, String nation){
+        this.userName=userName;
+        this.id = id;
+        this.nation=nation;
+    }
+    public User(){
+
+    }
     public void setUserName(String userName) {
         this.userName = userName;
     }

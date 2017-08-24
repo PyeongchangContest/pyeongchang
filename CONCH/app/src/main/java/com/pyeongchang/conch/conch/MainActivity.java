@@ -87,6 +87,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff339999));
         //액션바 수정
 
+        //유저 로딩
+        Intent intent = getIntent();
+        user = new User(
+                intent.getExtras().getString("user_name"),
+                intent.getExtras().getString("user_id"),
+                intent.getExtras().getString("user_country"));
+        //유저 로딩
+
+
         mContext = this;
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -179,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
                     java.util.Date date = calendar.getTime();
                     String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                    TorchCommunity addTorchCommunity = new TorchCommunity(user1.getUserName(), today,tName,tMaxPeople,isSecret);
-                    addTorchCommunity.getUserList().add(user2.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
+                    TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
+                    addTorchCommunity.getUserList().add(user.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
                     /******************************************
                      addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                      addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
