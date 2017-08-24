@@ -18,6 +18,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +30,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,6 +51,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private StorageReference userImageRef;
+    private User user;
 
 //    private DB_Manger dbmanger;
 
@@ -290,9 +294,22 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         for (TorchCommunity torchCommunity:torchCommunityArrayList) {
             addCommunityListInMypage(torchCommunity,index++);
         }
-
         userPictureBtn = (ImageButton) this.findViewById(R.id.mypage_userPicture);
-
         userPictureBtn.setOnClickListener(this);
+
+        initMypageInfo();
+    }
+    private void initMypageInfo(){
+        TextView userId=(TextView)findViewById(R.id.mypage_userID);
+        ImageView userNation= (ImageView) findViewById(R.id.mypage_userNation);
+        TextView userScore= (TextView) findViewById(R.id.mypage_userScore);
+        EditText userDescription= (EditText) findViewById(R.id.mypage_description);
+
+        user=((MainActivity)MainActivity.mContext).getUser();
+
+        userId.setText(user.getUserName());
+        userNation.setImageResource(R.drawable.bear);//나라별 이미지 필요
+        userScore.setText(String.valueOf(user.getScore()));
+        userDescription.setText("TEST DESCRIPTION");
     }
 }

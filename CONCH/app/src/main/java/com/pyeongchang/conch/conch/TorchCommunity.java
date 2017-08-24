@@ -2,6 +2,7 @@ package com.pyeongchang.conch.conch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Schwa on 2017-07-18.
@@ -30,7 +31,7 @@ public class TorchCommunity {
 
     public TorchCommunity(String leader,String communityName,int maxPeople,boolean isSecret){
         userList.add(leader);
-        communityScore=0;
+        communityScore= (int) (Math.random()*10000);//Test...원래는 0
         racingLevel = 0;
         this.communityName=communityName;
         this.maxPeople=maxPeople;
