@@ -48,7 +48,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 import java.util.Random;
 
@@ -165,8 +167,11 @@ public class MainActivity extends AppCompatActivity {
                 //성화 커뮤니티 객체 추가
                 /*****이곳에 DB에 저장하는 것을 추가해야함. communityList도 로그인 정보를 받아와서 해당 user의 정보에 추가해야한다고 생각됨**********/
                 /**커뮤니티 생성하자마자 미션 3개를 배정해야 함!! -> 미션 배정하는 메소드 필요**/
+                Calendar calendar = Calendar.getInstance();
+                java.util.Date date = calendar.getTime();
+                String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(),tName,tMaxPeople,isSecret);
+                TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
                 /******************************************
                  addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                  addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분

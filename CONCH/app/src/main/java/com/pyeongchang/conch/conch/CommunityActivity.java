@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
 import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,6 +32,11 @@ public class CommunityActivity extends AppCompatActivity {
     private String quizMission;
     private RotatingTextWrapper rotatingTextWrapper;
     private Rotatable rotatable;
+    private ListView listView;
+    private ArrayList<String> runnerList = new ArrayList<String>();
+    private ArrayList<String> dateList = new ArrayList<String>();
+    private ArrayList<RunnerListviewItem> runnerListView = new ArrayList<RunnerListviewItem>();
+    private RunnerListviewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,26 +54,9 @@ public class CommunityActivity extends AppCompatActivity {
 
         rotatingTextWrapper.setContent( " ", rotatable);
 
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date date = calendar.getTime();
-        String today = (new SimpleDateFormat("yyyyMMdd").format(date));
-
-//        ListView listView = (ListView) findViewById(R.id.runner_listview);
-//
-//        ArrayList<RunnerListviewItem> data = new ArrayList<>();
-//        RunnerListviewItem pyeongchang = new RunnerListviewItem(R.drawable.emblem, "PyeongChang", today);
-//        RunnerListviewItem tiger = new RunnerListviewItem(R.drawable.horang, "Tiger", today);
-//        RunnerListviewItem bear = new RunnerListviewItem(R.drawable.bear, "Bear", today);
-//        RunnerListviewItem torch = new RunnerListviewItem(R.drawable.torch, "Torch", today);
-//
-//        data.add(pyeongchang);
-//        data.add(tiger);
-//        data.add(bear);
-//        data.add(torch);
-//
-//
-//        RunnerListviewAdapter adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, data);
-//        listView.setAdapter(adapter);
+        listView = (ListView) findViewById(R.id.runner_listview);
+        adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, runnerListView);
+        listView.setAdapter(adapter);
 
         Button missionBtn = (Button) findViewById(R.id.missionBtn);
         missionBtn.setOnClickListener(new Button.OnClickListener() {
@@ -92,11 +82,11 @@ public class CommunityActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mTempRef.addValueEventListener(new ValueEventListener() {
+        mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String communityName = getIntent().getStringExtra("communityName");
-                DataSnapshot communityDataSnapshot = dataSnapshot.child(communityName);
+                DataSnapshot communityDataSnapshot = dataSnapshot.child("Community").child(communityName);
 
                 String racingMission = communityDataSnapshot.child("racingMission").child("missionName").getValue(String.class);
                 String invitattionMission = communityDataSnapshot.child("invitationMission").child("missionName").getValue(String.class);
@@ -108,6 +98,27 @@ public class CommunityActivity extends AppCompatActivity {
                 rotatable.setText(racingMission, invitattionMission, quizMission);
 
                 rotatingTextWrapper.setContent(" ", rotatable);
+
+                for(DataSnapshot singleDataSnapshot : communityDataSnapshot.child("userList").getChildren()) {
+                    runnerList.add(singleDataSnapshot.getValue(String.class));
+                }
+
+                for(DataSnapshot singleDataSnapshot : communityDataSnapshot.child("date").getChildren()) {
+                    dateList.add(singleDataSnapshot.getValue(String.class));
+                }
+
+                for (int i=0; i < runnerList.size(); i++) {
+                    int photo = 0;
+                    for (DataSnapshot singleDataSnapshot : dataSnapshot.child("Users").getChildren()) {
+                        if (singleDataSnapshot.getKey().equals(runnerList.get(i))) {
+                            photo = ((Long)singleDataSnapshot.child("photo").getValue()).intValue();
+                        }
+                    }
+                    runnerListView.add(new RunnerListviewItem(photo, runnerList.get(i), dateList.get(i)));
+                }
+                adapter.notifyDataSetChanged();
+
+                mDatabase.removeEventListener(this);
             }
 
             @Override
@@ -115,8 +126,10 @@ public class CommunityActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-//        getCommunityInfo(communityName);
+    public void createRunnerListView() {
+
     }
 
     public void getCommunityInfo(final String communityName) {
