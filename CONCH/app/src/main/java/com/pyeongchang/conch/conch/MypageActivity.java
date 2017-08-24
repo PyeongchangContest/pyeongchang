@@ -7,31 +7,31 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,12 +43,14 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_iMAGE = 2;
-    private ImageButton userPictureBtn;
+    private Button changePictureBtn;
+    private ImageView userPicture;
     private Uri mImageCaptureUri;
     private ImageView iv_UserPhoto;
     private int id_view;
     private String absoultePath;
     private FirebaseStorage storage;
+    private FirebaseDatabase mDatabase;
     private StorageReference storageRef;
     private StorageReference userImageRef;
     private User user;
@@ -65,8 +67,6 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference();
     }
 
 
@@ -182,8 +182,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (extras != null) {
                     Bitmap photo = extras.getParcelable("data"); // CROP된 BITMAP
-                    userPictureBtn.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
-
+                    userPicture.setImageBitmap(photo); // 레이아웃의 이미지칸에 CROP된 BITMAP을 보여줌
                     storeImageInFirebase(photo); // CROP된 이미지를 외부저장소, 앨범에 저장한다.
                     absoultePath = filePath;
                     break;
@@ -203,25 +202,14 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         public void onClick(View v) {
             id_view = v.getId();
             if(v.getId() == R.id.mypage_saveDescription) {
-//                /** SharedPreference 환경 변수 사용 **/
-//                SharedPreferences prefs = getSharedPreferences("login", 0);
-//                /** prefs.getString() return값이 null이라면 2번째 함수를 대입한다. **/
-//                String login = prefs.getString("USER_LOGIN", "LOGOUT");
-//                String facebook_login = prefs.getString("FACEBOOK_LOGIN", "LOGOUT");
-//                String user_id = prefs.getString("USER_ID","");
-//                String user_name = prefs.getString("USER_NAME", "");
-//                String user_password = prefs.getString("USER_PASSWORD", "");
-//                String user_phone = prefs.getString("USER_PHONE", "");
-//                String user_email = prefs.getString("USER_EMAIL", "");
-//                dbmanger.select(user_id,user_name,user_password, user_phone, user_email);
-//                dbmanger.selectPhoto(user_name, mImageCaptureUri, absoultePath);
-//
-//                Intent mainIntent = new Intent(getApplicationContext(), MypageActivity.class);
-//                MypageActivity.this.startActivity(mainIntent);
-//                MypageActivity.this.finish();
-                Toast.makeText(this, "저장버튼 클릭.", Toast.LENGTH_SHORT).show();
+                EditText description=(EditText) findViewById(R.id.mypage_description);
+                String changeText=description.getText().toString();
+                user.setInfo(changeText);
+                mDatabase=FirebaseDatabase.getInstance();
+                mDatabase.getReference().child("Users").child(user.getId()).child("info").setValue(changeText);
+                Toast.makeText(this, "자기소개 수정완료", Toast.LENGTH_SHORT).show();
 
-            }else if(v.getId() == R.id.mypage_userPicture) {
+            }else if(v.getId() == R.id.mypage_changeImage) {
                 DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -257,7 +245,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void storeImageInFirebase(Bitmap bitmap) {
         try {
-            userImageRef=storageRef.child("test.jpg");
+            userImageRef=storageRef.child(user.getId()+".jpg");
             ByteArrayOutputStream baos=new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
             byte[] data=baos.toByteArray();
@@ -271,6 +259,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl=taskSnapshot.getDownloadUrl();
+                    Glide.with(MypageActivity.this).load(downloadUrl).into(userPicture);
                     Log.e("(테스트) 파이어베이스 전송성공!!","!!!");
                 }
             });
@@ -278,7 +267,6 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
             e.printStackTrace();
         }
     }
-
 
 
 
@@ -294,8 +282,15 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         for (TorchCommunity torchCommunity:torchCommunityArrayList) {
             addCommunityListInMypage(torchCommunity,index++);
         }
-        userPictureBtn = (ImageButton) this.findViewById(R.id.mypage_userPicture);
-        userPictureBtn.setOnClickListener(this);
+        changePictureBtn = (Button) this.findViewById(R.id.mypage_changeImage);
+        userPicture=(ImageView)this.findViewById(R.id.mypage_userPicture);
+        changePictureBtn.setOnClickListener(this);
+        userPicture.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                initMypageInfo();
+            }
+        });
 
         initMypageInfo();
     }
@@ -307,9 +302,22 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
 
         user=((MainActivity)MainActivity.mContext).getUser();
 
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+
+        downloadImageFromFirebase(user.getId()+".jpg");
+
         userId.setText(user.getUserName());
         userNation.setImageResource(R.drawable.bear);//나라별 이미지 필요
         userScore.setText(String.valueOf(user.getScore()));
-        userDescription.setText("TEST DESCRIPTION");
+        userDescription.setText(user.getInfo());
+    }
+    private void downloadImageFromFirebase(String index){
+        storageRef.child(index).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(MypageActivity.this).load(uri).into(userPicture);
+            }
+        });
     }
 }
