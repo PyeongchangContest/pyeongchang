@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView infoSumOfTorch;
     private TextView runningDistance;
 
-    private User user=new User("TestUser","abc@naver.com","password123","Korea");//임시생성
+    private User user1=new User("ASDASD","abc@naver.com","password123","Korea");//임시생성
+    private User user2=new User("ASDFAS","abc@naver.com","password123","Korea");//임시생성
 
 
     private Button btnShowLocation;
@@ -171,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
                 java.util.Date date = calendar.getTime();
                 String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
+                TorchCommunity addTorchCommunity = new TorchCommunity(user1.getUserName(), today,tName,tMaxPeople,isSecret);
+                addTorchCommunity.getUserList().add(user2.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
                 /******************************************
                  addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                  addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
@@ -248,11 +250,13 @@ public class MainActivity extends AppCompatActivity {
                 torchCommunity.setRacingMission(runningMission);
 
                 Random random = new Random();
-                Object invitationMissionContent = (String) dataSnapshot.child("Invitation").child(String.valueOf(random.nextInt(1))).getValue();
+                int invitationMissionNum = ((Long)dataSnapshot.child("Invitation").getChildrenCount()).intValue();
+                Object invitationMissionContent = (String) dataSnapshot.child("Invitation").child(String.valueOf(random.nextInt(invitationMissionNum))).getValue();
                 MissionItem invitationMission = new MissionItem(invitationMissionContent.toString());
                 torchCommunity.setInvitationMission(invitationMission);
 
-                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(1))).getValue();
+                int quizMissionNum = ((Long)dataSnapshot.child("Quiz").getChildrenCount()).intValue();
+                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(quizMissionNum))).getValue();
                 MissionItem quizMission = new MissionItem(quizMissionContent.toString());
                 torchCommunity.setQuiz(quizMission);
 
