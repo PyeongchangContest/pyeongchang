@@ -18,13 +18,15 @@ public class TorchCommunity {
     private int racingLevel; //db에서 미션을 난이도별로 받아도기 위한 변수. 더 나은 구현 알고리즘이 있을까 고민 필요
     /**************************************************/
     //타임라인 추가하기 (타임라인아이템 객체가 필요해여)
+    private  List<Item> timeLine;
+    private List<Item> commentTimeLine;
     /**************************************************/
     private String runner; //현재 해당 커뮤니티의 주자를 저장하기 위한 변수
     // (유저 객체도 필요하지 않을까 추후 고려 그냥 List<String> 이어도 될 듯 싶기도 함)
     private MissionItem racingMission;
     private MissionItem InvitationMission;
     private MissionItem Quiz;
-    private List<MissionItem> completedMission = new ArrayList<MissionItem>();
+    private List<String> completedMission = new ArrayList<String>();
     private List<String> route = new ArrayList<String>();
 
     public TorchCommunity(String leader,String communityName,int maxPeople,boolean isSecret){
@@ -34,6 +36,8 @@ public class TorchCommunity {
         this.communityName=communityName;
         this.maxPeople=maxPeople;
         this.isSecret=isSecret;
+        this.runner = "hello!";
+        this.route.add("KOREA");
     }
 
     public TorchCommunity() {
@@ -126,11 +130,11 @@ public class TorchCommunity {
         Quiz = quiz;
     }
 
-    public List<MissionItem> getCompletedMission() {
+    public List<String> getCompletedMission() {
         return completedMission;
     }
 
-    public void setCompletedMission(List<MissionItem> completedMission) {
+    public void setCompletedMission(List<String> completedMission) {
         this.completedMission = completedMission;
     }
 

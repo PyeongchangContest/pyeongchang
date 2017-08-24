@@ -167,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "이미 생성된 이름입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }else {
-
                     int tMaxPeople = Integer.parseInt(torchMaxPeople.getText().toString());
                     boolean isSecret = isSecretCommunity.isChecked();
                     //성화 커뮤니티 객체 추가
