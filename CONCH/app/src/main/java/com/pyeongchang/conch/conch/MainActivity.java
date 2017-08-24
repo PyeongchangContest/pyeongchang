@@ -66,13 +66,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView runningDistance;
     private ArrayList<String> alreadyRegistered=new ArrayList<>();
 
-    private User user1=new User("ASDASD","abc@naver.com","password123","Korea");//임시생성
-    private User user2=new User("ASDFAS","abc@naver.com","password123","Korea");//임시생성
-    public User getUser() {
-        return user;
-    }
 
-    private User user = new User("TestUser", "abc@naver.com", "password123", "Korea");//임시생성
+    private User user;
+
+
 
     private Button btnShowLocation;
     BroadcastReceiver broadcastReceiver;
@@ -82,10 +79,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //액션바 수정
         getSupportActionBar().setTitle("PyeonChang2018");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff339999));
-        //액션바 수정
+
+        //유저 로딩
+        Intent intent = getIntent();
+        user = new User(
+                intent.getExtras().getString("user_name"),
+                intent.getExtras().getString("user_id"),
+                intent.getExtras().getString("user_country"));
+
 
         mContext = this;
 
@@ -179,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
                     java.util.Date date = calendar.getTime();
                     String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                    TorchCommunity addTorchCommunity = new TorchCommunity(user1.getUserName(), today,tName,tMaxPeople,isSecret);
-                    addTorchCommunity.getUserList().add(user2.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
+                    TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
+                    addTorchCommunity.getUserList().add(user.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
                     /******************************************
                      addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                      addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
@@ -262,9 +267,6 @@ public class MainActivity extends AppCompatActivity {
         runningDistance.setText(distance);
     }
 
-    public ArrayList<TorchCommunity> getCommunityList() {
-        return communityList;
-    }
 
     public void generateMission(final TorchCommunity torchCommunity) {
         mDatabase.child("Mission").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -490,5 +492,13 @@ public class MainActivity extends AppCompatActivity {
             Log.e("(테스트)",i+"번째 이름 : "+communityList.get(i).getCommunityName());
             Log.e("(테스트)",i+"번째 점수 : "+communityList.get(i).getCommunityRank());
         }
+    }
+
+//    getter
+    public User getUser() {
+        return user;
+    }
+    public ArrayList<TorchCommunity> getCommunityList() {
+        return communityList;
     }
 }

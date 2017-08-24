@@ -1,7 +1,5 @@
 package com.pyeongchang.conch.conch;
 
-import android.graphics.Bitmap;
-
 import java.util.List;
 
 /**
@@ -10,7 +8,7 @@ import java.util.List;
 
 public class User {
     private String userName;
-    private String email;
+    private String id;
     private String pwd;
     private String nation;
     private String info;
@@ -21,18 +19,26 @@ public class User {
     private boolean isRunner=false;
     private int distance=0; //If isRunner is true, the value of distance is valid;
     private List<String> communityList; // Community number is limited to 5;
-    public User(String userName, String email, String pwd, String nation){
+    public User(String userName, String id, String pwd, String nation){
         this.userName=userName;
-        this.email=email;
+        this.id = id;
         this.pwd=pwd;
         this.nation=nation;
+    }
+    public User(String userName, String id, String nation){
+        this.userName=userName;
+        this.id = id;
+        this.nation=nation;
+    }
+    public User(){
+
     }
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setPwd(String pwd) {
@@ -68,8 +74,8 @@ public class User {
         return userName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getId() {
+        return id;
     }
 
     public String getPwd() {
