@@ -1,21 +1,8 @@
 package com.pyeongchang.conch.conch;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.idunnololz.widgets.AnimatedExpandableListView;
-import com.idunnololz.widgets.AnimatedExpandableListView.AnimatedExpandableListAdapter;
-
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.Activity;
-import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -25,6 +12,18 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.idunnololz.widgets.AnimatedExpandableListView;
+import com.idunnololz.widgets.AnimatedExpandableListView.AnimatedExpandableListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This is an example usage of the AnimatedExpandableListView class.
@@ -264,7 +263,7 @@ public class MissionActivity extends AppCompatActivity {
 
     public void getScore(DataSnapshot dataSnapshot, String communityName) {
         int score = ((Long) dataSnapshot.child("Community").child(communityName).child("communityScore").getValue()).intValue();
-        score += 50;
+        score += 500;
 
         mDatabase.child("Community").child(communityName).child("communityScore").setValue(score);
     }

@@ -10,62 +10,74 @@
 
     </LinearLayout>
     <TableLayout
+        android:layout_marginTop="30dp"
+        android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TableRow
+            android:layout_weight="0.2"
             android:gravity="center_horizontal">
             <TextView
                 android:text="이름 : "
-                android:textSize="20dp"
+                android:textSize="18dp"
                 />
             <EditText
                 android:id="@+id/name"
                 android:hint="이름을 입력하세요."
                 android:textSize="15dp"
-                android:inputType="text"/>
+                android:imeOptions="actionNext"
+                android:inputType="text" />
         </TableRow>
 
         <TableRow
+            android:layout_weight="0.2"
             android:gravity="center_horizontal">
             <TextView
                 android:text="비밀번호 : "
-                android:textSize="20dp"/>
+                android:textSize="18dp"/>
             <EditText
                 android:id="@+id/password"
                 android:hint="비밀번호를 입력하세요."
                 android:textSize="15dp"
+                android:imeOptions="actionNext"
                 android:inputType="textPassword"/>
 
         </TableRow>
         <TableRow
+            android:layout_weight="0.2"
             android:gravity="center_horizontal">
             <TextView
                 android:text="비밀번호 확인 : "
-                android:textSize="20dp"/>
+                android:textSize="18dp"/>
             <EditText
                 android:id="@+id/passsign"
-                android:hint="다시 한 번 입력하세요."
+                android:hint="다시 한번 입력하세요."
                 android:textSize="15dp"
+                android:imeOptions="actionNext"
                 android:inputType="textPassword"/>
 
         </TableRow>>
         <TableRow
+            android:layout_weight="0.2"
             android:gravity="center_horizontal">
             <TextView
                 android:text="아이디 : "
-                android:textSize="20dp"/>
+                android:textSize="18dp"/>
             <EditText
                 android:id="@+id/id"
                 android:hint="아이디를 입력하세요."
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:imeOptions="actionDone"
+                android:inputType="text" />
 
         </TableRow>
         <TableRow
+            android:layout_weight="0.2"
             android:gravity="center_horizontal">
             <TextView
                 android:text="국가 : "
-                android:textSize="20dp"/>
+                android:textSize="18dp"/>
             <Spinner
                 android:id="@+id/spCountry"
                 android:layout_width="match_parent"
@@ -73,7 +85,10 @@
 
         </TableRow>
     </TableLayout>
+
     <LinearLayout
+        android:layout_weight="0.2"
+        android:layout_marginTop="30dp"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -82,10 +97,12 @@
             android:id="@+id/join"
             android:layout_width="150dp"
             android:layout_height="40dp"
-            android:onClick="join"
+            android:background="@color/LightSkyBlue"
 
-            android:padding="0sp"
+            android:onClick="join"
             android:scaleType="centerCrop"
-            android:text="Join" />
+            android:text="가입"
+            android:textSize="20dp"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

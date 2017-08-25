@@ -77,7 +77,6 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     private void inviteOtherUser(int index){
-        user=((MainActivity)MainActivity.mContext).getUser();
         String inviteCommunity=runnerList.get(user.getId());
         databaseUsers.child(userList.get(index).getId()).child("msgList").child(String.valueOf(userList.get(index).getMsgList().size())).setValue("초대 : "+inviteCommunity);
         Toast.makeText(InviteActivity.this, userList.get(index).getUserName()+"님이 초대되었습니다.", Toast.LENGTH_SHORT).show();
@@ -94,6 +93,7 @@ public class InviteActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        user=((MainActivity)MainActivity.mContext).getUser();
         userList = new ArrayList<>();
 
         databaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -101,9 +101,12 @@ public class InviteActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userList.clear();
                 for(DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
+                    User checkMe=userSnapshot.getValue(User.class);
+                    if (!checkMe.getId().equals(user.getId())) {
+                        User user = userSnapshot.getValue(User.class);
 
-                    userList.add(user);
+                        userList.add(user);
+                    }
                 }
                 InviteHelpActivity adapter = new InviteHelpActivity(InviteActivity.this, userList);
                 listViewUsers.setAdapter(adapter);
