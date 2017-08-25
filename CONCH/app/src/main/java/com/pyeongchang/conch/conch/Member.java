@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 /**
  * Created by bumsu on 2017-08-23.
@@ -73,19 +74,18 @@ public class Member extends AppCompatActivity {
         Tpasssign = PASSSIGN.getText().toString();
         Tid = ID.getText().toString();
         Tcountry = COUNTRY.getSelectedItem().toString();
+        boolean flag = Pattern.matches("^[a-zA-Z0-9]*$", Tid);
 
         if (Tname.length() <= 0) {
             Toast.makeText(getApplicationContext(), "이름을 정확하게 입력하세요.", Toast.LENGTH_SHORT).show();
-        }else if (Tpass.length() <6) {
+        }else if (Tpass.length() < 6 ) {
             Toast.makeText(getApplicationContext(), "비밀번호를 6자리 이상 입력하세요.", Toast.LENGTH_SHORT).show();
         } else if (!Tpasssign.equals(Tpass)) {
             Toast.makeText(getApplicationContext(), "비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show();
-        } else if (Tid.length() < 5 ){
-            Toast.makeText(getApplicationContext(), "아이디는 5글자 이상입니다.", Toast.LENGTH_SHORT).show();
+        } else if (flag == false || Tid.length() < 5) {
+            Toast.makeText(getApplicationContext(), "아이디는 5글자 이상, 특수문자 제외입니다.", Toast.LENGTH_SHORT).show();
         } else if(!isValidId(Tid)){
             Toast.makeText(getApplicationContext(), "이미 가입된 아이디입니다.", Toast.LENGTH_SHORT).show();
-        }else if (Tcountry.length() <= 0) {
-            Toast.makeText(getApplicationContext(), "국가를 선택해 주세요.", Toast.LENGTH_SHORT).show();
         }
         else {
             User user = new User(Tname, Tid, Tpass, Tcountry);

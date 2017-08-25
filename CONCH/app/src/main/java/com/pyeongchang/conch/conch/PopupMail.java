@@ -23,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class PopupMail extends AppCompatActivity {
     private LinearLayout mailBoxLayout;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -148,6 +151,11 @@ public class PopupMail extends AppCompatActivity {
                 TorchCommunity chosenCommunity = dataSnapshot.getValue(TorchCommunity.class);
                 int population=chosenCommunity.getUserList().size();
                 mDatabase.child("Community").child(communityName).child("userList").child(String.valueOf(population)).setValue(user.getId());
+
+                Calendar calendar = Calendar.getInstance();
+                java.util.Date date = calendar.getTime();
+                String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
+                mDatabase.child("Community").child(communityName).child("date").child(String.valueOf(population)).setValue(today);
                 mDatabase.child("Users").child(user.getId()).child("communityList").child(String.valueOf(user.getCommunityList().size()-1)).setValue(communityName);
             }
 

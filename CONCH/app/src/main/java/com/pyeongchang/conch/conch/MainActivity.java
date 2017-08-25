@@ -1,11 +1,14 @@
 package com.pyeongchang.conch.conch;
 
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -14,6 +17,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -273,7 +277,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeDistanceText(String distance) {
-        runningDistance.setText(distance);
+        if (distance.length()<5){
+            runningDistance.setText(String.valueOf(Float.valueOf(distance))+"m");
+        }else
+            runningDistance.setText(distance.substring(0,5)+"m");
     }
 
 
@@ -366,7 +373,32 @@ public class MainActivity extends AppCompatActivity {
         settingBtn.setOnClickListener(new View.OnClickListener() {//설정 버튼 클릭시
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, PopupSetting.class));
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("로그아웃 하시겠습니까?");
+                builder.setTitle("로그아웃").setCancelable(false).setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+
+                        editor.clear();
+                        editor.putBoolean("chkAuto", false);
+                        editor.commit();
+
+                        ActivityCompat.finishAffinity(MainActivity.this);
+                        System.runFinalizersOnExit(true);
+                        System.exit(0);
+                    }
+                })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.setTitle("로그아웃 알림창");
+                alert.show();
             }
         });
         rankingBtn.setOnClickListener(new View.OnClickListener() {//랭킹 버튼 클릭시
@@ -419,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
     public TorchCommunity updateCommunityRankingInFirebase(final TorchCommunity torchCommunity){
         final String targetCommunityName=torchCommunity.getCommunityName();
 
-        mDatabase.child("Community").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

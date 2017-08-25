@@ -3,13 +3,11 @@ package com.pyeongchang.conch.conch;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,10 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.sdsmdg.harjot.rotatingtext.RotatingTextWrapper;
 import com.sdsmdg.harjot.rotatingtext.models.Rotatable;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CommunityActivity extends AppCompatActivity{
     private boolean lastItemVisibleFlag = false; // 화면에 리스트의 마지막 아이템이 보여지는지 체크
@@ -147,7 +142,7 @@ public class CommunityActivity extends AppCompatActivity{
                     break;
                 }
             }
-            runnerListView.add(new RunnerListviewItem(photo, runnerList.get(i), dateList.get(i)));
+                runnerListView.add(new RunnerListviewItem(photo, runnerList.get(i), dateList.get(i)));
         }
         adapter.notifyDataSetChanged();
         loaded = true;

@@ -158,7 +158,7 @@
             android:layout_height="112dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="0.17"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/layout_body"
             app:layout_constraintHorizontal_bias="0.93"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -185,7 +185,8 @@
                 android:layout_alignStart="@+id/progressImage_walkingMan"
                 android:layout_below="@+id/progressText_end"
                 android:layout_centerInParent="false"
-                android:text="1.6km" />
+                android:gravity="center_horizontal"
+                android:text="   " />
 
             <TextView
                 android:id="@+id/progressText_end"
@@ -226,7 +227,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/layout_body"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -331,7 +332,7 @@
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/btn_setting" />
+            app:srcCompat="@drawable/btn_logout" />
 
         <TextView
             android:id="@+id/textView4"
@@ -339,7 +340,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-15dp"
             android:gravity="top"
-            android:text="설정"
+            android:text="로그아웃"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp" />
