@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/sliderBtn"
-        android:icon="@drawable/menuicon"
+        android:icon="@drawable/slider_btn"
         android:title="Search"
         app:showAsAction="always" />
 </menu>

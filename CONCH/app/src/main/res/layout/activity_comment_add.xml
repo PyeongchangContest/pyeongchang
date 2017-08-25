@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_comment_add"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="com.pyeongchang.conch.conch.CommentAddActivity">
+        <TextView
+            android:id="@+id/comment_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_margin="2dp"
+            android:textSize="15sp"
+            android:text="name"/>
+    <TextView
+        android:id="@+id/comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:minLines="5"
+        android:gravity="top"
+        android:layout_margin="2dp"
+        android:background="@drawable/black_border"
+        android:text="content"
+        android:maxLines="5"
+        android:scrollbars="vertical"/>
+    <ListView
+        android:layout_weight="16"
+        android:id="@+id/comment_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp">
+    </ListView>
+
+    <LinearLayout
+        android:layout_weight="6"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:gravity="start"
+            android:padding="10dp"
+            android:background="@drawable/black_border"
+            android:hint="덧글을 입력하세요."
+            android:id="@+id/comment_enter"
+            android:maxLength="100"/>
+        <Button
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/comment_add_button"
+            android:background="@drawable/border"
+            android:text="Add Comment"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
