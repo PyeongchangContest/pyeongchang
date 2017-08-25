@@ -419,15 +419,18 @@ public class MainActivity extends AppCompatActivity {
     public TorchCommunity updateCommunityRankingInFirebase(final TorchCommunity torchCommunity){
         final String targetCommunityName=torchCommunity.getCommunityName();
 
-        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("Community").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         if (postSnapshot.getKey().equals(targetCommunityName)){
+                            postSnapshot.getValue(TorchCommunity.class);
                             int rank=Integer.parseInt(postSnapshot.child("communityRank").getValue().toString());
+                            int score=Integer.parseInt(postSnapshot.child("communityScore").getValue().toString());
                             Log.e("(테스트)","계산된 랭킹 : "+rank);
                             torchCommunity.setCommunityRank(rank);
+                            torchCommunity.setCommunityScore(score);
                         }
                     }
                 }
