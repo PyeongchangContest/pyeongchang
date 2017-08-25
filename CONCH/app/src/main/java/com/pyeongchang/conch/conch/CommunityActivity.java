@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,7 +51,7 @@ public class CommunityActivity extends AppCompatActivity{
         rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
 
-        rotatable = new Rotatable(Color.parseColor("#FFA036"), 3000, "Hello", "Hello", "Hello");
+        rotatable = new Rotatable(Color.parseColor("#FFA036"), 3000, "Helloddddddddddddd", "Hellodddddddddddddd", "Hellodddddddddddddd");
         rotatable.setSize(35);
         rotatable.setAnimationDuration(500);
 
@@ -60,7 +61,7 @@ public class CommunityActivity extends AppCompatActivity{
         adapter = new RunnerListviewAdapter(this, R.layout.runner_listview_item, runnerListView);
         listView.setAdapter(adapter);
 
-        Button missionBtn = (Button) findViewById(R.id.missionBtn);
+        ImageButton missionBtn = (ImageButton) findViewById(R.id.missionBtn);
         missionBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,9 +91,8 @@ public class CommunityActivity extends AppCompatActivity{
                 String communityName = getIntent().getStringExtra("communityName");
                 DataSnapshot communityDataSnapshot = dataSnapshot.child("Community").child(communityName);
 
-                setRotatingText(communityDataSnapshot);
-
                 if(!isLoaded()) { //커뮤니티에 처음으로 들어왔을 때
+                    setRotatingText(communityDataSnapshot);
                     loadRunnerList(dataSnapshot, communityDataSnapshot);
                 } else if (isLoaded() && runnerListSizeIsChanged(communityDataSnapshot)) { //다른 액티비티에서 다시 커뮤니티로 돌아왔을 경우
                     resetRunnerList();
@@ -110,7 +110,7 @@ public class CommunityActivity extends AppCompatActivity{
     public void setRotatingText(DataSnapshot communityDataSnapshot) {
         String racingMission = "Run " + communityDataSnapshot.child("racingMission").child("missionName").getValue(String.class) + "Km with your members";
         String invitationMission = "Invite a " + communityDataSnapshot.child("invitationMission").child("missionName").getValue(String.class) + " person";
-        String quizMission = communityDataSnapshot.child("quiz").child("missionName").getValue(String.class);
+        String quizMission = "Let's solve the Quiz!";
 
         rotatingTextWrapper = (RotatingTextWrapper) findViewById(R.id.custom_switcher);
         rotatingTextWrapper.setSize(35);
@@ -138,8 +138,6 @@ public class CommunityActivity extends AppCompatActivity{
         for(DataSnapshot singleDataSnapshot : communityDataSnapshot.child("date").getChildren()) {
             dateList.add(singleDataSnapshot.getValue(String.class));
         }
-
-        dateList.add("2017-08-24"); /////////temp code!!!!!!!!!!
 
         for (int i=0; i < runnerList.size(); i++) {
             int photo = 0;
