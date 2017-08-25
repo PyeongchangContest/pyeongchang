@@ -27,7 +27,7 @@ public class User {
         this.id = id;
         this.pwd=pwd;
         this.nation=nation;
-        msgList.add(userName+"님, 회원가입을 축하합니다.");
+        msgList.add(":) "+userName+"님, 회원가입을 축하합니다.");
     }
     public User(String userName, String id, String nation){
         this.userName=userName;

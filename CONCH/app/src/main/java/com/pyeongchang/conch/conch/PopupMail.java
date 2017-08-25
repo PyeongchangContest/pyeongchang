@@ -41,10 +41,10 @@ public class PopupMail extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void drawMail(String contents, int type){
+    private void drawMail(final String contents, int type){
         mailBoxLayout = (LinearLayout) findViewById(R.id.mailbox_layout);
         ImageButton closeButton=new ImageButton(this);
-        int textWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,310, getResources().getDisplayMetrics());
+        int textWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,280, getResources().getDisplayMetrics());
         LinearLayout.LayoutParams textParam=new LinearLayout.LayoutParams(textWidth,LinearLayout.LayoutParams.MATCH_PARENT);
         LinearLayout.LayoutParams closeBtnParam=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
         final LinearLayout addMailInfo=new LinearLayout(this);
@@ -76,7 +76,29 @@ public class PopupMail extends AppCompatActivity {
                 buttonInfo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PopupMail.this);
+                        builder.setMessage("해당 커뮤니티에 참석하시겠습니까?");
+                        builder.setTitle("메시지").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                String communityName=contents.substring(5);
+                                enterCommunity(communityName);
+                                Toast.makeText(PopupMail.this, communityName+"에 오신 것을 환영합니다.", Toast.LENGTH_SHORT).show();
+                                mailBoxLayout.removeView(addMailInfo);
+                                deleteMessage(contents);
+                                finish();
+                                ((MainActivity)MainActivity.mContext).loadMyCommunityList();
+                            }
+                        })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.setTitle("커뮤니티 참가");
+                        alert.show();
                     }
                 });
                 break;
@@ -93,7 +115,7 @@ public class PopupMail extends AppCompatActivity {
                 builder.setTitle("메시지").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        deleteMessage();
+                        deleteMessage(contents);
                         Toast.makeText(PopupMail.this, "메시지 삭제 완료", Toast.LENGTH_SHORT).show();
                         mailBoxLayout.removeView(addMailInfo);
                     }
@@ -116,17 +138,36 @@ public class PopupMail extends AppCompatActivity {
 
     }
 
-    private void deleteMessage() {
+    private void enterCommunity(final String communityName) {
+        user.getCommunityList().add(communityName);
+
+
+        mDatabase.child("Community").child(communityName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TorchCommunity chosenCommunity = dataSnapshot.getValue(TorchCommunity.class);
+                int population=chosenCommunity.getUserList().size();
+                mDatabase.child("Community").child(communityName).child("userList").child(String.valueOf(population)).setValue(user.getId());
+                mDatabase.child("Users").child(user.getId()).child("communityList").child(String.valueOf(user.getCommunityList().size()-1)).setValue(communityName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void deleteMessage(final String contents) {
         mDatabase.child("Users").child(user.getId()).child("msgList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    for (String msgText:user.getMsgList()){
-                        if (postSnapshot.getValue(String.class).equals(msgText)){
-                            Log.e("(삭제 메시지 발견)",msgText);
-                            mDatabase.child("Users").child(user.getId()).child("msgList").child(String.valueOf(user.getMsgList().indexOf(msgText))).removeValue();
-                            Log.e("(삭제 완료)",msgText);
-                        }
+                    if (postSnapshot.getValue(String.class).equals(contents)){
+                        Log.e("(삭제 메시지 발견)",contents);
+                        mDatabase.child("Users").child(user.getId()).child("msgList").child(String.valueOf(user.getMsgList().indexOf(contents))).removeValue();
+                        user.getMsgList().remove(contents);
+                        Log.e("(삭제 완료)",contents);
                     }
                 }
             }

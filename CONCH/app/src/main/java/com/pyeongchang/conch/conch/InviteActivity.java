@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,14 +30,16 @@ public class InviteActivity extends AppCompatActivity {
     ListView listViewUsers;
 
     List<User> userList;
-
+    HashMap<String,String> runnerList= new HashMap<>();
+    private DatabaseReference mDatabase;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
 
         databaseUsers = FirebaseDatabase.getInstance().getReference("Users");
-
+        mDatabase=FirebaseDatabase.getInstance().getReference();
         listViewUsers = (ListView) findViewById((R.id.listViewUsers));
 
 
@@ -74,9 +77,9 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     private void inviteOtherUser(int index){
-
-
-
+        user=((MainActivity)MainActivity.mContext).getUser();
+        String inviteCommunity=runnerList.get(user.getId());
+        databaseUsers.child(userList.get(index).getId()).child("msgList").child(String.valueOf(userList.get(index).getMsgList().size())).setValue("초대 : "+inviteCommunity);
         Toast.makeText(InviteActivity.this, userList.get(index).getUserName()+"님이 초대되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
@@ -106,6 +109,26 @@ public class InviteActivity extends AppCompatActivity {
                 listViewUsers.setAdapter(adapter);
             }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        initRunnerList();
+    }
+
+    private void initRunnerList() {
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        String tmp1=postSnapshot.child("runner").getValue(String.class);
+                        String tmp2=postSnapshot.getKey();
+                        runnerList.put(tmp1,tmp2);
+                    }
+                }
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
