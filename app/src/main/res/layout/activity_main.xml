@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pyeongchang.conch.conch.MainActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.17">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout_body"
+            android:layout_width="wrap_content"
+            android:layout_height="324dp"
+            android:layout_marginBottom="-1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical"
+            android:weightSum="1"
+            app:layout_constraintBottom_toTopOf="@+id/layout_info"
+            app:layout_constraintHorizontal_bias="0.59"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+
+            <!--<HorizontalScrollView-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="220dp"-->
+            <!--android:layout_marginBottom="0dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.521"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--app:layout_constraintRight_toRightOf="parent">-->
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/scroll_wrapper"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="bottom"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/torch_position"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"></LinearLayout>-->
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/plus_torch"-->
+            <!--android:onClick="clickPlusBtn"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--app:srcCompat="@drawable/plus_torch" />-->
+
+            <!--</LinearLayout>-->
+
+            <!--</HorizontalScrollView>-->
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="266dp"
+            android:layout_height="122dp"
+            android:id="@+id/layout_info"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="-2dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:id="@+id/main_torchName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My torch1"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/main_torchScore"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
+
+            <TextView
+                android:id="@+id/main_torchInform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="새로운 성화를 생성하세요!"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25" />
+
+            <TextView
+                android:id="@+id/main_torchRank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="18dp"
+                android:visibility="invisible"
+                app:layout_constraintRight_toLeftOf="@+id/main_sumOfTorch"
+                app:layout_constraintTop_toTopOf="@+id/main_sumOfTorch" />
+
+            <TextView
+                android:id="@+id/main_sumOfTorch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/ 42144"
+                android:textSize="18dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/main_torchScore" />
+
+            <TextView
+                android:id="@+id/main_torchScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3420p"
+                android:textSize="22dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_walking"
+            android:layout_width="366dp"
+            android:layout_height="112dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.17"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/layout_body"
+            app:layout_constraintHorizontal_bias="0.93"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <ImageView
+                android:id="@+id/progressImage_walkingMan"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_above="@+id/progressBar"
+                android:layout_alignEnd="@+id/progressBar"
+                android:layout_alignRight="@+id/progressBar"
+                android:layout_marginEnd="44dp"
+                android:layout_marginRight="44dp"
+                app:srcCompat="@drawable/walking" />
+
+            <TextView
+                android:id="@+id/progressText_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/progressImage_walkingMan"
+                android:layout_alignStart="@+id/progressImage_walkingMan"
+                android:layout_below="@+id/progressText_end"
+                android:layout_centerInParent="false"
+                android:text="1.6km" />
+
+            <TextView
+                android:id="@+id/progressText_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/progressBar"
+                android:layout_centerInParent="false"
+                android:layout_toEndOf="@+id/progressBar"
+                android:layout_toRightOf="@+id/progressBar"
+                android:text="3km" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="150dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:max="3000"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/progressText_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/progressBar"
+                android:layout_centerInParent="false"
+                android:layout_toLeftOf="@+id/progressBar"
+                android:layout_toStartOf="@+id/progressBar"
+                android:text="0" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_finished"
+            android:layout_width="wrap_content"
+            android:layout_height="67dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/layout_body"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.592">
+
+            <Button
+                android:id="@+id/sendButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="false"
+                android:layout_centerVertical="true"
+                android:text="send torch" />
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/sliderMenu"
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#dbdded"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="100"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <ImageButton
+            android:id="@+id/profileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_profile" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="프로필"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/mailboxBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_msg" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="수신함"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/rankingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_ranking" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="랭킹"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/settingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="115dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/btn_setting" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
+            android:gravity="top"
+            android:text="설정"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/mailboxBtn"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginBottom="24dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:scaleType="centerInside"-->
+        <!--app:srcCompat="@drawable/btn_msg"-->
+        <!--tools:layout_editor_absoluteX="-179dp" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/textView2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="수신함" />-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/rankingBtn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="67dp"-->
+        <!--android:layout_marginBottom="24dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:scaleType="centerInside"-->
+        <!--app:srcCompat="@drawable/btn_ranking"-->
+        <!--tools:layout_editor_absoluteX="-179dp" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/textView3"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="랭킹" />-->
+
+        <!--<ImageButton-->
+        <!--android:id="@+id/settingBtn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="67dp"-->
+        <!--android:layout_marginBottom="24dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:scaleType="centerInside"-->
+        <!--app:srcCompat="@drawable/btn_setting"-->
+        <!--tools:layout_editor_absoluteX="-179dp" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/textView4"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="설정" />-->
+
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
