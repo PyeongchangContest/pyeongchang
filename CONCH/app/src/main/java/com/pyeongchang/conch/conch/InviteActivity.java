@@ -1,14 +1,13 @@
 package com.pyeongchang.conch.conch;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,11 +39,10 @@ public class InviteActivity extends AppCompatActivity {
 
         listViewUsers = (ListView) findViewById((R.id.listViewUsers));
 
-        userList = new ArrayList<>();
 
         listViewUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int index, long l) {
 //                User User = userList.get(i);
 //                Intent intent = getIntent();
 //                String communityName = intent.getStringExtra("communityName");
@@ -56,6 +54,7 @@ public class InviteActivity extends AppCompatActivity {
                 builder.setTitle("초대").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
+                        inviteOtherUser(index);
                         finish();
                     }
                 })
@@ -74,11 +73,27 @@ public class InviteActivity extends AppCompatActivity {
         });
     }
 
+    private void inviteOtherUser(int index){
+
+
+
+        Toast.makeText(InviteActivity.this, userList.get(index).getUserName()+"님이 초대되었습니다.", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onStart() {
         super .onStart();
 
-        databaseUsers.addValueEventListener(new ValueEventListener() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        userList = new ArrayList<>();
+
+        databaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userList.clear();
@@ -97,4 +112,5 @@ public class InviteActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -14,7 +14,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -89,9 +88,8 @@ public class Member extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "국가를 선택해 주세요.", Toast.LENGTH_SHORT).show();
         }
         else {
-            User User = new User(Tname, Tid, Tpass, Tcountry);
-            databaseUsers.child(Tid).setValue(User);
-
+            User user = new User(Tname, Tid, Tpass, Tcountry);
+            databaseUsers.child(Tid).setValue(user);
             Toast.makeText(getApplication(), Tname + "님 회원가입을 축하합니다.", Toast.LENGTH_SHORT).show();
             Intent login = new Intent(getApplication(), Login.class);
             login.putExtra("splash", "splash");

@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private Button btnShowLocation;
+    private Button sendTorchBtn;
     BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
@@ -368,7 +368,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.sliderBtn) {
-            Toast.makeText(this, "메뉴 슬라이더", Toast.LENGTH_SHORT).show();
             llDrawer = (LinearLayout) findViewById(R.id.sliderMenu);
             dlDrawer = (DrawerLayout) findViewById(R.id.activity_main);
             dlDrawer.openDrawer(llDrawer);
@@ -506,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 유저 정보 생성
-        btnShowLocation = (Button) findViewById(R.id.sendButton);
+        sendTorchBtn = (Button) findViewById(R.id.sendButton);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.pyeongchang.conch.conch.SEND_DISTANCE");
@@ -530,26 +529,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // GPS 정보를 보여주기 위한 이벤트 클래스 등록
-        btnShowLocation.setOnClickListener(new View.OnClickListener() {
+        sendTorchBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                gps = new GpsInfo(MainActivity.this);
-
-                // GPS 사용유무 가져오기
-                if (gps.isGetLocation()) {
-
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-
-
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    // GPS 를 사용할수 없으므로
-                    gps.showSettingsAlert();
-                }
+                startActivity(new Intent(MainActivity.this, InviteActivity.class));
             }
         });
         countAllCommunityAndUpdateCommunityRank();
