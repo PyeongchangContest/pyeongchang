@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                     String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
                     TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
-                    addTorchCommunity.getUserList().add(user.getUserName()); ///////// temp code!!!!!!! Have to delete!!!!
+
                     /******************************************
                      addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                      addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                 torchCommunity.setInvitationMission(invitationMission);
 
                 int quizMissionNum = ((Long)dataSnapshot.child("Quiz").getChildrenCount()).intValue();
-                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(quizMissionNum))).getValue();
+                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(quizMissionNum))).getKey();
                 MissionItem quizMission = new MissionItem(quizMissionContent.toString());
                 torchCommunity.setQuiz(quizMission);
 
