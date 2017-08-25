@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                 torchCommunity.setInvitationMission(invitationMission);
 
                 int quizMissionNum = ((Long)dataSnapshot.child("Quiz").getChildrenCount()).intValue();
-                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(quizMissionNum))).getValue();
+                Object quizMissionContent = (String) dataSnapshot.child("Quiz").child(String.valueOf(random.nextInt(quizMissionNum))).getKey();
                 MissionItem quizMission = new MissionItem(quizMissionContent.toString());
                 torchCommunity.setQuiz(quizMission);
 

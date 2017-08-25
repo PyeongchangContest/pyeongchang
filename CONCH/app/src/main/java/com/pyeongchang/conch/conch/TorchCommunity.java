@@ -56,7 +56,6 @@ public class TorchCommunity {
         this.isSecret=isSecret;
         this.route.add("KOREA");
         this.date.add(date);
-        this.completedMission.add("temp");
         this.runner=runner;
         this.totalDistance=0;
     }
