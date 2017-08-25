@@ -296,7 +296,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void initMypageInfo(){
         TextView userId=(TextView)findViewById(R.id.mypage_userID);
-        ImageView userNation= (ImageView) findViewById(R.id.mypage_userNation);
+        TextView userNation= (TextView) findViewById(R.id.mypage_userNation);
         TextView userScore= (TextView) findViewById(R.id.mypage_userScore);
         EditText userDescription= (EditText) findViewById(R.id.mypage_description);
 
@@ -308,7 +308,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         downloadImageFromFirebase(user.getId()+".jpg");
 
         userId.setText(user.getUserName());
-        userNation.setImageResource(R.drawable.bear);//나라별 이미지 필요
+        userNation.setText(user.getNation());
         userScore.setText(String.valueOf(user.getScore()));
         userDescription.setText(user.getInfo());
     }

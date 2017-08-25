@@ -20,6 +20,7 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
     Context mContext;
     int position;
 
+
     private static class ViewHolder{
         TextView date;
         TextView name;
@@ -68,8 +69,6 @@ public class TimeLineCustomAdapter extends ArrayAdapter<Item>{
         viewHolder.content.setText(dataModel.getContent());
         viewHolder.date.setText(dataModel.getDate());
         viewHolder.name.setText(dataModel.getName());
-
-
         return convertView;
     }
 

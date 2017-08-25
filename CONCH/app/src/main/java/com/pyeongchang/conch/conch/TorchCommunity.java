@@ -2,7 +2,6 @@ package com.pyeongchang.conch.conch;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Schwa on 2017-07-18.
@@ -38,17 +37,27 @@ public class TorchCommunity {
     private MissionItem Quiz;
     private List<String> completedMission = new ArrayList<String>();
     private List<String> route = new ArrayList<String>();
+    public float getTotalDistance() {
+        return totalDistance;
+    }
 
-    public TorchCommunity(String leader,String date, String communityName,int maxPeople,boolean isSecret){
+    public void setTotalDistance(float totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+    private float totalDistance;
+
+    public TorchCommunity(String leader,String date, String communityName,int maxPeople,boolean isSecret,String runner){
         userList.add(leader);
-        communityScore= (int) (Math.random()*10000);//Test...원래는 0
+        communityScore= 0;//Test...원래는 0
         racingLevel = 0;
         this.communityName=communityName;
         this.maxPeople=maxPeople;
         this.isSecret=isSecret;
-        this.runner = "helloWorld!";
         this.route.add("KOREA");
         this.date.add(date);
+        this.runner=runner;
+        this.totalDistance=0;
     }
 
     public TorchCommunity() {

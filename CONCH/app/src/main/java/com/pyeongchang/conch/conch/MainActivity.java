@@ -4,20 +4,17 @@ package com.pyeongchang.conch.conch;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-
 import android.os.Build;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,10 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,127 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private PopupWindow mPopupWindow;
     private ConstraintLayout mConstraintLayout;
     private ArrayList<TorchCommunity> communityList = new ArrayList<>();
-    private List<String> loadCommunityList=new List<String>() {
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        @NonNull
-        @Override
-        public Iterator<String> iterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        @NonNull
-        @Override
-        public <T> T[] toArray(@NonNull T[] ts) {
-            return null;
-        }
-
-        @Override
-        public boolean add(String s) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(@NonNull Collection<? extends String> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(int i, @NonNull Collection<? extends String> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean retainAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public String get(int i) {
-            return null;
-        }
-
-        @Override
-        public String set(int i, String s) {
-            return null;
-        }
-
-        @Override
-        public void add(int i, String s) {
-
-        }
-
-        @Override
-        public String remove(int i) {
-            return null;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public ListIterator<String> listIterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<String> listIterator(int i) {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public List<String> subList(int i, int i1) {
-            return null;
-        }
-    };
+    private List<String> loadCommunityList=new ArrayList<>();
     private TextView infoTorchRank;
     private TextView infoTorchName;
     private TextView infoTorchScore;
@@ -195,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private Button btnShowLocation;
+    private Button sendTorchBtn;
     BroadcastReceiver broadcastReceiver;
     // GPSTracker class
     private GpsInfo gps;
@@ -320,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     java.util.Date date = calendar.getTime();
                     String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));
 
-                    TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret);
+                    TorchCommunity addTorchCommunity = new TorchCommunity(user.getUserName(), today,tName,tMaxPeople,isSecret,user.getId());
                     /******************************************
                      addTorchCommunity.runner를 현재 로그인되어있는 사용자로 set해주는 부분
                      addTorchCommunity.route에 현재 로그인되어있는 사용자의 nation을 add해주는 부분
@@ -328,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
                     generateMission(addTorchCommunity);
                     communityList.add(addTorchCommunity); // 추후 수정 대상으로 고려 필요
 
+                    mDatabase.child("Users").child(user.getId()).child("communityList").child(String.valueOf(user.getCommunityList().size())).setValue(tName);
                     user.getCommunityList().add(tName);
-                    mDatabase.child("Users").child(user.getId()).child("communityList").child(String.valueOf(communityList.size())).setValue(tName);
                     CarouselFragment carouselFragment = (CarouselFragment) getFragmentManager().findFragmentById(R.id.layout_body);
                     carouselFragment.createNewTorch(tName);
 
@@ -368,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.sliderBtn) {
-            Toast.makeText(this, "메뉴 슬라이더", Toast.LENGTH_SHORT).show();
             llDrawer = (LinearLayout) findViewById(R.id.sliderMenu);
             dlDrawer = (DrawerLayout) findViewById(R.id.activity_main);
             dlDrawer.openDrawer(llDrawer);
@@ -506,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 유저 정보 생성
-        btnShowLocation = (Button) findViewById(R.id.sendButton);
+        sendTorchBtn = (Button) findViewById(R.id.sendButton);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.pyeongchang.conch.conch.SEND_DISTANCE");
@@ -515,7 +388,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 float distance = intent.getFloatExtra("distance", 0);
+                float a=intent.getFloatExtra("currentDistance",0);
                 changeDistanceText(String.valueOf(distance));
+                addDistanceToCommunityDistance(a);
                 progressBar.setProgress((int) distance);
                 if (progressBar.getProgress() >= 3000) {
                     runProgressedLayout.setVisibility(View.GONE);
@@ -530,26 +405,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // GPS 정보를 보여주기 위한 이벤트 클래스 등록
-        btnShowLocation.setOnClickListener(new View.OnClickListener() {
+        sendTorchBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
-                gps = new GpsInfo(MainActivity.this);
-
-                // GPS 사용유무 가져오기
-                if (gps.isGetLocation()) {
-
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-
-
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "당신의 위치 - \n위도: " + latitude + "\n경도: " + longitude,
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    // GPS 를 사용할수 없으므로
-                    gps.showSettingsAlert();
-                }
+                startActivity(new Intent(MainActivity.this, InviteActivity.class));
             }
         });
         countAllCommunityAndUpdateCommunityRank();
@@ -560,15 +419,18 @@ public class MainActivity extends AppCompatActivity {
     public TorchCommunity updateCommunityRankingInFirebase(final TorchCommunity torchCommunity){
         final String targetCommunityName=torchCommunity.getCommunityName();
 
-        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("Community").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         if (postSnapshot.getKey().equals(targetCommunityName)){
+                            postSnapshot.getValue(TorchCommunity.class);
                             int rank=Integer.parseInt(postSnapshot.child("communityRank").getValue().toString());
+                            int score=Integer.parseInt(postSnapshot.child("communityScore").getValue().toString());
                             Log.e("(테스트)","계산된 랭킹 : "+rank);
                             torchCommunity.setCommunityRank(rank);
+                            torchCommunity.setCommunityScore(score);
                         }
                     }
                 }
@@ -580,6 +442,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return torchCommunity;
+    }
+    private void addDistanceToCommunityDistance(float a) {
+        final float currentDistance = a;
+
+        //사용자가 속한 커뮤니티 모두에 해당 거리를 더해주고 해당 값을 db에 다시 저장
+        mDatabase.child("Community").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (int i=0; i < loadCommunityList.size(); i++) {
+                    String a=loadCommunityList.get(i);
+                    DataSnapshot communityDataSnapshot = dataSnapshot.child(a);
+
+                    float totalDistance = communityDataSnapshot.child("totalDistance").getValue(Float.class);
+                    totalDistance += currentDistance;
+                    int score=communityDataSnapshot.child("communityScore").getValue(Integer.class);
+                    mDatabase.child("Community").child(loadCommunityList.get(i)).child("totalDistance").setValue(totalDistance);
+                    mDatabase.child("Community").child(loadCommunityList.get(i)).child("communityScore").setValue(score+((int)totalDistance));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
     @Override
     protected void onPause() {
@@ -630,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadMyCommunityList(){
+    public void loadMyCommunityList(){
         mDatabase.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

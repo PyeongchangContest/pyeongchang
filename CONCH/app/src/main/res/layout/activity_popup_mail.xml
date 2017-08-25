@@ -68,45 +68,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView7"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@android:color/holo_orange_dark"
-                android:gravity="center"
-                android:text="user1님이 초대를 보냈습니다."
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@android:color/holo_orange_dark"
-                android:gravity="center"
-                android:text="torch2 미션 업데이트됨!!"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@android:color/holo_orange_dark"
-                android:gravity="center"
-                android:text="레벨업?"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@android:color/holo_orange_dark"
-                android:gravity="center"
-                android:text="korea torch - 관심 커뮤니티 등록"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

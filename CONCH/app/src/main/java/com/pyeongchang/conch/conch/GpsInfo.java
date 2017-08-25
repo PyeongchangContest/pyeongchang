@@ -5,17 +5,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-
-import static android.app.PendingIntent.getActivity;
 
 
 /**
@@ -211,6 +207,7 @@ public class GpsInfo extends Service implements LocationListener {
             Log.i("(테스트)위도: ",String.valueOf(location.getLatitude()));
             Log.i("(테스트)경도: ",String.valueOf(location.getLongitude()));
             broadcastIntent.putExtra("distance",totalDistance);
+            broadcastIntent.putExtra("currentDistance",distance[0]);
             mContext.sendBroadcast(broadcastIntent);
         }
     }

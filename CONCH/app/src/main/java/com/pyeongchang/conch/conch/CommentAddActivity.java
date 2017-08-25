@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,6 +29,7 @@ public class CommentAddActivity extends AppCompatActivity {
     int count;
     int commentCount = 0;
     String communityName;
+    private User user;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -39,11 +39,11 @@ public class CommentAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_add);
 
+        user=((MainActivity)MainActivity.mContext).getUser();
         //게시글 받아오기
         TextView name = (TextView)findViewById(R.id.comment_name);
         TextView content = (TextView)findViewById(R.id.comment_content);
         content.setMovementMethod(ScrollingMovementMethod.getInstance());
-
         Intent intent = getIntent();
         name.setText(intent.getStringExtra("name"));
         content.setText(intent.getStringExtra("content"));
@@ -65,8 +65,9 @@ public class CommentAddActivity extends AppCompatActivity {
                     String str = fileSnapshot.child("content").getValue(String.class);
                     String name = fileSnapshot.child("name").getValue(String.class);
                     String date = fileSnapshot.child("date").getValue(String.class);
+                    String img =fileSnapshot.child("profileImg").getValue(String.class);
                     if(str != null && name != null && date != null)
-                          commentList.add(new Item(date,1,name,str));
+                          commentList.add(new Item(date,img,name,str));
                 }
                 commentCount = commentList.size();
                 commentAdapter.notifyDataSetChanged();
@@ -84,14 +85,12 @@ public class CommentAddActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             EditText comment_content = (EditText)findViewById(R.id.comment_enter);
-            ImageButton profile_img = (ImageButton)findViewById(R.id.comment_img);
 
             //사용자 이미지 받아오기
             String comment = comment_content.getText().toString();
             String commentData = DateFormat.getDateTimeInstance().format(new Date());
-
             //데이터베이스에 저장
-           Item itemData = new Item(commentData,1,"username",comment);
+           Item itemData = new Item(commentData,user.getId()+".jpg",user.getUserName(),comment);
             databaseReference.child("timeLine").child(communityName).child(String.valueOf(count)).child(String.valueOf(commentCount)).setValue(itemData);
 
            // commentList.add(new Item(commentData,1, "1", comment));

@@ -7,7 +7,11 @@ package com.pyeongchang.conch.conch;
  */
 
 public class Item {
-    public int profileImg;
+    public String getProfileImg() {
+        return profileImg;
+    }
+
+    public String profileImg;
     public String simpleProfile;
     public String date;
     public String name;
@@ -18,7 +22,7 @@ public class Item {
 
     }
     // 게시글 & 덧글
-    public Item(String date, int profileImg, String name, String content){
+    public Item(String date, String profileImg, String name, String content){
         this.content = content;
         this.date = date;
         this.profileImg = profileImg;

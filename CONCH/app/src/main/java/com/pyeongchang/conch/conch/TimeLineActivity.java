@@ -27,7 +27,7 @@ public class TimeLineActivity extends Activity implements AdapterView.OnItemClic
     ListView lv;
     int count = 0;
     String communityName;
-
+    private User user;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
@@ -35,6 +35,8 @@ public class TimeLineActivity extends Activity implements AdapterView.OnItemClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_line);
+
+        user=((MainActivity)MainActivity.mContext).getUser();
 
         lv = (ListView) findViewById(R.id.timeline_list_view);
 
@@ -56,7 +58,8 @@ public class TimeLineActivity extends Activity implements AdapterView.OnItemClic
                     String str = fileSnapshot.child("content").getValue(String.class);
                     String name = fileSnapshot.child("name").getValue(String.class);
                     String date = fileSnapshot.child("date").getValue(String.class);
-                    timeLinelist.add(new Item(date, 1, name, str));
+                    String img =fileSnapshot.child("profileImg").getValue(String.class);
+                    timeLinelist.add(new Item(date, img, name, str));
                 }
                 count = timeLinelist.size();
                 cAdapter.notifyDataSetChanged();
@@ -90,7 +93,7 @@ public class TimeLineActivity extends Activity implements AdapterView.OnItemClic
                 //사용자 이미지
 
                 //firebase 저장
-                Item itemData = new Item(currentData, 1, "username", response);
+                Item itemData = new Item(currentData, user.getId()+".jpg", user.getUserName(), response);
                 databaseReference.child("timeLine").child(communityName).child(String.valueOf(count)).setValue(itemData);
 
                 //timeLinelist.add(new Item(currentData, 1, "username", response));
